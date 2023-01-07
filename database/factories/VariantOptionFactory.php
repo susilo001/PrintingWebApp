@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Variant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class VariantOptionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'variant_id' => Variant::factory(),
+            'value' => fake()->text(),
         ];
     }
 }

@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use App\Models\Category;
+use App\Models\Order;
+use App\Models\PaymentDetail;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class ProductSeeder extends Seeder
+class PaymentDetailSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,11 +16,11 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        $categories = Category::all();
+        $order = Order::all();
 
-        foreach ($categories as $category) {
-            Product::factory()->count(10)->create([
-                'category_id' => $category->id,
+        foreach ($order as $order) {
+            PaymentDetail::factory()->create([
+                'order_id' => $order->id,
             ]);
         }
     }

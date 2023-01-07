@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Product;
+use App\Models\Variant;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class VariantSeeder extends Seeder
 {
@@ -14,6 +16,19 @@ class VariantSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $products = Product::all();
+
+        foreach ($products as $product) {
+            Variant::factory()->count(6)->forEachSequence(
+                ['name' => 'Size'],
+                ['name' => 'Color'],
+                ['name' => 'Material'],
+                ['name' => 'Style'],
+                ['name' => 'Pattern'],
+                ['name' => 'Fit'],
+            )->create([
+                'product_id' => $product->id,
+            ]);
+        }
     }
 }

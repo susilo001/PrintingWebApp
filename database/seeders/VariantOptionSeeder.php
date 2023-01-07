@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Variant;
+use App\Models\VariantOption;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class VariantOptionSeeder extends Seeder
 {
@@ -14,6 +16,12 @@ class VariantOptionSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $variant = Variant::all();
+
+        foreach ($variant as $variant) {
+            VariantOption::factory()->create([
+                'variant_id' => $variant->id,
+            ]);
+        }
     }
 }

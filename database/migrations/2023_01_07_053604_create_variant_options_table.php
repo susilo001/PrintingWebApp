@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('variant_options', function (Blueprint $table) {
             $table->id();
+            $table->string('value');
+            $table->foreignId('variant_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

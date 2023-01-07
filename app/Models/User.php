@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'phone_number'
     ];
 
     /**
@@ -41,4 +43,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Has many addresses
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Has many payment methods
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+
+    public function paymentMethods()
+    {
+        return $this->hasMany(PaymentMethod::class);
+    }
+
+    /**
+     * Has many orders
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

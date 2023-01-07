@@ -8,4 +8,34 @@ use Illuminate\Database\Eloquent\Model;
 class Variant extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'product_id',
+        'name',
+    ];
+
+    /**
+     * Belongs to product
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Had many variant options
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function variantOptions()
+    {
+        return $this->hasMany(VariantOption::class);
+    }
 }

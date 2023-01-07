@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderItem extends Model
+class PaymentDetail extends Model
 {
     use HasFactory;
 
@@ -14,18 +14,13 @@ class OrderItem extends Model
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
         'order_id',
-        'product_id',
-        'name',
-        'description',
-        'image',
-        'qty',
-        'price',
-        'subtotal',
-        'discount',
-        'tax',
-        'total',
+        'gross_amount',
+        'status',
+        'payment_type',
+        'expiry'
     ];
 
     /**
@@ -36,15 +31,5 @@ class OrderItem extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
-    }
-
-    /**
-     * Belongs to product
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
     }
 }

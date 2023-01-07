@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OrderItemSeeder extends Seeder
 {
@@ -14,6 +17,14 @@ class OrderItemSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $product = Product::all();
+        $order = Order::all();
+
+        foreach ($order as $order) {
+            OrderItem::factory()->create([
+                'order_id' => $order->id,
+                'product_id' => $product->random()->id,
+            ]);
+        }
     }
 }

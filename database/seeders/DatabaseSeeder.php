@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Discount;
+use App\Models\PaymentMethod;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +19,18 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            AddressSeeder::class,
+            PaymentMethodSeeder::class,
+            CategorySeeder::class,
+            DiscountSeeder::class,
+            ProductSeeder::class,
+            PriceSeeder::class,
+            VariantSeeder::class,
+            VariantOptionSeeder::class,
+            OrderSeeder::class,
+            OrderItemSeeder::class,
+            PaymentDetailSeeder::class,
+            TestimonialSeeder::class,
         ]);
     }
 }

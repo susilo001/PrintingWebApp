@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Price extends Model
+class PaymentMethod extends Model
 {
     use HasFactory;
 
@@ -15,20 +15,22 @@ class Price extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'product_id',
-        'name',
-        'price',
-        'min_order',
-        'max_order',
+        'user_id',
+        'payment_type',
+        'account_name',
+        'account_number',
+        'bank',
+        'expiry_date',
+        'cvv',
     ];
 
     /**
-     * Belongs to product
+     * Belongs to user
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function user()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(User::class);
     }
 }

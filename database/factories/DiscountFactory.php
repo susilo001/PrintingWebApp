@@ -17,7 +17,10 @@ class DiscountFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->name(),
+            'description' => fake()->realText(),
+            'discount_percentage' => fake()->numberBetween(1, 100),
+            'active' => fake()->boolean(50)
         ];
     }
 }

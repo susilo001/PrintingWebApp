@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
+use App\Models\Address;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class AddressSeeder extends Seeder
 {
@@ -14,6 +16,12 @@ class AddressSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $user =  User::all();
+
+        foreach ($user as $user) {
+            Address::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        }
     }
 }
