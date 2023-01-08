@@ -5,7 +5,7 @@
         "build": "vite build && vite build --ssr"
     },
     "devDependencies": {
-        "@headlessui/react": "^1.4.2",
+        "@headlessui/react": "^1.7.7",
         "@inertiajs/inertia": "^0.11.0",
         "@inertiajs/inertia-react": "^0.8.1",
         "@inertiajs/progress": "^0.2.6",
@@ -23,6 +23,10 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "polotno": "^1.4.3"
+        "@heroicons/react": "^2.0.13",
+        "daisyui": "^2.46.1",
+        "polotno": "^1.4.3",
+        "swiper": "^8.4.5",
+        "theme-change": "^2.3.0"
     }
 }
