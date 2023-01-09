@@ -4,12 +4,14 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import ExploreByCategory from "@/Components/ExploreByCategory";
 import Carousel from "@/Components/Carousel";
 import Card from "@/Components/Card";
+import Testimonial from "@/Components/Testimonial";
+import FeatureSection from "@/Components/FeatureSection";
 
 export default function Welcome(props) {
     return (
         <AuthenticatedLayout auth={props.auth} errors={props.errors}>
             <Head title="Welcome" />
-            <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto max-w-7xl px-4 my-12 sm:px-6 lg:px-8">
                 <div className="hero bg-base-200">
                     <div className="hero-content flex-col lg:flex-row-reverse">
                         <img
@@ -101,14 +103,13 @@ export default function Welcome(props) {
                     </Carousel>
                 </div>
                 <div className="max-w-7xl my-8">
-                    <div className="flex justify-center mb-8">
-                        <h2 className="text-2xl font-bold">Feature</h2>
-                    </div>
+                    <FeatureSection />
                 </div>
                 <div className="max-w-7xl my-8">
                     <div className="flex justify-center mb-8">
                         <h2 className="text-2xl font-bold">Testimonial</h2>
                     </div>
+                    <Testimonial />
                 </div>
             </div>
         </AuthenticatedLayout>
