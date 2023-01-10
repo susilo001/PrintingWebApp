@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Product extends Model
 {
     use HasFactory;
@@ -25,6 +26,16 @@ class Product extends Model
         'featured',
         'discount_id',
         'category_id',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<int, string>
+     */
+
+    protected $casts = [
+        'featured' => 'boolean',
     ];
 
     /**

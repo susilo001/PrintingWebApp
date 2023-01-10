@@ -20,13 +20,21 @@ class ProductFactory extends Factory
     public function definition()
     {
         $name = fake()->name();
+
+        $highlights = [
+            fake()->sentence(10),
+            fake()->sentence(10),
+            fake()->sentence(10),
+            fake()->sentence(10),
+            fake()->sentence(10),
+        ];
         return [
             'category_id' => Category::factory(),
             'discount_id' => Discount::factory(),
             'name' => $name,
             'slug' => Str::slug($name),
             'description' => fake()->paragraph(3),
-            'highlights' => fake()->text(),
+            'highlights' => json_encode($highlights),
             'details' => fake()->text(),
             'image' => 'https://picsum.photos/200/' . fake()->numberBetween(1, 100),
             'tax' => fake()->numberBetween(1, 100),

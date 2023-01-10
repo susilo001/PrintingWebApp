@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->longText('description');
-            $table->string('highlights');
+            $table->json('highlights');
             $table->string('details');
             $table->string('image')->default('products/default.jpg');
             $table->decimal('tax', 8, 2);

@@ -19,7 +19,7 @@ class AddressSeeder extends Seeder
         $user =  User::all();
 
         foreach ($user as $user) {
-            Address::factory()->create([
+            Address::factory()->count(2)->create([
                 'user_id' => $user->id,
             ]);
         }

@@ -25,7 +25,7 @@ class VariantSeeder extends Seeder
                 ['name' => 'Material'],
                 ['name' => 'Style'],
                 ['name' => 'Pattern'],
-                ['name' => 'Fit'],
+                ['name' => 'Margin'],
             )->create([
                 'product_id' => $product->id,
             ]);

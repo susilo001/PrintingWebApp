@@ -26,7 +26,9 @@ class PriceSeeder extends Seeder
                 ['min_order' => 101, 'max_order' => 300],
                 ['min_order' => 301, 'max_order' => 500],
                 ['min_order' => 501, 'max_order' => 1000],
-            )->create();
+            )->create([
+                'product_id' => $product->id,
+            ]);
         }
     }
 }

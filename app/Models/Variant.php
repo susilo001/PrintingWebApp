@@ -34,7 +34,7 @@ class Variant extends Model
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function variantOptions()
+    public function options()
     {
         return $this->hasMany(VariantOption::class);
     }
