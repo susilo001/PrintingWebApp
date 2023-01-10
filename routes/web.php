@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Cart\CartController;
 use Inertia\Inertia;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Cart\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,16 +24,18 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
+        'categories' => Category::with('products')->get(),
+        'featuredProducts' => Product::with(['category', 'prices'])->where('featured', true)->get(),
         'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    // Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
     Route::controller(CartController::class)->group(function () {
         Route::get('/cart', 'index')->name('cart.index');
         Route::post('/cart', 'store')->name('cart.store');
+        Route::put('/cart', 'update')->name('cart.update');
+        Route::delete('/cart/{rowId}', 'destroy')->name('cart.destroy');
     });
 });
 

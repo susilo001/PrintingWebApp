@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers\Cart;
 
+use Inertia\Inertia;
 use DebugBar\DebugBar;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\Cart\CartService;
 use App\Http\Controllers\Controller;
-use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Date;
-use Inertia\Inertia;
-use Termwind\Components\Dd;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
 {
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     public function index()
     {
         return Inertia::render('Cart', [
@@ -26,41 +33,20 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
-        $path = $request->file('design')->store('public/designs');
+        $this->cartService->add($request);
 
-        $product = Product::find($request->product_id);
+        return redirect()->route('cart.index');
+    }
 
-        $prices = $product->prices;
+    public function update(Request $request)
+    {
+        Cart::update($request->rowId, $request->quantity);
+        return redirect()->route('cart.index');
+    }
 
-        if ($request->quantity > $prices->max('max_order')) {
-            $price = $prices->last();
-        } else {
-            $price = $prices
-                ->where('min_order', '<=', $request->quantity)
-                ->where('max_order', '>=', $request->quantity)
-                ->first();
-        }
-
-        foreach ($request->variants as $variant) {
-            $variants[] = array(
-                'name' => $variant['name'],
-                'value' => $variant['value']
-            );
-        }
-
-        if ($request->file('design')->isValid()) {
-            Cart::add([
-                'id' => Date::now()->timestamp,
-                'qty' => $request->quantity,
-                'name' => $product->name,
-                'price' => $price->price,
-                'weight' => 0,
-                'options' => [
-                    'design' => $path,
-                    'variants' => $variants,
-                ]
-            ])->associate('App\Models\Product');
-        }
+    public function destroy($rowId)
+    {
+        Cart::remove($rowId);
         return redirect()->route('cart.index');
     }
 }

@@ -20,7 +20,6 @@ class AddCartTest extends TestCase
      */
     public function testIfUserCanAddProductToCart()
     {
-
         $user = User::factory()->create();
         $this->withoutExceptionHandling();
         $this->actingAs($user)->post('/cart', [
