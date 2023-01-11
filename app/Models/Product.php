@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Gloudemans\Shoppingcart\CanBeBought;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Gloudemans\Shoppingcart\Contracts\Buyable;
 
 
-class Product extends Model
+class Product extends Model implements Buyable
 {
-    use HasFactory;
+    use HasFactory, CanBeBought;
 
     /**
      * The attributes that are mass assignable.

@@ -9,7 +9,7 @@ export default function ExploreByCategory({ categories }) {
   const [category, setCategory] = useState(categories[0]);
 
   return (
-    <div className="my-8">
+    <div>
       <div className="flex justify-center mb-8">
         <h2 className="text-2xl font-bold">Explore by Category</h2>
       </div>

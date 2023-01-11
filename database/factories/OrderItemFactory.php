@@ -18,6 +18,12 @@ class OrderItemFactory extends Factory
      */
     public function definition()
     {
+        $variants = [
+            ['name' => fake()->sentence(10), 'value' => fake()->sentence(10)],
+            ['name' => fake()->sentence(10), 'value' => fake()->sentence(10)],
+            ['name' => fake()->sentence(10), 'value' => fake()->sentence(10)],
+            ['name' => fake()->sentence(10), 'value' => fake()->sentence(10)],
+        ];
         return [
             'order_id' => Order::factory(),
             'product_id' => Product::factory(),
@@ -26,6 +32,7 @@ class OrderItemFactory extends Factory
             'image' => 'https://picsum.photos/200/' . $this->faker->numberBetween(1, 100),
             'qty' => $this->faker->numberBetween(1, 10000),
             'price' => $this->faker->numberBetween(1, 10000),
+            'variants' => json_encode($variants),
             'subtotal' => $this->faker->numberBetween(1, 10000),
             'discount' => $this->faker->numberBetween(1, 10000),
             'tax' => $this->faker->numberBetween(1, 10000),

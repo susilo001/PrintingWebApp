@@ -24,10 +24,22 @@ export default function Authenticated({ auth, header, children, cartCount }) {
 
               <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <NavLink
-                  href={route("dashboard")}
+                  href={route("home")}
                   active={route().current("dashboard")}
                 >
-                  Dashboard
+                  Home
+                </NavLink>
+                <NavLink
+                  href={route("home")}
+                  active={route().current("dashboard")}
+                >
+                  Products
+                </NavLink>
+                <NavLink
+                  href={route("design")}
+                  active={route().current("dashboard")}
+                >
+                  Design Tools
                 </NavLink>
               </div>
             </div>
@@ -36,14 +48,16 @@ export default function Authenticated({ auth, header, children, cartCount }) {
               <ToggleDarkMode />
               {auth?.user ? (
                 <>
-                  <button className="btn btn-ghost btn-circle">
-                    <div className="indicator">
-                      <span className="indicator-item badge badge-secondary badge-xs">
-                        {cartCount}
-                      </span>
-                      <ShoppingBagIcon className="h-6 w-6" />
-                    </div>
-                  </button>
+                  <Link href={route("cart.index")}>
+                    <button className="btn btn-ghost btn-circle">
+                      <div className="indicator">
+                        <span className="indicator-item badge badge-secondary badge-sm">
+                          {cartCount}
+                        </span>
+                        <ShoppingBagIcon className="h-6 w-6" />
+                      </div>
+                    </button>
+                  </Link>
                   <div className="relative">
                     <Dropdown>
                       <Dropdown.Trigger>
@@ -78,11 +92,17 @@ export default function Authenticated({ auth, header, children, cartCount }) {
                 </>
               ) : (
                 <div className="ml-3 space-x-4">
-                  <Link href={route("login")} className="btn btn-outline">
+                  <Link
+                    href={route("login")}
+                    className="btn btn-sm btn-outline btn-primary"
+                  >
                     Login
                   </Link>
 
-                  <Link href={route("register")} className="btn btn-outline">
+                  <Link
+                    href={route("register")}
+                    className="btn btn-sm btn-outline btn-primary"
+                  >
                     Register
                   </Link>
                 </div>
@@ -135,10 +155,10 @@ export default function Authenticated({ auth, header, children, cartCount }) {
         >
           <div className="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink
-              href={route("dashboard")}
+              href={route("home")}
               active={route().current("dashboard")}
             >
-              Dashboard
+              Home
             </ResponsiveNavLink>
           </div>
 

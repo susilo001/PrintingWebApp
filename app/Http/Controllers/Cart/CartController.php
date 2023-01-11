@@ -24,10 +24,12 @@ class CartController extends Controller
     {
         return Inertia::render('Cart', [
             'cart' => Cart::content(),
+            'weight' => Cart::weight(),
+            'priceTotal' => Cart::priceTotal(),
             'subtotal' => Cart::subtotal(),
-            'total' => Cart::total(),
             'tax' => Cart::tax(),
-            'count' => Cart::count(),
+            'discount' => Cart::discount(),
+            'total' => Cart::total(),
         ]);
     }
 
@@ -41,12 +43,26 @@ class CartController extends Controller
     public function update(Request $request)
     {
         Cart::update($request->rowId, $request->quantity);
+
         return redirect()->route('cart.index');
     }
 
     public function destroy($rowId)
     {
         Cart::remove($rowId);
+
+        return redirect()->route('cart.index');
+    }
+
+    /**
+     * Checkout the cart content
+     * 
+     * @return void
+     */
+    public function checkout()
+    {
+        $this->cartService->checkout();
+
         return redirect()->route('cart.index');
     }
 }

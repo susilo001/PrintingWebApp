@@ -6,6 +6,7 @@ import Testimonial from "@/Components/Testimonial";
 import FeatureSection from "@/Components/FeatureSection";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import { Swiper, SwiperSlide } from "swiper/react";
+import HeroSection from "@/Components/HeroSection";
 
 export default function Welcome({
   auth,
@@ -18,25 +19,13 @@ export default function Welcome({
     <AuthenticatedLayout auth={auth} errors={errors} cartCount={cartCount}>
       <Head title="Welcome" />
       <div className="container mx-auto max-w-7xl px-4 my-12 sm:px-6 lg:px-8">
-        <div className="hero bg-base-200">
-          <div className="hero-content flex-col lg:flex-row-reverse">
-            <img
-              src="https://picsum.photos/seed/picsum/200/300"
-              className="max-w-sm rounded-lg shadow-2xl"
-            />
-            <div>
-              <h1 className="text-5xl font-bold">Box Office News!</h1>
-              <p className="py-6">
-                Provident cupiditate voluptatem et in. Quaerat fugiat ut
-                assumenda excepturi exercitationem quasi. In deleniti eaque aut
-                repudiandae et a id nisi.
-              </p>
-              <button className="btn btn-primary">Get Started</button>
-            </div>
-          </div>
+        <div className="container m-auto px-6 py-20 md:pb-0 md:pt-40 md:px-12 lg:py-0 lg:px-10">
+          <HeroSection />
         </div>
-        <ExploreByCategory categories={categories} />
-        <div className="max-w-7xl my-8">
+        <div className="py-20 sm:py-32 lg:py-40">
+          <ExploreByCategory categories={categories} />
+        </div>
+        <div className="max-w-7xl py-20 sm:py-32 lg:py-40">
           <div className="flex justify-center mb-8">
             <h2 className="text-2xl font-bold">Popular Products</h2>
           </div>
@@ -64,10 +53,10 @@ export default function Welcome({
             ))}
           </Swiper>
         </div>
-        <div className="max-w-7xl my-8">
+        <div className="max-w-7xl py-20 sm:py-32 lg:py-40">
           <FeatureSection />
         </div>
-        <div className="max-w-7xl my-8">
+        <div className="max-w-7xl py-20 sm:py-32 lg:py-40">
           <div className="flex justify-center mb-8">
             <h2 className="text-2xl font-bold">Testimonial</h2>
           </div>

@@ -22,11 +22,13 @@ class OrderItem extends Model
         'image',
         'qty',
         'price',
+        'variants',
         'subtotal',
         'discount',
         'tax',
         'total',
     ];
+
 
     /**
      * Belongs to order
