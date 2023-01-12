@@ -9,6 +9,8 @@ import Input from "@/Components/Input";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import Button from "@/Components/Button";
 import { Link } from "@inertiajs/inertia-react";
+import { useEffect } from "react";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function Cart({
   auth,
@@ -18,10 +20,47 @@ export default function Cart({
   priceTotal,
   subtotal,
   tax,
+  token,
   weight,
   total,
 }) {
   const data = Object.entries(cart).map(([key, value]) => value);
+
+  useEffect(() => {
+    //change this to the script source you want to load, for example this is snap.js sandbox env
+    const midtransScriptUrl = import.meta.env.VITE_MIDTRANS_SCRIPT_URL;
+    //change this according to your client-key
+    const MidtransClientKey = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
+
+    let scriptTag = document.createElement("script");
+    scriptTag.src = midtransScriptUrl;
+    // optional if you want to set script attribute
+    // for example snap.js have data-client-key attribute
+    scriptTag.setAttribute("data-client-key", MidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  }, []);
+
+  const handleCheckout = () => {
+    Inertia.get(
+      route("cart.checkout"),
+      {},
+      {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: (page) => {
+          window.snap.pay(page.props.token, {
+            onSuccess: function (result) {
+              console.log(result);
+            },
+          });
+        },
+      }
+    );
+  };
 
   return (
     <AuthenticatedLayout
@@ -76,9 +115,14 @@ export default function Cart({
                     />
                   </div>
                   <div className="w-24">
-                    <button className="btn btn-circle btn-ghost">
+                    <Link
+                      href={route("cart.destroy", { rowId: item.rowId })}
+                      method="delete"
+                      className="btn btn-circle btn-ghost"
+                      as="button"
+                    >
                       <TrashIcon className="h-6 w-6 text-error" />
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -110,12 +154,13 @@ export default function Cart({
                 </div>
               </div>
               <div>
-                <Link href={route("cart.checkout")} method="post">
-                  <Button className="btn btn-primary btn-block gap-2">
-                    Checkout
-                    <BanknotesIcon className="h-6 w-6" />
-                  </Button>
-                </Link>
+                <button
+                  className="btn btn-primary btn-block gap-2"
+                  onClick={handleCheckout}
+                >
+                  Checkout
+                  <BanknotesIcon className="h-6 w-6" />
+                </button>
               </div>
             </div>
           </div>

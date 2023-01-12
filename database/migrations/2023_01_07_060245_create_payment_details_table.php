@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('payment_type')->nullable();
             $table->string('expiry')->nullable();
             $table->json('payment_details')->nullable();
-            $table->decimal('gross_amount', 20, 2);
+            $table->bigInteger('gross_amount');
             $table->timestamps();
         });
     }

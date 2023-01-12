@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('price', 20, 2);
+            $table->bigInteger('price');
             $table->bigInteger('min_order');
             $table->bigInteger('max_order');
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();

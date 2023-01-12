@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/cart', 'index')->name('cart.index');
         Route::post('/cart', 'store')->name('cart.store');
         Route::put('/cart', 'update')->name('cart.update');
-        Route::post('/cart/checkout', 'checkout')->name('cart.checkout');
+        Route::get('/cart/checkout', 'checkout')->name('cart.checkout');
         Route::delete('/cart/{rowId}', 'destroy')->name('cart.destroy');
     });
 

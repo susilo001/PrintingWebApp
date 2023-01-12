@@ -41,8 +41,27 @@ class CheckoutCartTest extends TestCase
             'design' => UploadedFile::fake()->image('design.png')
         ]);
 
-        $this->actingAs($user)
-            ->post('/cart/checkout')
-            ->assertOk();
+        $this->actingAs($user)->post('/cart', [
+            'product_id' => 3,
+            'quantity' => fake()->numberBetween(1, 10000),
+            'project_name' => fake()->sentence(3),
+            'description' => fake()->text(),
+            'variants' => [
+                [
+                    'name' => 'size',
+                    'value' => 's'
+                ],
+                [
+                    'name' => 'color',
+                    'value' => 'red'
+                ]
+            ],
+            'design' => UploadedFile::fake()->image('design.png')
+        ]);
+
+        $reponse =  $this->actingAs($user)
+            ->get('/cart/checkout');
+
+        $reponse->assertStatus(200);
     }
 }

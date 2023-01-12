@@ -2,6 +2,7 @@
 
 namespace App\Services\Payment;
 
+use App\Models\OrderItem;
 use App\Models\Product;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -45,6 +46,8 @@ abstract class Midtrans
 
     public function transform($data)
     {
+        $orderItems = OrderItem::where('order_id', $data['id'])->get();
+
         $transaction = [
             'transaction_details' => [
                 'order_id' => $data->id,
@@ -57,14 +60,12 @@ abstract class Midtrans
                 'phone' => $data->user->phone_number,
             ],
 
-            'item_details' => $data->orderItems->map(function ($item) {
-                $product = Product::find($item->product_id);
+            'item_details' => $orderItems->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'name' => $product->name,
-                    'price' => $item->price,
+                    'name' => $item->product->name,
+                    'price' => $item->price + $item->tax - $item->discount,
                     'quantity' => $item->qty,
-                    'variants' => $item->variants,
                 ];
             })->toArray(),
         ];

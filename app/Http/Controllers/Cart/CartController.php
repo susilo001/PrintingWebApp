@@ -10,6 +10,8 @@ use App\Services\Cart\CartService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Date;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Response;
 
 class CartController extends Controller
 {
@@ -61,8 +63,17 @@ class CartController extends Controller
      */
     public function checkout()
     {
-        $this->cartService->checkout();
+        $response = $this->cartService->checkout();
 
-        return redirect()->route('cart.index');
+        return Inertia::render('Cart', [
+            'cart' => Cart::content(),
+            'weight' => Cart::weight(),
+            'priceTotal' => Cart::priceTotal(),
+            'subtotal' => Cart::subtotal(),
+            'tax' => Cart::tax(),
+            'discount' => Cart::discount(),
+            'total' => Cart::total(),
+            'token' => $response,
+        ]);
     }
 }

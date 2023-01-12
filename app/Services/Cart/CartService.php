@@ -60,6 +60,9 @@ class CartService
                 ]
             ]);
 
+            // $cartItems->setTax();
+            // $cartItems->setDiscount();
+
             $cartItems->associate(Product::class);
         }
     }
@@ -94,10 +97,13 @@ class CartService
     public function checkout()
     {
         $cart = Cart::content();
+        $total = Cart::total();
+
+        // dd($cart, Cart::subtotal(), Cart::tax(), Cart::discount(), $total);
 
         $order = Order::create([
             'user_id' => auth()->user()->id,
-            'total_amount' => (float) Cart::total(),
+            'total_amount' => $total,
             'status' => 'pending',
         ]);
 
@@ -111,21 +117,21 @@ class CartService
                 'price' => $item->price,
                 'variants' => json_encode($item->variants),
                 'subtotal' => $item->subtotal,
-                'discount' => 0,
-                'tax' => $item->tax,
+                'discount' => $item->discountRate,
+                'tax' => $item->taxRate,
                 'total' => $item->total,
             ]);
         }
 
         $order->paymentDetail()->create([
             'status' => 'pending',
-            'gross_amount' => (float) Cart::total(),
+            'gross_amount' => $total,
         ]);
 
         Cart::destroy();
 
         $payment = new HandlePaymentService($order->load(['orderItems', 'paymentDetail', 'user']));
 
-        $payment->handle();
+        return $payment->handle();
     }
 }

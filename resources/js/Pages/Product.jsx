@@ -7,6 +7,7 @@ import Filepond from "@/Components/Filepond";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import { Inertia } from "@inertiajs/inertia";
 import Input from "@/Components/Input";
+import TextArea from "@/Components/TextArea";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -54,16 +55,18 @@ export default function Product(props) {
     let selectedVariant = [];
 
     product.variants.forEach((variant) => {
-      e.target[variant.name].value;
+      e.target[variant.name]?.value;
 
       selectedVariant.push({
         name: variant.name,
-        value: e.target[variant.name].value,
+        value: e.target[variant.name]?.value,
       });
     });
 
     Inertia.post("/cart", {
       product_id: props.product.id,
+      project_name: e.target.project_name.value,
+      description: e.target.description.value,
       quantity: e.target.qty.value,
       variants: selectedVariant,
       design: e.target.design.files[0],
@@ -186,14 +189,26 @@ export default function Product(props) {
                 </div>
 
                 <form className="mt-10" onSubmit={handleSubmit}>
-                  <div>
-                    <Input
-                      name="qty"
-                      label={"Quantity"}
-                      type="number"
-                      className={"input-bordered"}
-                    />
-                  </div>
+                  <Input
+                    name="project_name"
+                    label={"Project Name"}
+                    type="text"
+                    className={"input-bordered w-full"}
+                  />
+
+                  <TextArea
+                    name="description"
+                    label={"Description"}
+                    className={"textarea-bordered"}
+                  />
+
+                  <Input
+                    name="qty"
+                    label={"Quantity"}
+                    type="number"
+                    className={"input-bordered w-full"}
+                  />
+
                   {/* Variants */}
                   {product.variants.map((variant) => (
                     <div key={variant.id} className="mt-10">

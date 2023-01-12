@@ -1,7 +1,7 @@
 import { createStore } from "polotno/model/store";
 
 const store = createStore({
-    key: "9Tj-zn4hwDR0CHEjM-n8",
+  key: import.meta.env.VITE_POLOTNO_API_KEY,
 });
 
 store.addPage();

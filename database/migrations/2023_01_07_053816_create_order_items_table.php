@@ -21,12 +21,12 @@ return new class extends Migration
             $table->longText('description');
             $table->string('image');
             $table->json('variants');
-            $table->decimal('price', 20, 2);
+            $table->bigInteger('price');
             $table->bigInteger('qty');
-            $table->decimal('subtotal', 20, 2);
-            $table->decimal('discount', 20, 2);
-            $table->decimal('tax', 20, 2);
-            $table->decimal('total', 20, 2);
+            $table->bigInteger('subtotal');
+            $table->bigInteger('discount');
+            $table->bigInteger('tax');
+            $table->bigInteger('total');
             $table->timestamps();
         });
     }
