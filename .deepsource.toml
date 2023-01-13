@@ -1,0 +1,19 @@
+version = 1
+
+[[analyzers]]
+name = "test-coverage"
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  plugins = ["react"]
+
+[[analyzers]]
+name = "php"
+
+  [analyzers.meta]
+  bootstrap_files = ["bootstrap/app.php"]
+
+[[transformers]]
+name = "prettier"
