@@ -4,10 +4,10 @@ import {
   ShoppingCartIcon,
   TrashIcon,
   BanknotesIcon,
+  CreditCardIcon,
 } from "@heroicons/react/24/outline";
 import Input from "@/Components/Input";
 import CurrencyFormater from "@/lib/CurrencyFormater";
-import Button from "@/Components/Button";
 import { Link } from "@inertiajs/inertia-react";
 import { useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
@@ -27,15 +27,13 @@ export default function Cart({
   const data = Object.entries(cart).map(([key, value]) => value);
 
   useEffect(() => {
-    //change this to the script source you want to load, for example this is snap.js sandbox env
     const midtransScriptUrl = import.meta.env.VITE_MIDTRANS_SCRIPT_URL;
-    //change this according to your client-key
+
     const MidtransClientKey = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
 
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransScriptUrl;
-    // optional if you want to set script attribute
-    // for example snap.js have data-client-key attribute
+
     scriptTag.setAttribute("data-client-key", MidtransClientKey);
 
     document.body.appendChild(scriptTag);
@@ -44,10 +42,25 @@ export default function Cart({
     };
   }, []);
 
-  const handleCheckout = () => {
-    Inertia.get(
+  const handleCashPayment = () => {
+    Inertia.post(
       route("cart.checkout"),
-      {},
+      {
+        payment_method: "cash",
+      },
+      {
+        preserveScroll: true,
+        preserveState: true,
+      }
+    );
+  };
+
+  const handleSnapPayment = () => {
+    Inertia.post(
+      route("cart.checkout"),
+      {
+        payment_method: "snap",
+      },
       {
         preserveScroll: true,
         preserveState: true,
@@ -153,12 +166,19 @@ export default function Cart({
                   <span>{CurrencyFormater(total)}</span>
                 </div>
               </div>
-              <div>
+              <div className="space-y-4">
                 <button
-                  className="btn btn-primary btn-block gap-2"
-                  onClick={handleCheckout}
+                  className="btn btn-secondary btn-block gap-2"
+                  onClick={() => handleSnapPayment()}
                 >
-                  Checkout
+                  Pay with Midtrans
+                  <CreditCardIcon className="h-6 w-6" />
+                </button>
+                <button
+                  className="btn btn-success btn-block gap-2"
+                  onClick={() => handleCashPayment()}
+                >
+                  Cash on Delivery
                   <BanknotesIcon className="h-6 w-6" />
                 </button>
               </div>

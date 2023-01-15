@@ -30,7 +30,6 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'categories' => Category::with('products')->get(),
         'featuredProducts' => Product::with(['category', 'prices'])->where('featured', true)->get(),
-        'laravelVersion' => Application::VERSION,
     ]);
 })->name('home');
 
@@ -46,7 +45,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/cart', 'index')->name('cart.index');
         Route::post('/cart', 'store')->name('cart.store');
         Route::put('/cart', 'update')->name('cart.update');
-        Route::get('/cart/checkout', 'checkout')->name('cart.checkout');
+        Route::post('/cart/checkout', 'checkout')->name('cart.checkout');
         Route::delete('/cart/{rowId}', 'destroy')->name('cart.destroy');
     });
 
@@ -58,10 +57,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         return Inertia::render('Design');
     })->name('design');
 });
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 require __DIR__ . '/auth.php';

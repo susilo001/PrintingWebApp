@@ -23,10 +23,8 @@ return new class extends Migration
             $table->json('variants');
             $table->bigInteger('price');
             $table->bigInteger('qty');
-            $table->bigInteger('subtotal');
             $table->bigInteger('discount');
             $table->bigInteger('tax');
-            $table->bigInteger('total');
             $table->timestamps();
         });
     }

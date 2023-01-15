@@ -33,10 +33,8 @@ class OrderItemFactory extends Factory
             'qty' => $this->faker->numberBetween(1, 10000),
             'price' => $this->faker->numberBetween(1, 10000),
             'variants' => json_encode($variants),
-            'subtotal' => $this->faker->numberBetween(1, 10000),
             'discount' => $this->faker->numberBetween(1, 10000),
             'tax' => $this->faker->numberBetween(1, 10000),
-            'total' => $this->faker->numberBetween(1, 10000),
         ];
     }
 }

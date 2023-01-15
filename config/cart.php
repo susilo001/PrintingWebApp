@@ -12,7 +12,8 @@ return [
     |
     */
 
-    'calculator' => \Gloudemans\Shoppingcart\Calculation\DefaultCalculator::class,
+    // 'calculator' => \Gloudemans\Shoppingcart\Calculation\DefaultCalculator::class,
+    'calculator' => \App\Services\Calculator\CalculatorService::class,
 
     /*
     |--------------------------------------------------------------------------

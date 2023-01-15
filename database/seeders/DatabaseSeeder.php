@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            RoleAndPermissionSeeder::class,
             AddressSeeder::class,
             PaymentMethodSeeder::class,
             CategorySeeder::class,
@@ -27,8 +28,8 @@ class DatabaseSeeder extends Seeder
             PriceSeeder::class,
             VariantSeeder::class,
             VariantOptionSeeder::class,
-            OrderSeeder::class,
-            OrderItemSeeder::class,
+            // OrderSeeder::class,
+            // OrderItemSeeder::class,
             PaymentDetailSeeder::class,
             TestimonialSeeder::class,
         ]);

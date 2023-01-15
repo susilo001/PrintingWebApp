@@ -61,9 +61,10 @@ class CartController extends Controller
      * 
      * @return void
      */
-    public function checkout()
+    public function checkout(Request $request)
     {
-        $response = $this->cartService->checkout();
+
+        $response = $this->cartService->checkout($request->all());
 
         return Inertia::render('Cart', [
             'cart' => Cart::content(),

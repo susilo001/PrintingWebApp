@@ -2,20 +2,38 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Dusk\Browser;
+use App\Models\User;
 use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\Browser\Pages\Product;
 
 class UserAddCartTest extends DuskTestCase
 {
+    // use DatabaseMigrations;
+
     /**
-     * A Dusk test example.
+     * A Dusk test if user can add product to cart.
+     * 
+     * @return void
      */
-    public function testExample(): void
+    public function testUserCanAddProductToCart()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Laravel');
+            $browser->loginAs(13)
+                ->visit(new Product(1))
+                ->type('@project_name', 'Test Project')
+                ->type('@description', 'Test Description')
+                ->type('@qty', 1)
+                ->radio('@size', 'S')
+                ->radio('@color', 'Black')
+                ->radio('@material', 'Cotton')
+                ->radio('@style', 'Gothic')
+                ->radio('@pattern', 'Solid')
+                ->radio('@margin', '40%')
+                ->type('@design', 'Test Design')
+                ->assertSee('Add to Cart')
+                ->click('@addToCart');
         });
     }
 }

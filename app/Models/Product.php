@@ -26,6 +26,7 @@ class Product extends Model implements Buyable
         'image',
         'tax',
         'featured',
+        'weight',
         'discount_id',
         'category_id',
     ];
@@ -38,6 +39,7 @@ class Product extends Model implements Buyable
 
     protected $casts = [
         'featured' => 'boolean',
+        'highlights' => 'array',
     ];
 
     /**

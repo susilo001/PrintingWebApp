@@ -3,15 +3,16 @@
 namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
+use Laravel\Dusk\Page;
 
-class HomePage extends Page
+class Cart extends Page
 {
     /**
      * Get the URL for the page.
      */
     public function url(): string
     {
-        return '/';
+        return '/cart';
     }
 
     /**

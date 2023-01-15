@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('status');
+            $table->bigInteger('subtotal');
+            $table->bigInteger('discount');
+            $table->bigInteger('tax');
             $table->bigInteger('total_amount');
             $table->timestamps();
         });

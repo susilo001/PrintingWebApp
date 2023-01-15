@@ -3,15 +3,16 @@
 namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
+use Laravel\Dusk\Page;
 
-class HomePage extends Page
+class Login extends Page
 {
     /**
      * Get the URL for the page.
      */
     public function url(): string
     {
-        return '/';
+        return '/login';
     }
 
     /**
@@ -30,7 +31,9 @@ class HomePage extends Page
     public function elements(): array
     {
         return [
-            '@element' => '#selector',
+            '@email' => 'input[name="email"]',
+            '@password' => 'input[name="password"]',
+            '@login' => 'button[type="submit"]',
         ];
     }
 }

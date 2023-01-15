@@ -11,11 +11,45 @@ use App\Services\Payment\HandlePaymentService;
 
 class CartService
 {
+    /**
+     * @var Product
+     */
     protected $product;
+
+    /**
+     * @var Cart
+     */
+    protected $cart;
 
     public function __construct(Product $product)
     {
         $this->product = $product;
+        $this->cart = Cart::content();
+    }
+
+    /**
+     * Get price of product based on quantity ordered by user
+     * 
+     * @param int $product_id
+     * @param int $quantity
+     * @return int
+     */
+    public function getPrice($product_id, $quantity)
+    {
+        $product = $this->product->find($product_id);
+
+        $prices = $product->prices;
+
+        if ($quantity > $prices->max('max_order')) {
+            $price = $prices->last();
+        } else {
+            $price = $prices
+                ->where('min_order', '<=', $quantity)
+                ->where('max_order', '>=', $quantity)
+                ->first();
+        }
+
+        return $price->price;
     }
 
     /**
@@ -30,18 +64,9 @@ class CartService
 
         $path = Storage::url($image);
 
+        $price = $this->getPrice($request->product_id, $request->quantity);
+
         $product = $this->product->find($request->product_id);
-
-        $prices = $product->prices;
-
-        if ($request->quantity > $prices->max('max_order')) {
-            $price = $prices->last();
-        } else {
-            $price = $prices
-                ->where('min_order', '<=', $request->quantity)
-                ->where('max_order', '>=', $request->quantity)
-                ->first();
-        }
 
         if ($request->file('design')->isValid()) {
 
@@ -49,7 +74,7 @@ class CartService
                 'id' => Date::now()->timestamp,
                 'qty' => $request->quantity,
                 'name' => $product->name,
-                'price' => $price->price,
+                'price' => $price,
                 'weight' => 0,
                 'options' => [
                     'product_id' => $request->product_id,
@@ -60,8 +85,13 @@ class CartService
                 ]
             ]);
 
-            // $cartItems->setTax();
-            // $cartItems->setDiscount();
+            if ($product->discount->active) {
+                Cart::setDiscount($cartItems->rowId, $product->discount->discount_percentage);
+            }
+
+            if ($product->tax) {
+                Cart::setTax($cartItems->rowId, $product->tax);
+            }
 
             $cartItems->associate(Product::class);
         }
@@ -94,20 +124,18 @@ class CartService
      * 
      * @return void
      */
-    public function checkout()
+    public function checkout($request)
     {
-        $cart = Cart::content();
-        $total = Cart::total();
-
-        // dd($cart, Cart::subtotal(), Cart::tax(), Cart::discount(), $total);
-
         $order = Order::create([
             'user_id' => auth()->user()->id,
-            'total_amount' => $total,
             'status' => 'pending',
+            'subtotal' => Cart::priceTotal(),
+            'tax' => Cart::tax(),
+            'discount' => Cart::discount(),
+            'total_amount' => Cart::priceTotal(),
         ]);
 
-        foreach ($cart as $item) {
+        foreach ($this->cart as $item) {
             $order->orderItems()->create([
                 'product_id' => $item->options->product_id,
                 'name' => $item->options->project_name,
@@ -116,22 +144,28 @@ class CartService
                 'qty' => $item->qty,
                 'price' => $item->price,
                 'variants' => json_encode($item->variants),
-                'subtotal' => $item->subtotal,
                 'discount' => $item->discountRate,
                 'tax' => $item->taxRate,
-                'total' => $item->total,
             ]);
         }
 
         $order->paymentDetail()->create([
             'status' => 'pending',
-            'gross_amount' => $total,
+            'gross_amount' => Cart::priceTotal(),
         ]);
 
         Cart::destroy();
 
-        $payment = new HandlePaymentService($order->load(['orderItems', 'paymentDetail', 'user']));
 
-        return $payment->handle();
+        if ($request['payment_method'] == 'snap') {
+
+            $data = $order->load(['orderItems', 'paymentDetail', 'user']);
+
+            $payment = new HandlePaymentService();
+
+            return $payment->handle($data);
+        } else {
+            return $order;
+        }
     }
 }

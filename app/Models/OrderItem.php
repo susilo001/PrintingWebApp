@@ -23,12 +23,18 @@ class OrderItem extends Model
         'qty',
         'price',
         'variants',
-        'subtotal',
         'discount',
         'tax',
-        'total',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'variants' => 'array',
+    ];
 
     /**
      * Belongs to order

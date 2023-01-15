@@ -21,6 +21,7 @@ return new class extends Migration
             $table->json('highlights');
             $table->string('details');
             $table->string('image')->default('products/default.jpg');
+            $table->bigInteger('weight');
             $table->bigInteger('tax');
             $table->boolean('featured')->default(false);
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();

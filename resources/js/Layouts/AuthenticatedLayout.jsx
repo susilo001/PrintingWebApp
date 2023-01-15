@@ -6,10 +6,13 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import ToggleDarkMode from "@/Components/ToggleDarkMode";
 import { Link } from "@inertiajs/inertia-react";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import { usePage } from "@inertiajs/inertia-react";
 
 export default function Authenticated({ auth, header, children, cartCount }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
+
+  const { flash } = usePage().props;
   return (
     <div className="min-h-screen relative">
       <nav className="shadow-md fixed top-0 left-0 right-0 z-50 bg-base-100">
@@ -203,6 +206,13 @@ export default function Authenticated({ auth, header, children, cartCount }) {
             {header}
           </div>
         </header>
+      )}
+
+      {/* Flash Message */}
+      {flash.message && (
+        <div className="mt-20 max-w-7xl mx-auto alert shadow-lg">
+          {flash.message}
+        </div>
       )}
 
       <main className="py-4">{children}</main>

@@ -37,6 +37,7 @@ class ProductFactory extends Factory
             'highlights' => json_encode($highlights),
             'details' => fake()->text(),
             'image' => 'https://picsum.photos/200/' . fake()->numberBetween(1, 100),
+            'weight' => fake()->numberBetween(1, 100),
             'tax' => fake()->numberBetween(1, 100),
             'featured' => fake()->boolean(50),
         ];
