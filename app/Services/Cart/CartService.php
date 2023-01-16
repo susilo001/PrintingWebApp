@@ -3,6 +3,7 @@
 namespace App\Services\Cart;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
@@ -24,7 +25,6 @@ class CartService
     public function __construct(Product $product)
     {
         $this->product = $product;
-        $this->cart = Cart::content();
     }
 
     /**
@@ -68,32 +68,27 @@ class CartService
 
         $product = $this->product->find($request->product_id);
 
-        if ($request->file('design')->isValid()) {
+        $cartItems =  Cart::add([
+            'id' => Date::now()->timestamp,
+            'qty' => $request->quantity,
+            'name' => $product->name,
+            'price' => $price,
+            'weight' => 0,
+            'options' => [
+                'product_id' => $request->product_id,
+                'project_name' => $request->project_name,
+                'description' => $request->description,
+                'design' => $path,
+                'variants' => $request->variants,
+            ]
+        ])->associate(Product::class);
 
-            $cartItems =  Cart::add([
-                'id' => Date::now()->timestamp,
-                'qty' => $request->quantity,
-                'name' => $product->name,
-                'price' => $price,
-                'weight' => 0,
-                'options' => [
-                    'product_id' => $request->product_id,
-                    'project_name' => $request->project_name,
-                    'description' => $request->description,
-                    'design' => $path,
-                    'variants' => $request->variants,
-                ]
-            ]);
+        if ($product->discount->active) {
+            Cart::setDiscount($cartItems->rowId, $product->discount->discount_percentage);
+        }
 
-            if ($product->discount->active) {
-                Cart::setDiscount($cartItems->rowId, $product->discount->discount_percentage);
-            }
-
-            if ($product->tax) {
-                Cart::setTax($cartItems->rowId, $product->tax);
-            }
-
-            $cartItems->associate(Product::class);
+        if ($product->tax) {
+            Cart::setTax($cartItems->rowId, $product->tax);
         }
     }
 
@@ -135,7 +130,7 @@ class CartService
             'total_amount' => Cart::priceTotal(),
         ]);
 
-        foreach ($this->cart as $item) {
+        foreach (Cart::content() as $item) {
             $order->orderItems()->create([
                 'product_id' => $item->options->product_id,
                 'name' => $item->options->project_name,
@@ -143,9 +138,9 @@ class CartService
                 'image' => $item->options->design,
                 'qty' => $item->qty,
                 'price' => $item->price,
-                'variants' => json_encode($item->variants),
-                'discount' => $item->discountRate,
-                'tax' => $item->taxRate,
+                'variants' => $item->options->variants,
+                'discount' => $item->discount,
+                'tax' => $item->tax,
             ]);
         }
 
@@ -155,7 +150,6 @@ class CartService
         ]);
 
         Cart::destroy();
-
 
         if ($request['payment_method'] == 'snap') {
 

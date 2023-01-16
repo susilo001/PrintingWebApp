@@ -23,11 +23,15 @@ class CheckoutCartTest extends TestCase
     {
         $user = User::factory()->create();
 
+        $quantity = fake()->numberBetween(1, 10000);
+        $projectName = fake()->sentence(3);
+        $description = fake()->text();
+
         $this->actingAs($user)->post('/cart', [
-            'product_id' => 10,
-            'quantity' => fake()->numberBetween(1, 10000),
-            'project_name' => fake()->sentence(3),
-            'description' => fake()->text(),
+            'product_id' => 2,
+            'quantity' => $quantity,
+            'project_name' => $projectName,
+            'description' => $description,
             'variants' => [
                 [
                     'name' => 'size',
@@ -43,9 +47,9 @@ class CheckoutCartTest extends TestCase
 
         $this->actingAs($user)->post('/cart', [
             'product_id' => 3,
-            'quantity' => fake()->numberBetween(1, 10000),
-            'project_name' => fake()->sentence(3),
-            'description' => fake()->text(),
+            'quantity' => 1000,
+            'project_name' => 'test',
+            'description' => 'test',
             'variants' => [
                 [
                     'name' => 'size',
@@ -65,6 +69,25 @@ class CheckoutCartTest extends TestCase
             ]);
 
         $reponse->assertStatus(200);
+
+        $this->assertDatabaseHas('orders', [
+            'user_id' => $user->id,
+            'status' => 'pending'
+        ]);
+
+        $this->assertDatabaseHas('order_items', [
+            'product_id' => 3,
+            'name' => 'test',
+            'description' => 'test',
+            'qty' => 1000,
+        ]);
+
+        $this->assertDatabaseHas('order_items', [
+            'product_id' => 2,
+            'name' => $projectName,
+            'description' => $description,
+            'qty' => $quantity,
+        ]);
     }
 
     /**

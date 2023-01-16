@@ -8,11 +8,14 @@ import { Link } from "@inertiajs/inertia-react";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { usePage } from "@inertiajs/inertia-react";
 
-export default function Authenticated({ auth, header, children, cartCount }) {
+export default function Authenticated({ auth, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
   const { flash } = usePage().props;
+  const { cartCount } = usePage().props;
+  const { errors } = usePage().props;
+
   return (
     <div className="min-h-screen relative">
       <nav className="shadow-md fixed top-0 left-0 right-0 z-50 bg-base-100">
@@ -81,6 +84,9 @@ export default function Authenticated({ auth, header, children, cartCount }) {
                       <Dropdown.Content>
                         <Dropdown.Link href={route("profile.edit")}>
                           Profile
+                        </Dropdown.Link>
+                        <Dropdown.Link href={route("order.index")}>
+                          Order History
                         </Dropdown.Link>
                         <Dropdown.Link
                           href={route("logout")}
@@ -212,6 +218,16 @@ export default function Authenticated({ auth, header, children, cartCount }) {
       {flash.message && (
         <div className="mt-20 max-w-7xl mx-auto alert shadow-lg">
           {flash.message}
+        </div>
+      )}
+
+      {errors.message && (
+        <div className="mt-20 max-w-7xl mx-auto alert alert-error shadow-lg">
+          <ul className="list-disc list-inside">
+            {Object.values(errors).map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
         </div>
       )}
 

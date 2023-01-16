@@ -8,6 +8,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Order\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::put('/cart', 'update')->name('cart.update');
         Route::post('/cart/checkout', 'checkout')->name('cart.checkout');
         Route::delete('/cart/{rowId}', 'destroy')->name('cart.destroy');
+    });
+
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/order', 'index')->name('order.index');
+        Route::get('/order/{order}', 'show')->name('order.show');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
