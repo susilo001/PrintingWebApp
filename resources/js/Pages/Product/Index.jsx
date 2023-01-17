@@ -37,7 +37,11 @@ export default function ProductIndex({ products, auth, cartCount }) {
           {products.map((product) => (
             <div key={product.id} className="rounded-xl border">
               <div className="p-8 flex flex-col space-y-4">
-                <img src="http://picsum.photos/200" alt={'product name'} className="rounded-lg" />
+                <img
+                  src="http://picsum.photos/200"
+                  alt={"product name"}
+                  className="rounded-lg"
+                />
                 <p>{product.name}</p>
                 <p>{product.description}</p>
                 <p>{product.price}</p>
