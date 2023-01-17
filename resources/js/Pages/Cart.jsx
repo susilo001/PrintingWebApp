@@ -20,7 +20,6 @@ export default function Cart({
   priceTotal,
   subtotal,
   tax,
-  token,
   weight,
   total,
 }) {

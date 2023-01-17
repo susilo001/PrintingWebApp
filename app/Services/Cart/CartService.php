@@ -3,7 +3,6 @@
 namespace App\Services\Cart;
 
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
@@ -15,12 +14,12 @@ class CartService
     /**
      * @var Product
      */
-    protected $product;
+    protected Product $product;
 
     /**
      * @var Cart
      */
-    protected $cart;
+    protected Cart $cart;
 
     public function __construct(Product $product)
     {
@@ -29,7 +28,7 @@ class CartService
 
     /**
      * Get price of product based on quantity ordered by user
-     * 
+     *
      * @param int $product_id
      * @param int $quantity
      * @return int
@@ -116,7 +115,7 @@ class CartService
 
     /**
      * Checkout the cart content
-     * 
+     *
      * @return void
      */
     public function checkout($request)
@@ -127,7 +126,7 @@ class CartService
             'subtotal' => Cart::priceTotal(),
             'tax' => Cart::tax(),
             'discount' => Cart::discount(),
-            'total_amount' => Cart::priceTotal(),
+            'total_amount' => Cart::total(),
         ]);
 
         foreach (Cart::content() as $item) {
@@ -149,8 +148,6 @@ class CartService
             'gross_amount' => Cart::priceTotal(),
         ]);
 
-        Cart::destroy();
-
         if ($request['payment_method'] == 'snap') {
 
             $data = $order->load(['orderItems', 'paymentDetail', 'user']);
@@ -159,6 +156,7 @@ class CartService
 
             return $payment->handle($data);
         } else {
+            Cart::destroy();
             return $order;
         }
     }

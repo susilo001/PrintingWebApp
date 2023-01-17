@@ -1,79 +1,56 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/inertia-react";
-import { useState } from "react";
-import { StarIcon } from "@heroicons/react/20/solid";
+import { StarIcon, ShoppingBagIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import Filepond from "@/Components/Filepond";
 import CurrencyFormater from "@/lib/CurrencyFormater";
-import { Inertia } from "@inertiajs/inertia";
 import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
+import { useForm } from "@inertiajs/inertia-react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Product(props) {
-  const product = {
-    name: props.product.name,
-    price: props.product.prices[0].price,
-    href: "#",
-    breadcrumb: {
-      id: 1,
-      name: props.product.category.name,
-      href: "#",
-    },
-    images: [
-      {
-        src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-        alt: "Two each of gray, white, and black shirts laying flat.",
-      },
-      {
-        src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-        alt: "Model wearing plain black basic tee.",
-      },
-      {
-        src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-        alt: "Model wearing plain gray basic tee.",
-      },
-      {
-        src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-        alt: "Model wearing plain white basic tee.",
-      },
-    ],
-    variants: props.product.variants,
-    description: props.product.description,
-    highlights: JSON.parse(props.product.highlights),
-    details: props.product.details,
-  };
+export default function Product({ auth, error, product }) {
+  const { data, setData, post, processing, errors, reset } = useForm({
+    product_id: product.id,
+    project_name: "",
+    description: "",
+    quantity: 0,
+    variants: [],
+    design: "",
+  });
 
   const reviews = { href: "#", average: 4, totalCount: 117 };
+
+  const handleVariantChange = (name, value) => {
+    const variantExist = data.variants.find((variant) => variant.name === name);
+
+    if (variantExist) {
+      const variants = data.variants.map((variant) => {
+        if (variant.name === name) {
+          variant.value = value;
+        }
+        return variant;
+      });
+
+      setData("variants", variants);
+    } else {
+      data.variants.push({
+        name: name,
+        value: value,
+      });
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let selectedVariant = [];
-
-    product.variants.forEach((variant) => {
-      e.target[variant.name]?.value;
-
-      selectedVariant.push({
-        name: variant.name,
-        value: e.target[variant.name]?.value,
-      });
-    });
-
-    Inertia.post("/cart", {
-      product_id: props.product.id,
-      project_name: e.target.project_name.value,
-      description: e.target.description.value,
-      quantity: e.target.qty.value,
-      variants: selectedVariant,
-      design: e.target.design.files[0],
-    });
+    post("/cart");
   };
   return (
-    <AuthenticatedLayout auth={props.auth} errors={props.errors}>
+    <AuthenticatedLayout auth={auth} errors={error}>
       <Head title="Product" />
 
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
@@ -82,11 +59,8 @@ export default function Product(props) {
             <nav aria-label="Breadcrumb">
               <div className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="flex items-center">
-                  <a
-                    href={product.breadcrumb.href}
-                    className="mr-2 text-sm font-medium"
-                  >
-                    {product.breadcrumb.name}
+                  <a href={"#"} className="mr-2 text-sm font-medium">
+                    {product.category.name}
                   </a>
                   <svg
                     width={16}
@@ -101,11 +75,11 @@ export default function Product(props) {
                   </svg>
                 </div>
                 <a
-                  href={props.product.href}
+                  href={"#"}
                   aria-current="page"
                   className="font-medium hover:text-gray-600"
                 >
-                  {props.product.name}
+                  {product.name}
                 </a>
               </div>
             </nav>
@@ -114,31 +88,39 @@ export default function Product(props) {
             <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
               <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
                 <img
-                  src={product.images[0].src}
-                  alt={product.images[0].alt}
+                  src={
+                    "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg"
+                  }
+                  alt={"Two each of gray, white, and black shirts laying flat."}
                   className="h-full w-full object-cover object-center"
                 />
               </div>
               <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                 <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
                   <img
-                    src={product.images[1].src}
-                    alt={product.images[1].alt}
+                    src={
+                      "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg"
+                    }
+                    alt={"Model wearing plain black basic tee."}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
                 <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
                   <img
-                    src={product.images[2].src}
-                    alt={product.images[2].alt}
+                    src={
+                      "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg"
+                    }
+                    alt={"Model wearing plain gray basic tee."}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
               </div>
               <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
                 <img
-                  src={product.images[3].src}
-                  alt={product.images[3].alt}
+                  src={
+                    "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg"
+                  }
+                  alt={"Model wearing plain white basic tee."}
                   className="h-full w-full object-cover object-center"
                 />
               </div>
@@ -148,7 +130,7 @@ export default function Product(props) {
             <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
               <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                 <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                  {props.product.name}
+                  {product.name}
                 </h1>
               </div>
 
@@ -156,7 +138,7 @@ export default function Product(props) {
               <div className="mt-4 lg:row-span-3 lg:mt-0">
                 <h2 className="sr-only">Product information</h2>
                 <p className="text-3xl tracking-tight">
-                  {CurrencyFormater(product.price)}{" "}
+                  {CurrencyFormater(product.prices[0].price)}{" "}
                   <span className="text-sm badge">/ Starting Price</span>
                 </p>
 
@@ -193,6 +175,10 @@ export default function Product(props) {
                     name="project_name"
                     label={"Project Name"}
                     type="text"
+                    value={data.project_name}
+                    handleChange={(e) =>
+                      setData("project_name", e.target.value)
+                    }
                     className={"input-bordered w-full"}
                   />
 
@@ -200,11 +186,15 @@ export default function Product(props) {
                     name="description"
                     label={"Description"}
                     className={"textarea-bordered"}
+                    value={data.description}
+                    handleChange={(e) => setData("description", e.target.value)}
                   />
 
                   <Input
                     name="qty"
                     label={"Quantity"}
+                    value={data.quantity}
+                    handleChange={(e) => setData("quantity", e.target.value)}
                     type="number"
                     className={"input-bordered w-full"}
                   />
@@ -224,7 +214,10 @@ export default function Product(props) {
 
                       <RadioGroup
                         name={variant.name}
-                        defaultValue={variant.options[0]}
+                        value={data.variants[variant.id]}
+                        onChange={(value) =>
+                          handleVariantChange(variant.name, value)
+                        }
                         className="mt-4"
                       >
                         <RadioGroup.Label className="sr-only">
@@ -238,7 +231,7 @@ export default function Product(props) {
                               value={option.value}
                               className={({ active }) =>
                                 classNames(
-                                  "bg-neutral-content shadow-sm text-gray-900 cursor-pointer",
+                                  "bg-white shadow-sm text-gray-900 cursor-pointer",
                                   active ? "ring-2 ring-accent-focus" : "",
                                   "group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
                                 )
@@ -276,16 +269,19 @@ export default function Product(props) {
                       name={"design"}
                       type={"file"}
                       label="File Upload"
+                      handleChange={(e) => setData("design", e.target.files[0])}
                       className={"file-input file-input-bordered"}
                     />
                   </div>
 
                   <button
+                    disabled={processing}
                     name="addToCart"
                     type="submit"
-                    className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="btn btn-primary w-full mt-8 gap-2"
                   >
                     Add to Cart
+                    <ShoppingBagIcon className="w-6 h-6" />
                   </button>
                 </form>
               </div>
@@ -308,7 +304,7 @@ export default function Product(props) {
                       role="list"
                       className="list-disc space-y-2 pl-4 text-sm"
                     >
-                      {product.highlights.map((highlight) => (
+                      {JSON.parse(product.highlights).map((highlight) => (
                         <li key={highlight}>
                           <span>{highlight}</span>
                         </li>

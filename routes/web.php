@@ -34,7 +34,11 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/products', 'index')->name('product.index');
+    Route::get('/product/{product}', 'show')->name('product.show');
+});
+
 
 
 /**

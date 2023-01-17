@@ -4,6 +4,7 @@ namespace App\Services\Payment;
 
 use App\Models\OrderItem;
 use App\Services\Payment\Midtrans;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Date;
 
 class HandlePaymentService extends Midtrans
@@ -40,6 +41,31 @@ class HandlePaymentService extends Midtrans
                 );
             })->toArray(),
         );
+
+        $additionalFee = array(
+            array(
+                'id' => 'F01',
+                'name' => 'Fee',
+                'price' => 0,
+                'quantity' => 1,
+            ),
+            array(
+                'id' => 'T01',
+                'name' => 'Tax',
+                'price' => Cart::tax(),
+                'quantity' => 1,
+            ),
+            array(
+                'id' => 'D01',
+                'name' => 'Discount',
+                'price' => Cart::discount(),
+                'quantity' => 1,
+            ),
+        );
+
+        $transaction['item_details'] = array_merge($transaction['item_details'], $additionalFee);
+
+        Cart::destroy();
 
         return $transaction;
     }

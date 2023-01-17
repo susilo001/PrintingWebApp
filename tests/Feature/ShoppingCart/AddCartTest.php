@@ -4,7 +4,6 @@ namespace Tests\Feature\ShoppingCart;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Product;
 use Illuminate\Http\UploadedFile;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,7 +15,7 @@ class AddCartTest extends TestCase
 
     /**
      * Test if user can add product to cart
-     * 
+     *
      * return void
      */
     public function testIfUserCanAddProductToCart()
@@ -49,7 +48,7 @@ class AddCartTest extends TestCase
 
     /**
      * Test if user can add multiple product to cart
-     * 
+     *
      * return void
      */
     public function testIfUserCanAddMultipleProductToCart()
