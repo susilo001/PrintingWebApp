@@ -4,9 +4,8 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import ToggleDarkMode from "@/Components/ToggleDarkMode";
-import { Link } from "@inertiajs/inertia-react";
+import { Link, usePage } from "@inertiajs/inertia-react";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
-import { usePage } from "@inertiajs/inertia-react";
 
 export default function Authenticated({ auth, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =

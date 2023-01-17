@@ -46,18 +46,21 @@ Route::controller(ProductController::class)->group(function () {
  */
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::controller(CartController::class)->group(function () {
-        Route::get('/cart', 'index')->name('cart.index');
-        Route::post('/cart', 'store')->name('cart.store');
-        Route::put('/cart', 'update')->name('cart.update');
-        Route::post('/cart/checkout', 'checkout')->name('cart.checkout');
-        Route::delete('/cart/{rowId}', 'destroy')->name('cart.destroy');
-    });
 
-    Route::controller(OrderController::class)->group(function () {
-        Route::get('/order', 'index')->name('order.index');
-        Route::get('/order/{order}', 'show')->name('order.show');
-    });
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
+    Route::resource('cart', CartController::class)->except('show')->names([
+        'index' => 'cart.index',
+        'store' => 'cart.store',
+        'update' => 'cart.update',
+        'destroy' => 'cart.destroy',
+    ]);
+
+    Route::resource('order', OrderController::class)->names([
+        'index' => 'order.index',
+        'show' => 'order.show',
+        'update' => 'order.update',
+    ]);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

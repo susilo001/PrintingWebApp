@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head, InertiaHead, Link } from "@inertiajs/inertia-react";
 import {
   ShoppingCartIcon,
   TrashIcon,
@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/24/outline";
 import Input from "@/Components/Input";
 import CurrencyFormater from "@/lib/CurrencyFormater";
-import { Link } from "@inertiajs/inertia-react";
 import { useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -17,7 +16,6 @@ export default function Cart({
   cart,
   cartCount,
   discount,
-  priceTotal,
   subtotal,
   tax,
   weight,
@@ -50,6 +48,16 @@ export default function Cart({
       {
         preserveScroll: true,
         preserveState: true,
+        onSuccess: (page) => {
+          console.log(page);
+          Inertia.put(
+            route("order.update", {
+              order: page.props.token.id,
+              status: "Cash On Delivery",
+              payment_type: "cash",
+            })
+          );
+        },
       }
     );
   };
@@ -66,7 +74,25 @@ export default function Cart({
         onSuccess: (page) => {
           window.snap.pay(page.props.token, {
             onSuccess: function (result) {
+              Inertia.put(
+                route("order.update", {
+                  order: result.order_id,
+                  status: result.transaction_status,
+                  payment_type: result.payment_type,
+                })
+              );
+            },
+            onPending: function (result) {
               console.log(result);
+            },
+            onError: function (result) {
+              alert("Payment failed");
+              console.log(result);
+            },
+            onClose: function () {
+              console.log(
+                "customer closed the popup without finishing the payment"
+              );
             },
           });
         },
@@ -128,7 +154,7 @@ export default function Cart({
                   </div>
                   <div className="w-24">
                     <Link
-                      href={route("cart.destroy", { rowId: item.rowId })}
+                      href={route("cart.destroy", { cart: item.rowId })}
                       method="delete"
                       className="btn btn-circle btn-ghost"
                       as="button"
@@ -145,10 +171,6 @@ export default function Cart({
               <h2 className="text-xl font-bold">Order Summary</h2>
               <div className="space-y-4">
                 <div className="flex justify-between border-b border-base-content pb-4">
-                  <div>Price</div>
-                  <span>{CurrencyFormater(priceTotal)}</span>
-                </div>
-                <div className="flex justify-between border-b border-base-content pb-4">
                   <div>Subtotal</div>
                   <span>{CurrencyFormater(subtotal)}</span>
                 </div>
@@ -161,7 +183,11 @@ export default function Cart({
                   <span>{CurrencyFormater(tax)}</span>
                 </div>
                 <div className="flex justify-between border-b border-base-content pb-4">
-                  <div>Order Total</div>
+                  <div>Discount</div>
+                  <span>{CurrencyFormater(discount)}</span>
+                </div>
+                <div className="flex justify-between border-b border-base-content pb-4">
+                  <div>Total</div>
                   <span>{CurrencyFormater(total)}</span>
                 </div>
               </div>

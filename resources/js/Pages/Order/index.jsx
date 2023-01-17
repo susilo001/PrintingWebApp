@@ -59,8 +59,8 @@ export default function Order({ orders, auth, cartCount }) {
                   <div className="flex-grow pl-8 space-y-4">
                     <p>{item.name}</p>
                     <div className="grid grid-cols-3 gap-y-4">
-                      {item.variants.map((variant) => (
-                        <p>{variant.value}</p>
+                      {item.variants.map((variant, index) => (
+                        <span key={index}>{variant.value}</span>
                       ))}
                     </div>
                     <p>{item.description}</p>

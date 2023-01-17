@@ -27,8 +27,7 @@ class CartController extends Controller
         return Inertia::render('Cart', [
             'cart' => Cart::content(),
             'weight' => Cart::weight(),
-            'priceTotal' => Cart::priceTotal(),
-            'subtotal' => Cart::subtotal(),
+            'subtotal' => Cart::priceTotal(),
             'tax' => Cart::tax(),
             'discount' => Cart::discount(),
             'total' => Cart::total(),
@@ -63,7 +62,6 @@ class CartController extends Controller
      */
     public function checkout(Request $request)
     {
-
         $response = $this->cartService->checkout($request->all());
 
         return Inertia::render('Cart', [

@@ -22,7 +22,7 @@ class HandlePaymentService extends Midtrans
 
         $transaction = array(
             'transaction_details' => array(
-                'order_id' => $data->id . Date::now()->timestamp,
+                'order_id' => $data->id,
                 'gross_amount' => (int) $data->total_amount,
             ),
 

@@ -121,6 +121,7 @@ class CartService
     public function checkout($request)
     {
         $order = Order::create([
+            'id' => Date::now()->timestamp,
             'user_id' => auth()->user()->id,
             'status' => 'pending',
             'subtotal' => Cart::priceTotal(),
@@ -157,6 +158,7 @@ class CartService
             return $payment->handle($data);
         } else {
             Cart::destroy();
+
             return $order;
         }
     }
