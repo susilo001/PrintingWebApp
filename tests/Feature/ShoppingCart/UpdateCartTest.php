@@ -44,7 +44,7 @@ class UpdateCartTest extends TestCase
 
         $qty = fake()->numberBetween(1, 10000);
 
-        $this->actingAs($user)->put('/cart', [
+        $this->actingAs($user)->put('/cart/' . Cart::content()->first()->rowId, [
             'rowId' => Cart::content()->first()->rowId,
             'quantity' => $qty,
         ])->assertRedirect('/cart');
