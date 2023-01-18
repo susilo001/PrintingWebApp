@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\Design\DesignController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,11 @@ Route::controller(ProductController::class)->group(function () {
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
 
+    Route::resource('design', DesignController::class)->names([
+        'index' => 'design.index',
+        'store' => 'design.store',
+    ]);
+
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
     Route::resource('cart', CartController::class)->except('show')->names([
@@ -65,10 +71,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/design', function () {
-        return Inertia::render('Design');
-    })->name('design');
 });
 
 
