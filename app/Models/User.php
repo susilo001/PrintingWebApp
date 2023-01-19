@@ -56,17 +56,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Has many payment methods
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-
-    public function paymentMethods()
-    {
-        return $this->hasMany(PaymentMethod::class);
-    }
-
-    /**
      * Has many orders
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

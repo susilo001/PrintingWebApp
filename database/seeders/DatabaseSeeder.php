@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleAndPermissionSeeder::class,
             AddressSeeder::class,
-            PaymentMethodSeeder::class,
             CategorySeeder::class,
             DiscountSeeder::class,
             ProductSeeder::class,

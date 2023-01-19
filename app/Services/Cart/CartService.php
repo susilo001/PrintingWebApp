@@ -92,28 +92,6 @@ class CartService
     }
 
     /**
-     * Update item in cart
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function update($request)
-    {
-        Cart::update($request->rowId, $request->quantity);
-    }
-
-    /**
-     * Remove item from cart
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function remove($request)
-    {
-        Cart::remove($request->rowId);
-    }
-
-    /**
      * Checkout the cart content
      *
      * @return void

@@ -89,4 +89,39 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
     }
+
+    /**
+     * Test if request login with many attempts will be locked
+     * 
+     * @return void
+     */
+    public function test_login_request_with_many_attempts_will_be_locked(): void
+    {
+        $user = User::factory()->create();
+
+        for ($i = 0; $i < 10; $i++) {
+            $this->post('/login', [
+                'email' => $user->email,
+                'password' => 'wrong-password',
+            ]);
+        }
+
+        $this->assertGuest();
+    }
+
+    /**
+     * Test if user can logout and redirect to login page
+     * 
+     * @return void
+     */
+    public function test_user_can_logout(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->post('/logout');
+
+        $this->assertGuest();
+        $response->assertRedirect('/');
+    }
 }
