@@ -1,7 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Link } from "@inertiajs/inertia-react";
+import Card from "@/Components/Card";
+import CurrencyFormater from "@/lib/CurrencyFormater";
 
-export default function ProductIndex({ products, auth, cartCount }) {
+export default function Products({ products, auth, cartCount }) {
   return (
     <AuthenticatedLayout
       auth={auth}
@@ -19,44 +21,31 @@ export default function ProductIndex({ products, auth, cartCount }) {
         </div>
       }
     >
-      <div className="max-w-7xl px-8 mx-auto my-10">
-        {products.length === 0 && (
-          <div className="flex justify-center items-center h-96">
-            <div className="text-center">
-              <p className="text-2xl font-bold">No products found</p>
-              <p className="text-gray-500">
-                You have not added any products yet
-              </p>
-              <Link href="/product/create" className="btn btn-primary mt-4">
-                Add Product
-              </Link>
-            </div>
-          </div>
-        )}
-        <div className="grid grid-cols-3 gap-10">
+      <div className="max-w-7xl mx-auto my-10 flex justify-center">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {products.map((product) => (
-            <div key={product.id} className="rounded-xl border">
-              <div className="p-8 flex flex-col space-y-4">
-                <img
-                  src="http://picsum.photos/200"
-                  alt={"product name"}
-                  className="rounded-lg"
+            <Link
+              className="w-fit "
+              key={product.id}
+              href={route("product.show", product.id)}
+            >
+              <Card className={"w-80 shadow-xl hover:bg-base-200"}>
+                <Card.Image
+                  className={"bg-cover w-full h-72"}
+                  src={product.image}
+                  alt={product.name}
                 />
-                <p>{product.name}</p>
-                <p>{product.description}</p>
-                <p>{product.price}</p>
-                <p>{product.quantity}</p>
-                <div className="flex justify-between items-center">
-                  <Link
-                    href={`/product/${product.id}/edit`}
-                    className="btn btn-ghost"
-                  >
-                    Edit
-                  </Link>
-                  <button className="btn btn-ghost">Delete</button>
-                </div>
-              </div>
-            </div>
+                <Card.Body>
+                  <Card.Title>{product.name}</Card.Title>
+                  <span className="font-bold">
+                    {CurrencyFormater(product.prices[0].price)}
+                  </span>
+                  <span className="badge badge-sm badge-secondary">
+                    {product.category.name}
+                  </span>
+                </Card.Body>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>

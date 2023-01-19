@@ -1,7 +1,15 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
+import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-react";
+import axios from "axios";
+
 export default function Order({ orders, auth, cartCount }) {
+  const handleRequestInvoice = (id) => {
+    axios.post(route("invoice"), { id: id }).then((response) => {
+      window.open(response.data.invoice, "_blank");
+    });
+  };
   return (
     <AuthenticatedLayout
       auth={auth}
@@ -37,19 +45,24 @@ export default function Order({ orders, auth, cartCount }) {
           <div key={order.id} className="rounded-xl border mt-10">
             <div className="flex justify-between items-center p-8">
               <div className="flex flex-col">
-                <span>Order number</span>
+                <span className="font-bold text-lg">Order number</span>
                 <span>#{order.id}</span>
               </div>
               <div className="flex flex-col">
-                <span>Order placed</span>
+                <span className="font-bold text-lg">Order placed</span>
                 <span>{order.created_at}</span>
               </div>
               <div className="flex flex-col">
-                <span>Total amount</span>
+                <span className="font-bold text-lg">Total amount</span>
                 <span>{CurrencyFormater(order.total_amount)}</span>
               </div>
               <div className="flex flex-col">
-                <button className="btn btn-ghost">Invoice</button>
+                <button
+                  className="btn btn-ghost btn-outline font-bold "
+                  onClick={() => handleRequestInvoice(order.id)}
+                >
+                  Invoice
+                </button>
               </div>
             </div>
             {order.order_items.map((item) => (
@@ -57,7 +70,7 @@ export default function Order({ orders, auth, cartCount }) {
                 <div className="p-8 flex border-t space-x-4">
                   <img src="http://picsum.photos/200" className="rounded-lg" />
                   <div className="flex-grow pl-8 space-y-4">
-                    <p>{item.name}</p>
+                    <h2 className="font-bold text-lg">{item.name}</h2>
                     <div className="grid grid-cols-3 gap-y-4">
                       {item.variants.map((variant, index) => (
                         <span key={index}>{variant.value}</span>
@@ -66,14 +79,23 @@ export default function Order({ orders, auth, cartCount }) {
                     <p>{item.description}</p>
                   </div>
                   <div>
-                    <p>{CurrencyFormater(item.price)}</p>
-                    <p>{item.qty}</p>
+                    <p className="font-bold">{CurrencyFormater(item.price)}</p>
+                    <div className="space-x-2">
+                      <span>Quantity:</span>
+                      <span>{item.qty}</span>
+                    </div>
                   </div>
                 </div>
                 <div className="p-8 flex justify-between">
-                  <p>{order.status}</p>
+                  <p className={"badge font-lg"}>{order.status}</p>
                   <div>
-                    <button>View Product</button>
+                    <Link
+                      href={route("product.show", { product: item.product_id })}
+                      className="btn btn-ghost"
+                      as="button"
+                    >
+                      View Product
+                    </Link>
                   </div>
                 </div>
               </div>

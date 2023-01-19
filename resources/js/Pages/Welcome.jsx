@@ -25,12 +25,12 @@ export default function Welcome({
         <div className="py-20 sm:py-32 lg:py-40">
           <ExploreByCategory categories={categories} />
         </div>
-        <div className="max-w-7xl py-20 sm:py-32 lg:py-40">
+        <div className="lg:max-w-7xl py-20 sm:py-32 lg:py-40">
           <div className="flex justify-center mb-8">
             <h2 className="text-2xl font-bold">Popular Products</h2>
           </div>
 
-          <Swiper spaceBetween={20} slidesPerView={5} className={"swiper"}>
+          <Swiper spaceBetween={20} slidesPerView={4} className={"swiper"}>
             {featuredProducts.map((product, index) => (
               <SwiperSlide key={index}>
                 <Link href={route("product.show", product.id)}>
@@ -45,7 +45,9 @@ export default function Welcome({
                       <span className="badge badge-sm badge-secondary">
                         {product.category.name}
                       </span>
-                      <span>{CurrencyFormater(product.prices[0].price)}</span>
+                      <span className="font-bold text-lg">
+                        {CurrencyFormater(product.prices[0].price)}
+                      </span>
                     </Card.Body>
                   </Card>
                 </Link>

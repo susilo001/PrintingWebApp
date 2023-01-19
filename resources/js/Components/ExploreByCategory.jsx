@@ -13,9 +13,9 @@ export default function ExploreByCategory({ categories }) {
       <div className="flex justify-center mb-8">
         <h2 className="text-2xl font-bold">Explore by Category</h2>
       </div>
-      <div className="grid grid-cols-3 gap-x-4">
-        <div className="flex flex-col max-h-screen place-content-between space-y-2">
-          <div className="flex-none">
+      <div className="grid lg:grid-cols-3 gap-x-4 justify-center">
+        <div className="flex flex-col items-center justify-center sm:mb-10 max-h-screen place-content-between space-y-2">
+          <div className="flex justify-center w-full">
             <Input
               type={"text"}
               placeholder={"Search"}
@@ -23,7 +23,7 @@ export default function ExploreByCategory({ categories }) {
             />
           </div>
           <div className="grow">
-            <div className="flex flex-col items-start space-y-8 border-r-2 mr-10 pl-8 h-full">
+            <div className="flex flex-row flex-wrap justify-center lg:flex-col lg:items-start lg:space-y-8 lg:border-r-2 lg:mr-10 lg:pl-8 h-full">
               {categories.map((category, index) => (
                 <button
                   className="text-left btn btn-ghost"
@@ -35,15 +35,17 @@ export default function ExploreByCategory({ categories }) {
               ))}
             </div>
           </div>
-          <div className="flex-none">
-            <Button className={"btn-primary btn-wide gap-2"}>
-              Explore
-              <ArrowRightIcon className={"w-5 h-5"} />
-            </Button>
-          </div>
+          <Link
+            href={route("product.index")}
+            as="button"
+            className="btn btn-primary gap-2 text-white w-fit"
+          >
+            Explore
+            <ArrowRightIcon className={"w-5 h-5"} />
+          </Link>
         </div>
         <div className="col-span-2 max-h-screen overflow-y-auto snap-y scroll-pt-12 overscroll-x-none">
-          <div className="grid grid-cols-2 gap-x-10 gap-y-12 snap-start pr-8">
+          <div className="grid justify-center md:grid-cols-2 lg:gap-x-10 gap-y-12 snap-start lg:pr-8">
             {category.products.map((product) => (
               <Link
                 href={route("product.show", product.id)}
@@ -56,9 +58,6 @@ export default function ExploreByCategory({ categories }) {
                     <Card.Title className={"text-2xl font-bold"}>
                       {product.name}
                     </Card.Title>
-                    {/* <Card.Actions>
-                      <Button className={"btn-ghost"}>Explore</Button>
-                    </Card.Actions> */}
                   </Card.Body>
                 </Card>
               </Link>

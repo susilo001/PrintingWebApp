@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Design\DesignController;
+use App\Http\Controllers\Invoice\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,9 +65,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('order', OrderController::class)->names([
         'index' => 'order.index',
-        'show' => 'order.show',
+        // 'show' => 'order.show',
         'update' => 'order.update',
     ]);
+
+    Route::post('/invoice', InvoiceController::class)->name('invoice');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

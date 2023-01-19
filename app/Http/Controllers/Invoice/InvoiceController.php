@@ -1,37 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Order;
+namespace App\Http\Controllers\Invoice;
 
 use Inertia\Inertia;
-use App\Models\Order;
 use Illuminate\Http\Request;
 use LaravelDaily\Invoices\Invoice;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use LaravelDaily\Invoices\Classes\Party;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
 
-class OrderController extends Controller
+class InvoiceController extends Controller
 {
     /**
-     * Display a listing of the resource belongs to user.
+     * Handle the incoming request.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function __invoke(Request $request)
     {
-        return Inertia::render('Order/index', [
-            'orders' => Order::where('user_id', auth()->user()->id)->with('orderItems')->get(),
-        ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
-    {
+        $order = Order::find($request->id);
         $items = $order->orderItems()->get();
         $payment = $order->paymentDetail()->get();
 
@@ -65,31 +54,10 @@ class OrderController extends Controller
             ->filename($customer->name)
             ->addItems($items)
             ->logo(public_path('vendor/invoices/sample-logo.png'))
-            // You can additionally save generated invoice to configured disk
             ->save('public');
 
-        return Inertia::render('Order/index', [
+        return response()->json([
             'invoice' => $invoice->url(),
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        $order->update([
-            'status' => 'On Progress',
-        ]);
-
-        $order->paymentDetail()->update([
-            'status' => $request->status,
-            'payment_type' => $request->payment_type,
-        ]);
-
-        return redirect()->route('order.index');
     }
 }

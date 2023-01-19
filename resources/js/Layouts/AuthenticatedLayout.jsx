@@ -35,13 +35,13 @@ export default function Authenticated({ auth, header, children }) {
                   Home
                 </NavLink>
                 <NavLink
-                  href={route("home")}
+                  href={route("product.index")}
                   active={route().current("dashboard")}
                 >
                   Products
                 </NavLink>
                 <NavLink
-                  href={route("design")}
+                  href={route("design.index")}
                   active={route().current("dashboard")}
                 >
                   Design Tools
