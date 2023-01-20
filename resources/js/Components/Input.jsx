@@ -12,6 +12,7 @@ export default forwardRef(function Input(
     value,
     className,
     required,
+    errors,
   },
   ref
 ) {
@@ -24,7 +25,7 @@ export default forwardRef(function Input(
   }, []);
 
   return (
-    <div className="form-control w-full max-w-xs">
+    <div className="form-control w-full">
       <label htmlFor={name} className="label">
         <span className="label-text">{label}</span>
       </label>
@@ -40,6 +41,9 @@ export default forwardRef(function Input(
         required={required}
         className={`input ${className}`}
       />
+      <div className="mt-4">
+        <p className="text-error text-xs">{errors ? <p>{errors}</p> : null}</p>
+      </div>
     </div>
   );
 });

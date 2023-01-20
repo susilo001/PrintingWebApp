@@ -2,17 +2,23 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/inertia-react";
 import { StarIcon, ShoppingBagIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
-import Filepond from "@/Components/Filepond";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
 import { useForm } from "@inertiajs/inertia-react";
+import { useRef } from "react";
+import ImageGallery from "@/Components/ImageGallery";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Product({ auth, error, product }) {
+  const projectNameInput = useRef();
+  const descriptionInput = useRef();
+  const quantityInput = useRef();
+  const designInput = useRef();
+
   const { data, setData, post, processing, errors, reset } = useForm({
     product_id: product.id,
     project_name: "",
@@ -47,8 +53,50 @@ export default function Product({ auth, error, product }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    post("/cart");
+    post("/cart", {
+      onError: () => {
+        if (errors.quantity) {
+          reset("quantity");
+          quantityInput.current.focus();
+        }
+
+        if (errors.project_name) {
+          reset("project_name");
+          projectNameInput.current.focus();
+        }
+
+        if (errors.description) {
+          reset("description");
+          descriptionInput.current.focus();
+        }
+
+        if (errors.design) {
+          reset("design");
+          designInput.current.focus();
+        }
+      },
+    });
   };
+
+  const images = [
+    {
+      url: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+      alt: "Model wearing light blue cotton tank top.",
+    },
+    {
+      url: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg",
+      alt: "Model wearing gray cotton tank top.",
+    },
+    {
+      url: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg",
+      alt: "Model wearing black cotton tank top.",
+    },
+    {
+      url: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg",
+      alt: "Model wearing white cotton tank top.",
+    },
+  ];
+
   return (
     <AuthenticatedLayout auth={auth} errors={error}>
       <Head title="Product" />
@@ -85,46 +133,7 @@ export default function Product({ auth, error, product }) {
             </nav>
 
             {/* Image gallery */}
-            <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-              <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
-                <img
-                  src={
-                    "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg"
-                  }
-                  alt={"Two each of gray, white, and black shirts laying flat."}
-                  className="h-full w-full object-cover object-center"
-                />
-              </div>
-              <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-                  <img
-                    src={
-                      "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg"
-                    }
-                    alt={"Model wearing plain black basic tee."}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-                <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-                  <img
-                    src={
-                      "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg"
-                    }
-                    alt={"Model wearing plain gray basic tee."}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-              </div>
-              <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
-                <img
-                  src={
-                    "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg"
-                  }
-                  alt={"Model wearing plain white basic tee."}
-                  className="h-full w-full object-cover object-center"
-                />
-              </div>
-            </div>
+            <ImageGallery images={images} />
 
             {/* Product info */}
             <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
@@ -175,6 +184,8 @@ export default function Product({ auth, error, product }) {
                     name="project_name"
                     label={"Project Name"}
                     type="text"
+                    errors={errors.project_name}
+                    required
                     value={data.project_name}
                     handleChange={(e) =>
                       setData("project_name", e.target.value)
@@ -194,6 +205,7 @@ export default function Product({ auth, error, product }) {
                     name="qty"
                     label={"Quantity"}
                     value={data.quantity}
+                    errors={errors.quantity}
                     handleChange={(e) => setData("quantity", e.target.value)}
                     type="number"
                     className={"input-bordered w-full"}
@@ -263,12 +275,11 @@ export default function Product({ auth, error, product }) {
 
                   {/* FileUpload */}
                   <div className="mt-10">
-                    {/* <Filepond name={"filepond"} maxFiles={1} /> */}
-
                     <Input
                       name={"design"}
                       type={"file"}
                       label="File Upload"
+                      errors={errors.design}
                       handleChange={(e) => setData("design", e.target.files[0])}
                       className={"file-input file-input-bordered"}
                     />

@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
             PriceSeeder::class,
             VariantSeeder::class,
             VariantOptionSeeder::class,
-            // OrderSeeder::class,
-            // OrderItemSeeder::class,
+            OrderSeeder::class,
+            OrderItemSeeder::class,
             PaymentDetailSeeder::class,
             TestimonialSeeder::class,
         ]);

@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
+<<<<<<< HEAD
 import DangerButton from "@/Components/DangerButton";
+=======
+>>>>>>> 5b7aa70 (restricion admin dasboard)
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
@@ -46,17 +49,24 @@ export default function DeleteUserForm({ className }) {
   return (
     <section className={`space-y-6 ${className}`}>
       <header>
+<<<<<<< HEAD
         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
           Delete Account
         </h2>
 
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+=======
+        <h2 className="text-lg font-medium ">Delete Account</h2>
+
+        <p className="mt-1 text-sm">
+>>>>>>> 5b7aa70 (restricion admin dasboard)
           Once your account is deleted, all of its resources and data will be
           permanently deleted. Before deleting your account, please download any
           data or information that you wish to retain.
         </p>
       </header>
 
+<<<<<<< HEAD
       <DangerButton onClick={confirmUserDeletion}>Delete Account</DangerButton>
 
       <Modal show={confirmingUserDeletion} onClose={closeModal}>
@@ -66,6 +76,19 @@ export default function DeleteUserForm({ className }) {
           </h2>
 
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+=======
+      <button className="btn btn-error" onClick={confirmUserDeletion}>
+        Delete Account
+      </button>
+
+      <Modal show={confirmingUserDeletion} onClose={closeModal}>
+        <form onSubmit={deleteUser} className="p-6">
+          <h2 className="text-lg font-medium">
+            Are you sure you want to delete your account?
+          </h2>
+
+          <p className="mt-1 text-sm">
+>>>>>>> 5b7aa70 (restricion admin dasboard)
             Once your account is deleted, all of its resources and data will be
             permanently deleted. Please enter your password to confirm you would
             like to permanently delete your account.
@@ -92,9 +115,15 @@ export default function DeleteUserForm({ className }) {
           <div className="mt-6 flex justify-end">
             <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
 
+<<<<<<< HEAD
             <DangerButton className="ml-3" processing={processing}>
               Delete Account
             </DangerButton>
+=======
+            <button className="btn btn-error ml-3" processing={processing}>
+              Delete Account
+            </button>
+>>>>>>> 5b7aa70 (restricion admin dasboard)
           </div>
         </form>
       </Modal>

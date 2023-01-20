@@ -1,8 +1,5 @@
 <?php
 
-use Inertia\Inertia;
-use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProductController;
@@ -10,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Design\DesignController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Invoice\InvoiceController;
 
 /*
@@ -27,14 +25,7 @@ use App\Http\Controllers\Invoice\InvoiceController;
  * Public Route
  */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'categories' => Category::with('products')->get(),
-        'featuredProducts' => Product::with(['category', 'prices'])->where('featured', true)->get(),
-    ]);
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index')->name('product.index');
@@ -42,12 +33,11 @@ Route::controller(ProductController::class)->group(function () {
 });
 
 
-
 /**
  * Authenticated Route
  */
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('design', DesignController::class)->names([
         'index' => 'design.index',

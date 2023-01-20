@@ -14,6 +14,18 @@ class AddCartTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * Test if user can see cart page
+     * 
+     * return void
+     */
+    public function testIfUserCanSeeCartPage()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get('/cart')->assertOk();
+    }
+
+    /**
      * Test if user can add product to cart
      *
      * return void
