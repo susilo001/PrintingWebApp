@@ -28,6 +28,14 @@ class ProductFactory extends Factory
             fake()->sentence(10),
             fake()->sentence(10),
         ];
+
+        $images = [
+            'https://picsum.photos/id/' . fake()->numberBetween(1, 100) . '/800/600',
+            'https://picsum.photos/id/' . fake()->numberBetween(1, 100) . '/800/600',
+            'https://picsum.photos/id/' . fake()->numberBetween(1, 100) . '/800/600',
+            'https://picsum.photos/id/' . fake()->numberBetween(1, 100) . '/800/600',
+        ];
+
         return [
             'category_id' => Category::factory(),
             'discount_id' => Discount::factory(),
@@ -36,7 +44,7 @@ class ProductFactory extends Factory
             'description' => fake()->realText(200),
             'highlights' => json_encode($highlights),
             'details' => fake()->realText(200),
-            'image' => 'https://picsum.photos/200/' . fake()->numberBetween(1, 100),
+            'images' => $images,
             'weight' => fake()->numberBetween(1, 100),
             'tax' => fake()->numberBetween(1, 100),
             'featured' => fake()->boolean(50),

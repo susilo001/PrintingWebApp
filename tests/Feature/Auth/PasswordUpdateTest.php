@@ -48,4 +48,27 @@ class PasswordUpdateTest extends TestCase
             ->assertSessionHasErrors('current_password')
             ->assertRedirect('/profile');
     }
+
+    /**
+     * Test if user can update password with invalid credentials.
+     * 
+     * @return void
+     */
+    public function test_user_can_update_password_with_invalid_credentials(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from('/profile')
+            ->put('/password', [
+                'current_password' => 'password',
+                'password' => 'new-password',
+                'password_confirmation' => 'wrong-password',
+            ]);
+
+        $response
+            ->assertSessionHasErrors('password')
+            ->assertRedirect('/profile');
+    }
 }

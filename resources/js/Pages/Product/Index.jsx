@@ -31,8 +31,8 @@ export default function Products({ products, auth, cartCount }) {
             >
               <Card className={"w-80 shadow-xl hover:bg-base-200"}>
                 <Card.Image
-                  className={"bg-cover w-full h-72"}
-                  src={product.image}
+                  className={"object-cover w-full h-72"}
+                  src={product.images[0]}
                   alt={product.name}
                 />
                 <Card.Body>

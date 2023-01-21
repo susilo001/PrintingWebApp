@@ -23,7 +23,7 @@ class Product extends Model implements Buyable
         'description',
         'highlights',
         'details',
-        'image',
+        'images',
         'tax',
         'featured',
         'weight',
@@ -40,6 +40,7 @@ class Product extends Model implements Buyable
     protected $casts = [
         'featured' => 'boolean',
         'highlights' => 'array',
+        'images' => 'array'
     ];
 
     /**

@@ -39,7 +39,7 @@ class PasswordResetTest extends TestCase
         $this->post('/forgot-password', ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-            $response = $this->get('/reset-password/'.$notification->token);
+            $response = $this->get('/reset-password/' . $notification->token);
 
             $response->assertStatus(200);
 
@@ -67,5 +67,17 @@ class PasswordResetTest extends TestCase
 
             return true;
         });
+    }
+
+    /**
+     * Test if user can ask for reset link with unsuccessful response.
+     *  
+     * @return void
+     */
+    public function test_user_can_ask_for_reset_link_with_unsuccessful_response(): void
+    {
+        $response = $this->post('/forgot-password', ['email' => 'oho@oho.com']);
+
+        $response->assertSessionHasErrors('email');
     }
 }

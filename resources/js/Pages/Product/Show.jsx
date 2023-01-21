@@ -78,25 +78,6 @@ export default function Product({ auth, error, product }) {
     });
   };
 
-  const images = [
-    {
-      url: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      alt: "Model wearing light blue cotton tank top.",
-    },
-    {
-      url: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg",
-      alt: "Model wearing gray cotton tank top.",
-    },
-    {
-      url: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg",
-      alt: "Model wearing black cotton tank top.",
-    },
-    {
-      url: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg",
-      alt: "Model wearing white cotton tank top.",
-    },
-  ];
-
   return (
     <AuthenticatedLayout auth={auth} errors={error}>
       <Head title="Product" />
@@ -133,7 +114,7 @@ export default function Product({ auth, error, product }) {
             </nav>
 
             {/* Image gallery */}
-            <ImageGallery images={images} />
+            <ImageGallery images={product.images} />
 
             {/* Product info */}
             <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">

@@ -36,9 +36,9 @@ export default function Welcome({
                 <Link href={route("product.show", product.id)}>
                   <Card className={"bg-base-200 h-96 card-compact shadow-md"}>
                     <Card.Image
-                      src={product.image}
+                      src={product.images[0]}
                       alt={product.name}
-                      className="bg-cover h-52"
+                      className="object-cover h-52"
                     />
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>

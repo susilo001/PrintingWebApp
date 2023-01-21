@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('description');
             $table->json('highlights');
             $table->string('details');
-            $table->string('image')->default('products/default.jpg');
+            $table->json('images');
             $table->bigInteger('weight');
             $table->bigInteger('tax');
             $table->boolean('featured')->default(false);
