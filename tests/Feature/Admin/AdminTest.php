@@ -29,7 +29,7 @@ class AdminTest extends TestCase
      *
      * @return void
      */
-    public function testNonAdminDashboard()
+    public function testNonAdminUserAccessAdminDashboardExpectForbidden()
     {
         $user = User::factory()->create();
 

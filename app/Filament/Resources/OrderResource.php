@@ -41,15 +41,17 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->searchable(),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
-                        'warning' => 'pending',
-                        'success' => 'completed',
-                        'danger' => 'canceled',
+                        'primary',
+                        'secondary' => static fn ($state): bool => $state === 'pending',
+                        'warning' => static fn ($state): bool => $state === 'processing',
+                        'success' => static fn ($state): bool => $state === 'completed',
+                        'danger' => static fn ($state): bool => $state === 'cancelled',
                     ])
                     ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('subtotal')->money('idr'),
                 Tables\Columns\TextColumn::make('discount')->money('idr'),
                 Tables\Columns\TextColumn::make('tax')->money('idr'),

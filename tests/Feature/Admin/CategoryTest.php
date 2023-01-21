@@ -2,11 +2,14 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Filament\Resources\CategoryResource;
-use App\Models\Category;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Livewire\Livewire;
+use App\Models\Category;
+use App\Filament\Resources\CategoryResource;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Filament\Resources\CategoryResource\Pages\CreateCategory;
+
 
 class CategoryTest extends TestCase
 {

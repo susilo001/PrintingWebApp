@@ -2,14 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
-use App\Models\Product;
+use Closure;
 use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use App\Filament\Resources\ProductResource\Pages;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use App\Filament\Resources\ProductResource\RelationManagers;
 
 class ProductResource extends Resource
 {
@@ -21,15 +33,31 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('category_id')
-                    ->required(),
-                Forms\Components\TextInput::make('discount_id')
-                    ->required(),
+                Select::make('category_id')
+                    ->label('Category')
+                    ->options(Category::all()->pluck('name', 'id'))
+                    ->relationship('category', 'name')
+                    ->searchable(),
+                Select::make('discount_id')
+                    ->label('Discount')
+                    ->options(Category::all()->pluck('name', 'id'))
+                    ->relationship('discount', 'name')
+                    ->searchable(),
                 Forms\Components\TextInput::make('name')
+                    ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
+                        if (!$get('is_slug_changed_manually') && filled($state)) {
+                            $set('slug', Str::slug($state));
+                        }
+                    })
+                    ->reactive()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
+                    ->afterStateUpdated(function (Closure $set) {
+                        $set('is_slug_changed_manually', true);
+                    })
                     ->required()
+                    ->disabled()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->required(),
@@ -38,12 +66,17 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('details')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('image')
-                    ->required()
-                    ->maxLength(255),
+                FileUpload::make('images')
+                    ->multiple()
+                    ->maxFiles(4)
+                    ->required(),
                 Forms\Components\TextInput::make('weight')
+                    ->numeric()
+                    ->type('number')
                     ->required(),
                 Forms\Components\TextInput::make('tax')
+                    ->numeric()
+                    ->type('number')
                     ->required(),
                 Forms\Components\Toggle::make('featured')
                     ->required(),
@@ -54,19 +87,21 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category.name'),
-                Tables\Columns\TextColumn::make('discount.active'),
+                Tables\Columns\ImageColumn::make('images.0')
+                    ->circular()
+                    ->label('Image'),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('slug'),
-                Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('weight'),
-                Tables\Columns\TextColumn::make('tax'),
+                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\IconColumn::make('discount.active')
+                    ->boolean(),
                 Tables\Columns\IconColumn::make('featured')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime('d/m/Y'),
+                Tables\Columns\TextColumn::make('weight')
+                    ->icon('heroicon-o-cube')
+                    ->iconPosition('after'),
+                Tables\Columns\TextColumn::make('tax')
+                    ->icon('heroicon-o-receipt-tax')
+                    ->iconPosition('after'),
             ])
             ->filters([
                 //
