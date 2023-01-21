@@ -3,11 +3,9 @@
 namespace Tests\Unit\Cart;
 
 use App\Models\Product;
-use Tests\TestCase;
-use Illuminate\Http\UploadedFile;
 use App\Services\Cart\CartService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
+use Tests\TestCase;
 
 class CartTest extends TestCase
 {
@@ -24,7 +22,7 @@ class CartTest extends TestCase
 
     /**
      * if quantity is greater than max_order, return price of last price
-     * 
+     *
      * @return void
      */
     public function testGetPriceIfQuantityIsGreaterThanMaxOrder()
@@ -50,10 +48,9 @@ class CartTest extends TestCase
         $this->assertEquals(2000, $price);
     }
 
-
     /**
      * if quantity is between min_order and max_order, return price of first price
-     * 
+     *
      * @return void
      */
     public function testGetPriceIfQuantityIsBetweenMinOrderAndMaxOrder()

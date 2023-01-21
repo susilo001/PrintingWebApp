@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Design\DesignController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Invoice\InvoiceController;
+use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,6 @@ use App\Http\Controllers\Invoice\InvoiceController;
 /**
  * Public Route
  */
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::controller(ProductController::class)->group(function () {
@@ -32,13 +31,10 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/product/{product}', 'show')->name('product.show');
 });
 
-
 /**
  * Authenticated Route
  */
-
 Route::group(['middleware' => 'auth'], function () {
-
     Route::resource('design', DesignController::class)->names([
         'index' => 'design.index',
         'store' => 'design.store',
@@ -66,5 +62,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

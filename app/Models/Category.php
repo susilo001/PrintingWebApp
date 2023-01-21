@@ -21,7 +21,7 @@ class Category extends Model
 
     /**
      * Has many products
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function products()

@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Gloudemans\Shoppingcart\CanBeBought;
+use Gloudemans\Shoppingcart\Contracts\Buyable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Gloudemans\Shoppingcart\Contracts\Buyable;
-
 
 class Product extends Model implements Buyable
 {
@@ -36,16 +35,15 @@ class Product extends Model implements Buyable
      *
      * @var array<int, string>
      */
-
     protected $casts = [
         'featured' => 'boolean',
         'highlights' => 'array',
-        'images' => 'array'
+        'images' => 'array',
     ];
 
     /**
      * Belongs to category
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category()
@@ -55,7 +53,7 @@ class Product extends Model implements Buyable
 
     /**
      * Belongs to discount
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function discount()
@@ -65,7 +63,7 @@ class Product extends Model implements Buyable
 
     /**
      * Has many prices
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function prices()
@@ -75,7 +73,7 @@ class Product extends Model implements Buyable
 
     /**
      * Has many order items
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orderItems()
@@ -85,7 +83,7 @@ class Product extends Model implements Buyable
 
     /**
      * Has many variants
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function variants()

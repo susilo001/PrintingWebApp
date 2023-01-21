@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Price;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PriceSeeder extends Seeder
 {

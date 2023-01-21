@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\Admin;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Order;
 use App\Filament\Resources\OrderResource;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
@@ -24,7 +23,7 @@ class OrderTest extends TestCase
 
     /**
      * Test if Admin can view orders
-     * 
+     *
      * @return void
      */
     public function testAdminCanViewOrders()
@@ -35,7 +34,7 @@ class OrderTest extends TestCase
 
     /**
      * Test if Admin can view order create form
-     * 
+     *
      * @return void
      */
     public function testAdminCanViewOrderCreateForm()
@@ -46,7 +45,7 @@ class OrderTest extends TestCase
 
     /**
      * Test if Admin can view order edit form
-     * 
+     *
      * @return void
      */
     public function testAdminCanViewOrderEditForm()

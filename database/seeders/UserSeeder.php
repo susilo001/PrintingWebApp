@@ -5,8 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {
@@ -17,7 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $user =   User::factory()->count(10)->create();
+        $user = User::factory()->count(10)->create();
 
         $customer = Role::create(['name' => 'customer']);
 

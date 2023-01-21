@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\Admin;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Category;
 use App\Filament\Resources\CategoryResource;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
@@ -26,7 +25,7 @@ class CategoryTest extends TestCase
 
     /**
      * Test if Admin can view categories
-     * 
+     *
      * @return void
      */
     public function testAdminCanViewCategories()
@@ -37,7 +36,7 @@ class CategoryTest extends TestCase
 
     /**
      * Test if Admin can view category create form
-     * 
+     *
      * @return void
      */
     public function testAdminCanViewCategoryCreateForm()
@@ -48,7 +47,7 @@ class CategoryTest extends TestCase
 
     /**
      * Test if Admin can view category edit form
-     * 
+     *
      * @return void
      */
     public function testAdminCanViewCategoryEditForm()

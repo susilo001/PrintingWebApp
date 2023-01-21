@@ -21,7 +21,7 @@ class Variant extends Model
 
     /**
      * Belongs to product
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product()
@@ -31,7 +31,7 @@ class Variant extends Model
 
     /**
      * Had many variant options
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function options()

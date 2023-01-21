@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Discount;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -30,10 +30,10 @@ class ProductFactory extends Factory
         ];
 
         $images = [
-            'https://picsum.photos/id/' . fake()->numberBetween(1, 100) . '/800/600',
-            'https://picsum.photos/id/' . fake()->numberBetween(1, 100) . '/800/600',
-            'https://picsum.photos/id/' . fake()->numberBetween(1, 100) . '/800/600',
-            'https://picsum.photos/id/' . fake()->numberBetween(1, 100) . '/800/600',
+            'https://picsum.photos/id/'.fake()->numberBetween(1, 100).'/800/600',
+            'https://picsum.photos/id/'.fake()->numberBetween(1, 100).'/800/600',
+            'https://picsum.photos/id/'.fake()->numberBetween(1, 100).'/800/600',
+            'https://picsum.photos/id/'.fake()->numberBetween(1, 100).'/800/600',
         ];
 
         return [

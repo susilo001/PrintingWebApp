@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Order;
 
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
-use LaravelDaily\Invoices\Invoice;
-use App\Http\Controllers\Controller;
-use LaravelDaily\Invoices\Classes\Party;
+use Inertia\Inertia;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
+use LaravelDaily\Invoices\Classes\Party;
+use LaravelDaily\Invoices\Invoice;
 
 class OrderController extends Controller
 {
@@ -37,10 +37,10 @@ class OrderController extends Controller
 
         $customer = new Party(
             [
-                'name'          => $order->user->name,
+                'name' => $order->user->name,
                 'custom_fields' => [
                     'address' => $order->user->address,
-                    'phone'   => $order->user->phone,
+                    'phone' => $order->user->phone,
                 ],
             ]
         );

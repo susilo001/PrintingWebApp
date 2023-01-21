@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\Cart;
 
-use Inertia\Inertia;
-use DebugBar\DebugBar;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use App\Services\Cart\CartService;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Date;
+use App\Services\Cart\CartService;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Redirect;
-use Inertia\Response;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
@@ -81,7 +76,7 @@ class CartController extends Controller
 
     /**
      * Checkout the cart content
-     * 
+     *
      * @return void
      */
     public function checkout(Request $request)

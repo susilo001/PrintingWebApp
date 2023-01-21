@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Admin;
 
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AdminTest extends TestCase
 {
@@ -13,7 +12,7 @@ class AdminTest extends TestCase
 
     /**
      * Test if the admin dashboard is accessible by an admin user
-     * 
+     *
      * @return void
      */
     public function testAdminDashboard()
@@ -27,7 +26,7 @@ class AdminTest extends TestCase
 
     /**
      * Test if the admin dashboard is not accessible by a non-admin user
-     * 
+     *
      * @return void
      */
     public function testNonAdminDashboard()

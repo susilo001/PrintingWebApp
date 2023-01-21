@@ -22,7 +22,7 @@ class Testimonial extends Model
 
     /**
      * Belongs to user
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
@@ -32,7 +32,7 @@ class Testimonial extends Model
 
     /**
      * Belongs to product
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product()

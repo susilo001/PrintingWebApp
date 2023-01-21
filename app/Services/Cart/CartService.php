@@ -4,10 +4,10 @@ namespace App\Services\Cart;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\Payment\HandlePaymentService;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use App\Services\Payment\HandlePaymentService;
 
 class CartService
 {
@@ -29,8 +29,8 @@ class CartService
     /**
      * Get price of product based on quantity ordered by user
      *
-     * @param int $product_id
-     * @param int $quantity
+     * @param  int  $product_id
+     * @param  int  $quantity
      * @return int
      */
     public function getPrice($product_id, $quantity)
@@ -54,7 +54,7 @@ class CartService
     /**
      * Add item to cart
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return void
      */
     public function add($request)
@@ -67,7 +67,7 @@ class CartService
 
         $product = $this->product->find($request->product_id);
 
-        $cartItems =  Cart::add([
+        $cartItems = Cart::add([
             'id' => Date::now()->timestamp,
             'qty' => $request->quantity,
             'name' => $product->name,
@@ -79,7 +79,7 @@ class CartService
                 'description' => $request->description,
                 'design' => $path,
                 'variants' => $request->variants,
-            ]
+            ],
         ])->associate(Product::class);
 
         if ($product->discount->active) {
@@ -128,7 +128,6 @@ class CartService
         ]);
 
         if ($request['payment_method'] == 'snap') {
-
             $data = $order->load(['orderItems', 'paymentDetail', 'user']);
 
             $payment = new HandlePaymentService();

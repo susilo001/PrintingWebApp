@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Api\Design;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class DesignController extends Controller
@@ -35,15 +33,15 @@ class DesignController extends Controller
             $name = str_replace('.png', '', $name);
             $name = str_replace('.gif', '', $name);
 
-            $jsonFile = 'templates/' . $name . '.json';
+            $jsonFile = 'templates/'.$name.'.json';
 
             if (in_array($jsonFile, $json)) {
                 $content = (array) json_decode(Storage::disk('public')->get($jsonFile));
 
                 $templates[] = [
                     'id' => $name,
-                    'image' => asset('storage/' . $image),
-                    'json' => asset('storage/' . $jsonFile),
+                    'image' => asset('storage/'.$image),
+                    'json' => asset('storage/'.$jsonFile),
                 ];
             }
         }

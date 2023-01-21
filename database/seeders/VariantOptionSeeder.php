@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Variant;
 use App\Models\VariantOption;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class VariantOptionSeeder extends Seeder
 {
@@ -24,7 +23,6 @@ class VariantOptionSeeder extends Seeder
         $variantPattern = Variant::where('name', 'Pattern')->get();
         $variantStyle = Variant::where('name', 'Style')->get();
         $variantMargin = Variant::where('name', 'Margin')->get();
-
 
         foreach ($variantSize as $size) {
             VariantOption::factory()->forEachSequence(

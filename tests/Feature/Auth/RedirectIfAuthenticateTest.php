@@ -2,18 +2,15 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RedirectIfAuthenticateTest extends TestCase
 {
-
     /**
      * Test if user already logged in, redirect to home page
-     * 
+     *
      * @return void
      */
     public function testRedirectIfAuthenticate()
@@ -22,7 +19,7 @@ class RedirectIfAuthenticateTest extends TestCase
 
         $response = $this->post('/login', [
             'email' => $user->email,
-            'password' => 'password'
+            'password' => 'password',
         ]);
 
         $this->assertAuthenticated();

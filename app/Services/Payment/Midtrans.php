@@ -8,9 +8,13 @@ use Midtrans\Snap;
 abstract class Midtrans
 {
     protected $clientKey;
+
     protected $serverKey;
+
     protected $isProduction;
+
     protected $isSanitized;
+
     protected $is3ds;
 
     public function __construct()
@@ -23,11 +27,10 @@ abstract class Midtrans
     }
 
     /**
-     * Configure midtrans 
-     * 
+     * Configure midtrans
+     *
      * @return void
      */
-
     public function configure()
     {
         Config::$serverKey = config('services.midtrans.server_key');

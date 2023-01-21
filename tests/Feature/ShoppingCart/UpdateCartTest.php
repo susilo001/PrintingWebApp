@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\ShoppingCart;
 
-use Tests\TestCase;
 use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class UpdateCartTest extends TestCase
 {
@@ -14,7 +13,7 @@ class UpdateCartTest extends TestCase
 
     /**
      * Test if user can update cart
-     * 
+     *
      * return void
      */
     public function testIfUserCanUpdateCart()
@@ -32,19 +31,19 @@ class UpdateCartTest extends TestCase
                 'variants' => [
                     [
                         'name' => 'size',
-                        'value' => 's'
+                        'value' => 's',
                     ],
                     [
                         'name' => 'color',
-                        'value' => 'red'
-                    ]
-                ]
-            ]
+                        'value' => 'red',
+                    ],
+                ],
+            ],
         ]);
 
         $qty = fake()->numberBetween(1, 10000);
 
-        $this->actingAs($user)->put('/cart/' . Cart::content()->first()->rowId, [
+        $this->actingAs($user)->put('/cart/'.Cart::content()->first()->rowId, [
             'rowId' => Cart::content()->first()->rowId,
             'quantity' => $qty,
         ])->assertRedirect('/cart');

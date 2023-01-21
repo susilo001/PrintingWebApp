@@ -21,9 +21,9 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * The path to the 'admin' route for your application.
-     * 
+     *
      * Typically, users are redirected here after authentication.
-     * 
+     *
      * @var string
      */
     public const ADMIN = '/admin';

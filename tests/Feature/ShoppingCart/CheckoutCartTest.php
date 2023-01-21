@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\ShoppingCart;
 
-use Tests\TestCase;
 use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
 
 class CheckoutCartTest extends TestCase
 {
@@ -15,10 +14,9 @@ class CheckoutCartTest extends TestCase
 
     /**
      * Test if user can checkout the cart using snap payment method
-     * 
+     *
      * return void
      */
-
     public function testIfUserCanCheckoutTheCart()
     {
         $user = User::factory()->create();
@@ -35,14 +33,14 @@ class CheckoutCartTest extends TestCase
             'variants' => [
                 [
                     'name' => 'size',
-                    'value' => 's'
+                    'value' => 's',
                 ],
                 [
                     'name' => 'color',
-                    'value' => 'red'
-                ]
+                    'value' => 'red',
+                ],
             ],
-            'design' => UploadedFile::fake()->image('design.png')
+            'design' => UploadedFile::fake()->image('design.png'),
         ]);
 
         $this->actingAs($user)->post('/cart', [
@@ -53,26 +51,26 @@ class CheckoutCartTest extends TestCase
             'variants' => [
                 [
                     'name' => 'size',
-                    'value' => 's'
+                    'value' => 's',
                 ],
                 [
                     'name' => 'color',
-                    'value' => 'red'
-                ]
+                    'value' => 'red',
+                ],
             ],
-            'design' => UploadedFile::fake()->image('design.png')
+            'design' => UploadedFile::fake()->image('design.png'),
         ]);
 
-        $reponse =  $this->actingAs($user)
+        $reponse = $this->actingAs($user)
             ->post('/cart/checkout', [
-                'payment_method' => 'snap'
+                'payment_method' => 'snap',
             ]);
 
         $reponse->assertStatus(200);
 
         $this->assertDatabaseHas('orders', [
             'user_id' => $user->id,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         $this->assertDatabaseHas('order_items', [
@@ -92,10 +90,9 @@ class CheckoutCartTest extends TestCase
 
     /**
      * Test if user can checkout the cart using cash payment method
-     * 
+     *
      * return void
      */
-
     public function testIfUserCanCheckoutTheCartUsingCashPaymentMethod()
     {
         $user = User::factory()->create();
@@ -108,14 +105,14 @@ class CheckoutCartTest extends TestCase
             'variants' => [
                 [
                     'name' => 'size',
-                    'value' => 's'
+                    'value' => 's',
                 ],
                 [
                     'name' => 'color',
-                    'value' => 'red'
-                ]
+                    'value' => 'red',
+                ],
             ],
-            'design' => UploadedFile::fake()->image('design.png')
+            'design' => UploadedFile::fake()->image('design.png'),
         ]);
 
         $this->actingAs($user)->post('/cart', [
@@ -126,19 +123,19 @@ class CheckoutCartTest extends TestCase
             'variants' => [
                 [
                     'name' => 'size',
-                    'value' => 's'
+                    'value' => 's',
                 ],
                 [
                     'name' => 'color',
-                    'value' => 'red'
-                ]
+                    'value' => 'red',
+                ],
             ],
-            'design' => UploadedFile::fake()->image('design.png')
+            'design' => UploadedFile::fake()->image('design.png'),
         ]);
 
-        $reponse =  $this->actingAs($user)
+        $reponse = $this->actingAs($user)
             ->post('/cart/checkout', [
-                'payment_method' => 'cash'
+                'payment_method' => 'cash',
             ]);
 
         $reponse->assertStatus(200);

@@ -38,7 +38,7 @@ class OrderItem extends Model
 
     /**
      * Belongs to order
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function order()
@@ -48,7 +48,7 @@ class OrderItem extends Model
 
     /**
      * Belongs to product
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product()

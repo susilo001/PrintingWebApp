@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\ShoppingCart;
 
-use Tests\TestCase;
 use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RemoveCartTest extends TestCase
 {
@@ -14,7 +13,7 @@ class RemoveCartTest extends TestCase
 
     /**
      * Test if user can remove cart
-     * 
+     *
      * return void
      */
     public function testIfUserCanRemoveCart()
@@ -32,17 +31,17 @@ class RemoveCartTest extends TestCase
                 'variants' => [
                     [
                         'name' => 'size',
-                        'value' => 's'
+                        'value' => 's',
                     ],
                     [
                         'name' => 'color',
-                        'value' => 'red'
-                    ]
-                ]
-            ]
+                        'value' => 'red',
+                    ],
+                ],
+            ],
         ]);
 
-        $this->actingAs($user)->delete('/cart/' . Cart::content()->first()->rowId)->assertRedirect('/cart');
+        $this->actingAs($user)->delete('/cart/'.Cart::content()->first()->rowId)->assertRedirect('/cart');
 
         $this->assertEquals(Cart::content()->count(), 0);
     }

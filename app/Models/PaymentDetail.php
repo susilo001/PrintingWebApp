@@ -14,18 +14,17 @@ class PaymentDetail extends Model
      *
      * @var array<int, string>
      */
-
     protected $fillable = [
         'order_id',
         'gross_amount',
         'status',
         'payment_type',
-        'expiry'
+        'expiry',
     ];
 
     /**
      * Belongs to order
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function order()

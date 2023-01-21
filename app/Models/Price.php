@@ -24,7 +24,7 @@ class Price extends Model
 
     /**
      * Belongs to product
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product()

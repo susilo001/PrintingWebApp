@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Design;
 
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
 
 class DesignTest extends TestCase
 {
@@ -14,7 +13,7 @@ class DesignTest extends TestCase
 
     /**
      * Test if the design screen can be rendered.
-     * 
+     *
      * @return void
      */
     public function test_design_screen_can_be_rendered()
@@ -28,10 +27,9 @@ class DesignTest extends TestCase
 
     /**
      * Test if user can upload design.
-     * 
+     *
      * @return void
      */
-
     public function test_user_can_upload_design()
     {
         $user = User::factory()->create();
@@ -59,7 +57,7 @@ class DesignTest extends TestCase
 
     /**
      * Test if design api can be accessed.
-     * 
+     *
      * @return void
      */
     public function test_design_api_can_be_accessed()

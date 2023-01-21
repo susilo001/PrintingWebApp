@@ -33,6 +33,7 @@ class AuthenticationTest extends TestCase
 
     /**
      * Test if Admin role can login and redirect to admin dashboard
+     *
      * @return void
      */
     public function test_admin_can_login_and_redirect_to_admin_dashboard(): void
@@ -49,6 +50,7 @@ class AuthenticationTest extends TestCase
 
     /**
      * Test if Super Admin role can login and redirect to admin dashboard
+     *
      * @return void
      */
     public function test_super_admin_can_login_and_redirect_to_admin_dashboard(): void
@@ -65,6 +67,7 @@ class AuthenticationTest extends TestCase
 
     /**
      * Test if User role is customer can login and do not redirect to admin dashboard
+     *
      * @return void
      */
     public function test_user_can_login_and_redirect_to_home(): void
@@ -92,7 +95,7 @@ class AuthenticationTest extends TestCase
 
     /**
      * Test if request login with many attempts will be locked
-     * 
+     *
      * @return void
      */
     public function test_login_request_with_many_attempts_will_be_locked(): void
@@ -111,7 +114,7 @@ class AuthenticationTest extends TestCase
 
     /**
      * Test if user can logout and redirect to login page
-     * 
+     *
      * @return void
      */
     public function test_user_can_logout(): void

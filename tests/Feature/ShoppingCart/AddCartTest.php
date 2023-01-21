@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\ShoppingCart;
 
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
 
 class AddCartTest extends TestCase
 {
@@ -15,7 +14,7 @@ class AddCartTest extends TestCase
 
     /**
      * Test if user can see cart page
-     * 
+     *
      * return void
      */
     public function testIfUserCanSeeCartPage()
@@ -39,12 +38,12 @@ class AddCartTest extends TestCase
         $variants = [
             [
                 'name' => 'size',
-                'value' => 's'
+                'value' => 's',
             ],
             [
                 'name' => 'color',
-                'value' => 'red'
-            ]
+                'value' => 'red',
+            ],
         ];
 
         $this->withoutExceptionHandling();
@@ -54,7 +53,7 @@ class AddCartTest extends TestCase
             'project_name' => $projectName,
             'description' => $description,
             'variants' => $variants,
-            'design' => UploadedFile::fake()->image('design.png')
+            'design' => UploadedFile::fake()->image('design.png'),
         ])->assertRedirect('/cart');
     }
 
@@ -76,14 +75,14 @@ class AddCartTest extends TestCase
             'variants' => [
                 [
                     'name' => 'size',
-                    'value' => 's'
+                    'value' => 's',
                 ],
                 [
                     'name' => 'color',
-                    'value' => 'red'
-                ]
+                    'value' => 'red',
+                ],
             ],
-            'design' => UploadedFile::fake()->image('design.png')
+            'design' => UploadedFile::fake()->image('design.png'),
         ])->assertRedirect('/cart');
 
         $this->actingAs($user)->post('/cart', [
@@ -94,14 +93,14 @@ class AddCartTest extends TestCase
             'variants' => [
                 [
                     'name' => 'size',
-                    'value' => 's'
+                    'value' => 's',
                 ],
                 [
                     'name' => 'color',
-                    'value' => 'red'
-                ]
+                    'value' => 'red',
+                ],
             ],
-            'design' => UploadedFile::fake()->image('design.png')
+            'design' => UploadedFile::fake()->image('design.png'),
         ])->assertRedirect('/cart');
 
         $this->assertEquals(2, Cart::content()->count());

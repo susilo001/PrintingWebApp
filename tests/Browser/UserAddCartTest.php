@@ -3,10 +3,10 @@
 namespace Tests\Browser;
 
 use App\Models\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\Product;
+use Tests\DuskTestCase;
 
 class UserAddCartTest extends DuskTestCase
 {
@@ -14,7 +14,7 @@ class UserAddCartTest extends DuskTestCase
 
     /**
      * A Dusk test if user can add product to cart.
-     * 
+     *
      * @return void
      */
     public function testUserCanAddProductToCart()

@@ -26,7 +26,7 @@ class Order extends Model
 
     /**
      * Belongs to user
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
@@ -36,7 +36,7 @@ class Order extends Model
 
     /**
      * Has many order items
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orderItems()
@@ -46,7 +46,7 @@ class Order extends Model
 
     /**
      * Has one payment detail
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function paymentDetail()

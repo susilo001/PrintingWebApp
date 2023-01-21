@@ -20,7 +20,7 @@ class DiscountFactory extends Factory
             'name' => fake()->name(),
             'description' => fake()->realText(),
             'discount_percentage' => fake()->numberBetween(1, 100),
-            'active' => fake()->boolean(50)
+            'active' => fake()->boolean(50),
         ];
     }
 }

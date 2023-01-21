@@ -21,7 +21,7 @@ class VariantOption extends Model
 
     /**
      * Belongs to variant
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function variant()

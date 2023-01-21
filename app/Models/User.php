@@ -25,7 +25,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'avatar',
-        'phone_number'
+        'phone_number',
     ];
 
     /**
@@ -54,7 +54,7 @@ class User extends Authenticatable implements FilamentUser
 
     /**
      * Has many addresses
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function addresses()
@@ -64,10 +64,9 @@ class User extends Authenticatable implements FilamentUser
 
     /**
      * Has many orders
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-
     public function orders()
     {
         return $this->hasMany(Order::class);

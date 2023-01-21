@@ -3,18 +3,15 @@
 namespace Tests\Feature\Admin;
 
 use App\Filament\Resources\ProductResource;
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
+use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $admin;
-
 
     public function setUp(): void
     {
@@ -25,7 +22,7 @@ class ProductTest extends TestCase
 
     /**
      * Test if Admin can view products
-     * 
+     *
      * @return void
      */
     public function testAdminCanViewProducts()
@@ -35,8 +32,8 @@ class ProductTest extends TestCase
     }
 
     /**
-     * Test if Admin can create a product 
-     * 
+     * Test if Admin can create a product
+     *
      * @return void
      */
     public function testAdminCanCreateProduct()
@@ -46,8 +43,8 @@ class ProductTest extends TestCase
     }
 
     /**
-     * Test if Admin can edit a product 
-     * 
+     * Test if Admin can edit a product
+     *
      * @return void
      */
     public function testAdminCanEditProduct()

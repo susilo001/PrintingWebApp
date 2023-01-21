@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\Invoice;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class InvoiceTest extends TestCase
 {
@@ -15,7 +14,7 @@ class InvoiceTest extends TestCase
 
     /**
      * Test if user can see invoice url.
-     * 
+     *
      * @return void
      */
     public function testUserCanSeeInvoiceUrl()

@@ -18,12 +18,12 @@ class Discount extends Model
         'name',
         'description',
         'discount_percentage',
-        'active'
+        'active',
     ];
 
     /**
      * Has many products
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function products()
