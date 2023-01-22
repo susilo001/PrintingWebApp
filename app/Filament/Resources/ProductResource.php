@@ -2,26 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Category;
+use App\Models\Product;
 use Closure;
 use Filament\Forms;
-use Filament\Tables;
-use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Support\Str;
-use Filament\Resources\Form;
-use Filament\Resources\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Textarea;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
-use App\Filament\Resources\ProductResource\Pages;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Resources\ProductResource\RelationManagers;
+use Filament\Forms\Components\Select;
+use Filament\Resources\Form;
+use Filament\Resources\Resource;
+use Filament\Resources\Table;
+use Filament\Tables;
+use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
@@ -45,7 +38,7 @@ class ProductResource extends Resource
                     ->searchable(),
                 Forms\Components\TextInput::make('name')
                     ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
-                        if (!$get('is_slug_changed_manually') && filled($state)) {
+                        if (! $get('is_slug_changed_manually') && filled($state)) {
                             $set('slug', Str::slug($state));
                         }
                     })

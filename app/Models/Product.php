@@ -72,13 +72,13 @@ class Product extends Model implements Buyable
     }
 
     /**
-     * Has many order items
+     * Has one order item
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function orderItems()
+    public function orderItem()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasOne(OrderItem::class);
     }
 
     /**

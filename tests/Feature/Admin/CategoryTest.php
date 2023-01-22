@@ -2,62 +2,53 @@
 
 namespace Tests\Feature\Admin;
 
-use Tests\TestCase;
-use App\Models\User;
-use Livewire\Livewire;
-use App\Models\Category;
 use App\Filament\Resources\CategoryResource;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Filament\Resources\CategoryResource\Pages\CreateCategory;
+use App\Models\Category;
+use App\Models\User;
+use function Pest\Livewire\livewire;
 
+beforeEach(
+    fn () => $this->actingAs(User::where('email', 'admin@admin.com')->first())
+);
 
-class CategoryTest extends TestCase
-{
-    use RefreshDatabase;
+it('can view categories', function () {
+    $this->get(CategoryResource::getUrl('index'))
+        ->assertStatus(200);
+});
 
-    protected $admin;
+it('can view category create form', function () {
+    $this->get(CategoryResource::getUrl('create'))
+        ->assertStatus(200);
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+it('can view category edit form', function () {
+    $category = Category::factory()->create();
 
-        $this->admin = User::where('email', 'admin@admin.com')->first();
+    $this->get(CategoryResource::getUrl('edit', $category->id))
+        ->assertStatus(200);
+});
 
-        $this->actingAs($this->admin);
-    }
+/**
+ * Test if admin can create new category
+ */
+it('can create new category', function () {
+    $category = Category::factory()->make();
 
-    /**
-     * Test if Admin can view categories
-     *
-     * @return void
-     */
-    public function testAdminCanViewCategories()
-    {
-        $this->get(CategoryResource::getUrl('index'))
-            ->assertStatus(200);
-    }
+    livewire(CreateCategory::class)
+        ->fillForm([
+            'name' => $category->name,
+            'slug' => $category->slug,
+        ])
+        ->assertFormSet([
+            'name' => $category->name,
+            'slug' => $category->slug,
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors();
 
-    /**
-     * Test if Admin can view category create form
-     *
-     * @return void
-     */
-    public function testAdminCanViewCategoryCreateForm()
-    {
-        $this->get(CategoryResource::getUrl('create'))
-            ->assertStatus(200);
-    }
-
-    /**
-     * Test if Admin can view category edit form
-     *
-     * @return void
-     */
-    public function testAdminCanViewCategoryEditForm()
-    {
-        $category = Category::factory()->create();
-
-        $this->get(CategoryResource::getUrl('edit', $category->id))
-            ->assertStatus(200);
-    }
-}
+    $this->assertDatabaseHas(Category::class, [
+        'name' => $category->name,
+        'slug' => $category->slug,
+    ]);
+});

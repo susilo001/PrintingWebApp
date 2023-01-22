@@ -3,56 +3,30 @@
 namespace Tests\Feature\Admin;
 
 use App\Filament\Resources\OrderResource;
-use App\Models\Order;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class OrderTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(fn () => $this->actingAs(User::where('email', 'admin@admin.com')->first()));
 
-    protected $admin;
+/**
+ * Test if admin can view orders list
+ */
+it('Test if admin can view orders list', function () {
+    $this->get(OrderResource::getUrl('index'))
+        ->assertStatus(200);
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+/**
+ * Test if admin can view order create form
+ */
+it('Test if admin can view order create form', function () {
+    $this->get(OrderResource::getUrl('create'))
+        ->assertStatus(200);
+});
 
-        $this->admin = User::where('email', 'admin@admin.com')->first();
-    }
-
-    /**
-     * Test if Admin can view orders
-     *
-     * @return void
-     */
-    public function testAdminCanViewOrders()
-    {
-        $this->actingAs($this->admin)->get(OrderResource::getUrl('index'))
-            ->assertStatus(200);
-    }
-
-    /**
-     * Test if Admin can view order create form
-     *
-     * @return void
-     */
-    public function testAdminCanViewOrderCreateForm()
-    {
-        $this->actingAs($this->admin)->get(OrderResource::getUrl('create'))
-            ->assertStatus(200);
-    }
-
-    /**
-     * Test if Admin can view order edit form
-     *
-     * @return void
-     */
-    public function testAdminCanViewOrderEditForm()
-    {
-        $order = Order::factory()->create();
-
-        $this->actingAs($this->admin)->get(OrderResource::getUrl('edit', $order->id))
-            ->assertStatus(200);
-    }
-}
+/**
+ * Test if admin can view edit order form
+ */
+it('Test if admin can view edit order form', function () {
+    $this->get(OrderResource::getUrl('edit', 1))
+        ->assertStatus(200);
+});

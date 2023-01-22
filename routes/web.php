@@ -7,6 +7,7 @@ use App\Http\Controllers\Invoice\InvoiceController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\AddressController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -51,7 +52,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('order', OrderController::class)->names([
         'index' => 'order.index',
-        // 'show' => 'order.show',
         'update' => 'order.update',
     ]);
 
@@ -60,6 +60,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('/profile/address', AddressController::class)->names([
+        'store' => 'address.store',
+        'update' => 'address.update',
+        'destroy' => 'address.destroy',
+    ]);
 });
 
 require __DIR__.'/auth.php';

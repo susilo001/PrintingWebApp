@@ -96,4 +96,87 @@ class ProfileTest extends TestCase
 
         $this->assertNotNull($user->fresh());
     }
+
+    /**
+     * Test if user can add address to their profile
+     *
+     * @return void
+     */
+    public function testUserCanAddAddress()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post('/profile/address', [
+            'street_name' => 'Jl. Test',
+            'city' => 'Jakarta',
+            'province' => 'DKI Jakarta',
+            'zip_code' => '12345',
+        ])->assertRedirect('/profile');
+
+        $this->assertDatabaseHas('addresses', [
+            'user_id' => $user->id,
+            'street_name' => 'Jl. Test',
+            'city' => 'Jakarta',
+            'province' => 'DKI Jakarta',
+            'zip_code' => '12345',
+        ]);
+    }
+
+    /**
+     * Test if user can update address
+     *
+     * @return void
+     */
+    public function testUserCanUpdateAddress()
+    {
+        $user = User::factory()->create();
+        $address = $user->addresses()->create([
+            'street_name' => 'Jl. Test',
+            'city' => 'Jakarta',
+            'province' => 'DKI Jakarta',
+            'zip_code' => '12345',
+        ]);
+
+        $this->actingAs($user)->patch('/profile/address/'.$address->id, [
+            'street_name' => 'Jl. Test 2',
+            'city' => 'Jakarta',
+            'province' => 'DKI Jakarta',
+            'zip_code' => '12345',
+        ])->assertRedirect('/profile');
+
+        $this->assertDatabaseHas('addresses', [
+            'user_id' => $user->id,
+            'street_name' => 'Jl. Test 2',
+            'city' => 'Jakarta',
+            'province' => 'DKI Jakarta',
+            'zip_code' => '12345',
+        ]);
+    }
+
+    /**
+     * Test if user can delete address
+     *
+     * @return void
+     */
+    public function testUserCanDeleteAddress()
+    {
+        $user = User::factory()->create();
+        $address = $user->addresses()->create([
+            'street_name' => 'Jl. Test',
+            'city' => 'Jakarta',
+            'province' => 'DKI Jakarta',
+            'zip_code' => '12345',
+        ]);
+
+        $this->actingAs($user)->delete('/profile/address/'.$address->id)
+            ->assertRedirect('/profile');
+
+        $this->assertDatabaseMissing('addresses', [
+            'user_id' => $user->id,
+            'street_name' => 'Jl. Test',
+            'city' => 'Jakarta',
+            'province' => 'DKI Jakarta',
+            'zip_code' => '12345',
+        ]);
+    }
 }

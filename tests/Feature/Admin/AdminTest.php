@@ -3,38 +3,17 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class AdminTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(fn () => $this->actingAs(User::where('email', 'admin@admin.com')->first()));
 
-    /**
-     * Test if the admin dashboard is accessible by an admin user
-     *
-     * @return void
-     */
-    public function testAdminDashboard()
-    {
-        $admin = User::where('email', 'admin@admin.com')->first();
+it('Test if can render admin dashboard', function () {
+    $this->get('/admin')
+        ->assertStatus(200);
+});
 
-        $this->actingAs($admin)
-            ->get('/admin')
-            ->assertStatus(200);
-    }
+it('Test if user non admin can access admin dashoard expect forbidden', function () {
+    $this->actingAs(User::where('email', 'test@test.com')->first());
 
-    /**
-     * Test if the admin dashboard is not accessible by a non-admin user
-     *
-     * @return void
-     */
-    public function testNonAdminUserAccessAdminDashboardExpectForbidden()
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->get('/admin')
-            ->assertStatus(403);
-    }
-}
+    $this->get('/admin')
+        ->assertStatus(403);
+});
