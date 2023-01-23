@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "test": "php artisan test --coverage",
+    "test": "php artisan test --coverage-html tests/reports/coverage",
     "build": "vite build && vite build --ssr"
   },
   "devDependencies": {

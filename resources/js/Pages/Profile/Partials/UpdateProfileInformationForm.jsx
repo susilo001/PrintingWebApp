@@ -1,9 +1,6 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Link, useForm, usePage } from "@inertiajs/inertia-react";
 import { Transition } from "@headlessui/react";
+import Input from "@/Components/Input";
 
 export default function UpdateProfileInformation({
   mustVerifyEmail,
@@ -27,57 +24,51 @@ export default function UpdateProfileInformation({
   return (
     <section className={className}>
       <header>
-        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-          Profile Information
-        </h2>
+        <h2 className="text-lg font-medium">Profile Information</h2>
 
-        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p className="mt-1 text-sm">
           Update your account's profile information and email address.
         </p>
       </header>
 
-      <form onSubmit={submit} className="mt-6 space-y-6">
+      <form onSubmit={submit} className="mt-6">
         <div>
-          <InputLabel for="name" value="Name" />
-
-          <TextInput
+          <Input
             id="name"
-            className="mt-1 block w-full"
+            label="Name"
             value={data.name}
             handleChange={(e) => setData("name", e.target.value)}
             required
             isFocused
             autoComplete="name"
+            className="input-bordered"
+            errors={errors.name}
           />
-
-          <InputError className="mt-2" message={errors.name} />
         </div>
 
         <div>
-          <InputLabel for="email" value="Email" />
-
-          <TextInput
+          <Input
+            label="Email"
             id="email"
             type="email"
-            className="mt-1 block w-full"
             value={data.email}
             handleChange={(e) => setData("email", e.target.value)}
             required
             autoComplete="email"
+            className="input-bordered"
+            errors={errors.email}
           />
-
-          <InputError className="mt-2" message={errors.email} />
         </div>
 
         {mustVerifyEmail && user.email_verified_at === null && (
           <div>
-            <p className="text-sm mt-2 text-gray-800 dark:text-gray-200">
+            <p className="text-sm mt-2">
               Your email address is unverified.
               <Link
                 href={route("verification.send")}
                 method="post"
                 as="button"
-                className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                className="btn btn-link text-sm"
               >
                 Click here to re-send the verification email.
               </Link>
@@ -92,7 +83,9 @@ export default function UpdateProfileInformation({
         )}
 
         <div className="flex items-center gap-4">
-          <PrimaryButton processing={processing}>Save</PrimaryButton>
+          <button className="btn btn-ghost btn-outline" disabled={processing}>
+            Save
+          </button>
 
           <Transition
             show={recentlySuccessful}
@@ -100,7 +93,7 @@ export default function UpdateProfileInformation({
             leaveTo="opacity-0"
             className="transition ease-in-out"
           >
-            <p className="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+            <p className="text-sm">Saved.</p>
           </Transition>
         </div>
       </form>

@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/inertia-react";
+import Input from "@/Components/Input";
 
 export default function ConfirmPassword() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -31,32 +28,33 @@ export default function ConfirmPassword() {
     <GuestLayout>
       <Head title="Confirm Password" />
 
-      <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+      <div className="mb-4 text-sm">
         This is a secure area of the application. Please confirm your password
         before continuing.
       </div>
 
       <form onSubmit={submit}>
         <div className="mt-4">
-          <InputLabel forInput="password" value="Password" />
-
-          <TextInput
+          <Input
             id="password"
+            label="Password"
             type="password"
-            name="password"
             value={data.password}
-            className="mt-1 block w-full"
+            name="password"
             isFocused={true}
             handleChange={onHandleChange}
+            className="input-bordered"
+            errors={errors.password}
           />
-
-          <InputError message={errors.password} className="mt-2" />
         </div>
 
         <div className="flex items-center justify-end mt-4">
-          <PrimaryButton className="ml-4" processing={processing}>
+          <button
+            className="btn btn-ghost btn-outline ml-4"
+            disabled={processing}
+          >
             Confirm
-          </PrimaryButton>
+          </button>
         </div>
       </form>
     </GuestLayout>

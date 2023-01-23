@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, InertiaHead, Link } from "@inertiajs/inertia-react";
+import { Head, Link } from "@inertiajs/inertia-react";
 import {
   ShoppingCartIcon,
   TrashIcon,

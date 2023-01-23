@@ -1,8 +1,6 @@
 import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/inertia-react";
+import Input from "@/Components/Input";
 
 export default function ForgotPassword({ status }) {
   const { data, setData, post, processing, errors } = useForm({
@@ -23,7 +21,7 @@ export default function ForgotPassword({ status }) {
     <GuestLayout>
       <Head title="Forgot Password" />
 
-      <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+      <div className="mb-4 text-sm">
         Forgot your password? No problem. Just let us know your email address
         and we will email you a password reset link that will allow you to
         choose a new one.
@@ -36,22 +34,21 @@ export default function ForgotPassword({ status }) {
       )}
 
       <form onSubmit={submit}>
-        <TextInput
+        <Input
           id="password"
           type="email"
           name="email"
           value={data.email}
-          className="mt-1 block w-full"
+          className="input-bordered"
           isFocused={true}
           handleChange={onHandleChange}
+          errors={errors.email}
         />
 
-        <InputError message={errors.email} className="mt-2" />
-
         <div className="flex items-center justify-end mt-4">
-          <PrimaryButton className="ml-4" processing={processing}>
+          <button className="btn btn-ghost ml-4" disabled={processing}>
             Email Password Reset Link
-          </PrimaryButton>
+          </button>
         </div>
       </form>
     </GuestLayout>

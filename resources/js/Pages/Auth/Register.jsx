@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/inertia-react";
+import Input from "@/Components/Input";
 
 export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -41,86 +38,71 @@ export default function Register() {
 
       <form onSubmit={submit}>
         <div>
-          <InputLabel forInput="name" value="Name" />
-
-          <TextInput
+          <Input
             id="name"
+            label="Name"
             name="name"
             value={data.name}
-            className="mt-1 block w-full"
-            autoComplete="name"
-            isFocused={true}
             handleChange={onHandleChange}
-            required
+            autoComplete="name"
+            errors={errors.name}
+            className="input-bordered"
           />
-
-          <InputError message={errors.name} className="mt-2" />
         </div>
 
-        <div className="mt-4">
-          <InputLabel forInput="email" value="Email" />
-
-          <TextInput
+        <div>
+          <Input
             id="email"
+            label="Email"
             type="email"
             name="email"
             value={data.email}
-            className="mt-1 block w-full"
-            autoComplete="username"
             handleChange={onHandleChange}
-            required
+            autoComplete="username"
+            errors={errors.email}
+            className="input-bordered"
           />
-
-          <InputError message={errors.email} className="mt-2" />
         </div>
 
-        <div className="mt-4">
-          <InputLabel forInput="password" value="Password" />
-
-          <TextInput
+        <div>
+          <Input
             id="password"
+            label="Password"
             type="password"
             name="password"
             value={data.password}
-            className="mt-1 block w-full"
-            autoComplete="new-password"
             handleChange={onHandleChange}
-            required
+            autoComplete="new-password"
+            errors={errors.password}
+            className="input-bordered"
           />
-
-          <InputError message={errors.password} className="mt-2" />
         </div>
 
-        <div className="mt-4">
-          <InputLabel
-            forInput="password_confirmation"
-            value="Confirm Password"
-          />
-
-          <TextInput
+        <div>
+          <Input
             id="password_confirmation"
             type="password"
             name="password_confirmation"
             value={data.password_confirmation}
-            className="mt-1 block w-full"
             handleChange={onHandleChange}
             required
+            className="input-bordered"
+            label="Confirm Password"
+            errors={errors.password_confirmation}
           />
-
-          <InputError message={errors.password_confirmation} className="mt-2" />
         </div>
 
         <div className="flex items-center justify-end mt-4">
-          <Link
-            href={route("login")}
-            className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-          >
+          <Link href={route("login")} className="link link-hover">
             Already registered?
           </Link>
 
-          <PrimaryButton className="ml-4" processing={processing}>
+          <button
+            className="btn btn-sm btn-ghost btn-outline ml-4"
+            disabled={processing}
+          >
             Register
-          </PrimaryButton>
+          </button>
         </div>
       </form>
     </GuestLayout>

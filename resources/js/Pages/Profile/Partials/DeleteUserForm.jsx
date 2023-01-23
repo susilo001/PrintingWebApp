@@ -1,10 +1,7 @@
 import { useRef, useState } from "react";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
-import SecondaryButton from "@/Components/SecondaryButton";
-import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/inertia-react";
+import Input from "@/Components/Input";
 
 export default function DeleteUserForm({ className }) {
   const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -45,11 +42,9 @@ export default function DeleteUserForm({ className }) {
   return (
     <section className={`space-y-6 ${className}`}>
       <header>
-        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-          Delete Account
-        </h2>
+        <h2 className="text-lg font-medium">Delete Account</h2>
 
-        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p className="mt-1 text-sm">
           Once your account is deleted, all of its resources and data will be
           permanently deleted. Before deleting your account, please download any
           data or information that you wish to retain.
@@ -62,36 +57,35 @@ export default function DeleteUserForm({ className }) {
 
       <Modal show={confirmingUserDeletion} onClose={closeModal}>
         <form onSubmit={deleteUser} className="p-6">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+          <h2 className="text-lg font-medium">
             Are you sure you want to delete your account?
           </h2>
 
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-1 text-sm">
             Once your account is deleted, all of its resources and data will be
             permanently deleted. Please enter your password to confirm you would
             like to permanently delete your account.
           </p>
 
           <div className="mt-6">
-            <InputLabel for="password" value="Password" className="sr-only" />
-
-            <TextInput
+            <Input
               id="password"
+              label="Password"
               type="password"
               name="password"
               ref={passwordInput}
               value={data.password}
               handleChange={(e) => setData("password", e.target.value)}
-              className="mt-1 block w-3/4"
               isFocused
               placeholder="Password"
+              errors={errors.password}
             />
-
-            <InputError message={errors.password} className="mt-2" />
           </div>
 
           <div className="mt-6 flex justify-end">
-            <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
+            <button className="btn btn-outline btn-ghost" onClick={closeModal}>
+              Cancel
+            </button>
 
             <button className="btn btn-error ml-3" disabled={processing}>
               Delete Account
