@@ -23,8 +23,8 @@ class CategorySeeder extends Seeder
             ['name' => 'Packages', 'slug' => 'packages'],
             ['name' => 'Others', 'slug' => 'others'],
             ['name' => 'Undangan', 'slug' => 'undangan'],
-            ['name' => 'Brosur', 'slug' => 'brosur'],
-            ['name' => 'Paper Bag', 'slug' => 'paper-bag'],
+            ['name' => 'Brochure', 'slug' => 'brochure'],
+            ['name' => 'Poster', 'slug' => 'poster'],
         )->create();
     }
 }

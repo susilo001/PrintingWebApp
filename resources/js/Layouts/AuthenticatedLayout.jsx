@@ -100,16 +100,13 @@ export default function Authenticated({ auth, header, children }) {
                 </>
               ) : (
                 <div className="ml-3 space-x-4">
-                  <Link
-                    href={route("login")}
-                    className="btn btn-sm btn-outline btn-primary"
-                  >
+                  <Link href={route("login")} className="btn btn-sm btn-ghost">
                     Login
                   </Link>
 
                   <Link
                     href={route("register")}
-                    className="btn btn-sm btn-outline btn-primary"
+                    className="btn btn-sm btn-ghost"
                   >
                     Register
                   </Link>
