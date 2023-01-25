@@ -8,7 +8,9 @@ use App\Models\Category;
 use App\Models\Product;
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -26,53 +28,66 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('category_id')
-                    ->label('Category')
-                    ->options(Category::all()->pluck('name', 'id'))
-                    ->relationship('category', 'name')
-                    ->searchable(),
-                Select::make('discount_id')
-                    ->label('Discount')
-                    ->options(Category::all()->pluck('name', 'id'))
-                    ->relationship('discount', 'name')
-                    ->searchable(),
-                Forms\Components\TextInput::make('name')
-                    ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
-                        if (! $get('is_slug_changed_manually') && filled($state)) {
-                            $set('slug', Str::slug($state));
-                        }
-                    })
-                    ->reactive()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('slug')
-                    ->afterStateUpdated(function (Closure $set) {
-                        $set('is_slug_changed_manually', true);
-                    })
-                    ->required()
-                    ->disabled()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required(),
-                Forms\Components\TextInput::make('highlights')
-                    ->required(),
-                Forms\Components\TextInput::make('details')
-                    ->required()
-                    ->maxLength(255),
-                FileUpload::make('images')
-                    ->multiple()
-                    ->maxFiles(4)
-                    ->required(),
-                Forms\Components\TextInput::make('weight')
-                    ->numeric()
-                    ->type('number')
-                    ->required(),
-                Forms\Components\TextInput::make('tax')
-                    ->numeric()
-                    ->type('number')
-                    ->required(),
-                Forms\Components\Toggle::make('featured')
-                    ->required(),
+                Card::make()->columns(1)->schema([
+                    Grid::make()->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
+                                if (! $get('is_slug_changed_manually') && filled($state)) {
+                                    $set('slug', Str::slug($state));
+                                }
+                            })
+                            ->reactive()
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('slug')
+                            ->afterStateUpdated(function (Closure $set) {
+                                $set('is_slug_changed_manually', true);
+                            })
+                            ->required()
+                            ->disabled()
+                            ->maxLength(255),
+                    ]),
+                    Forms\Components\Textarea::make('description')
+                        ->required(),
+                    Forms\Components\TextInput::make('highlights')
+                        ->required(),
+                    Forms\Components\TextInput::make('details')
+                        ->required()
+                        ->maxLength(255),
+                ]),
+                Card::make()->columns(1)->schema([
+                    Grid::make()->schema([
+                        Select::make('category_id')
+                            ->label('Category')
+                            ->options(Category::all()->pluck('name', 'id'))
+                            ->relationship('category', 'name')
+                            ->searchable(),
+                        Select::make('discount_id')
+                            ->label('Discount')
+                            ->options(Category::all()->pluck('name', 'id'))
+                            ->relationship('discount', 'name')
+                            ->searchable(),
+                    ]),
+                    Grid::make()->schema([
+                        Forms\Components\TextInput::make('weight')
+                            ->numeric()
+                            ->type('number')
+                            ->required(),
+                        Forms\Components\TextInput::make('tax')
+                            ->numeric()
+                            ->type('number')
+                            ->required(),
+                    ]),
+                    Forms\Components\Toggle::make('featured')
+                        ->required(),
+                ]),
+                Card::make()->columns(1)->schema([
+                    FileUpload::make('images')
+                        ->multiple()
+                        ->directory('images/asset/products')
+                        ->maxFiles(4)
+                        ->required(),
+                ]),
             ]);
     }
 
@@ -81,13 +96,18 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('images.0')
-                    ->circular()
+                    ->square()
                     ->label('Image'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('discount.active')
+                    ->sortable()
                     ->boolean(),
                 Tables\Columns\IconColumn::make('featured')
+                    ->sortable()
                     ->boolean(),
                 Tables\Columns\TextColumn::make('weight')
                     ->icon('heroicon-o-cube')

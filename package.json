@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "vite",
     "test": "php artisan test --coverage-html tests/reports/coverage",
+    "pint": "./vendor/bin/pint",
     "build": "vite build && vite build --ssr"
   },
   "devDependencies": {

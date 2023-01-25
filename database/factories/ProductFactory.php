@@ -30,10 +30,10 @@ class ProductFactory extends Factory
         ];
 
         $images = [
-            'https://picsum.photos/id/'.fake()->numberBetween(1, 100).'/800/600',
-            'https://picsum.photos/id/'.fake()->numberBetween(1, 100).'/800/600',
-            'https://picsum.photos/id/'.fake()->numberBetween(1, 100).'/800/600',
-            'https://picsum.photos/id/'.fake()->numberBetween(1, 100).'/800/600',
+            'images/asset/products/Box1.png',
+            'images/asset/products/Box2.png',
+            'images/asset/products/Box3.png',
+            'images/asset/products/Box4.png',
         ];
 
         return [

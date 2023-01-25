@@ -5,22 +5,9 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
 
 class ProductSeeder extends Seeder
 {
-
-    /**
-     * Get the file URL.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    public function fileURL($path)
-    {
-        return Storage::url($path);
-    }
-
     /**
      * Run the database seeds.
      *
@@ -28,7 +15,6 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-
         $other = Category::where('slug', 'others')->first();
 
         Product::factory()->count(10)->create([
@@ -43,7 +29,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan',
                 'slug' => 'undangan',
                 'images' => [
-                    $this->fileURL('images/asset/products/invitation.jpg'),
+                    'images/asset/products/invitation.jpg',
                 ],
             ],
             [
@@ -51,7 +37,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan v2',
                 'slug' => 'undangan-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/invitation.jpg'),
+                    'images/asset/products/invitation.jpg',
                 ],
             ],
             [
@@ -59,7 +45,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan v3',
                 'slug' => 'undangan-v3',
                 'images' => [
-                    $this->fileURL('images/asset/products/invitation.jpg'),
+                    'images/asset/products/invitation.jpg',
                 ],
             ],
             [
@@ -67,7 +53,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan v4',
                 'slug' => 'undangan-v4',
                 'images' => [
-                    $this->fileURL('images/asset/products/invitation.jpg'),
+                    'images/asset/products/invitation.jpg',
                 ],
             ],
             [
@@ -75,7 +61,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan v5',
                 'slug' => 'undangan-v5',
                 'images' => [
-                    $this->fileURL('images/asset/products/invitation.jpg'),
+                    'images/asset/products/invitation.jpg',
                 ],
             ],
         )->create();
@@ -88,7 +74,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender',
                 'slug' => 'kalender',
                 'images' => [
-                    $this->fileURL('images/asset/products/calendar.jpg'),
+                    'images/asset/products/calendar.jpg',
                 ],
             ],
             [
@@ -96,7 +82,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender v2',
                 'slug' => 'kalender-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/calendar.jpg'),
+                    'images/asset/products/calendar.jpg',
                 ],
             ],
             [
@@ -104,7 +90,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender v3',
                 'slug' => 'kalender-v3',
                 'images' => [
-                    $this->fileURL('images/asset/products/calendar.jpg'),
+                    'images/asset/products/calendar.jpg',
                 ],
             ],
             [
@@ -112,7 +98,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender v4',
                 'slug' => 'kalender-v4',
                 'images' => [
-                    $this->fileURL('images/asset/products/calendar.jpg'),
+                    'images/asset/products/calendar.jpg',
                 ],
             ],
             [
@@ -120,7 +106,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender v5',
                 'slug' => 'kalender-v5',
                 'images' => [
-                    $this->fileURL('images/asset/products/calendar.jpg'),
+                    'images/asset/products/calendar.jpg',
                 ],
             ],
         )->create();
@@ -133,7 +119,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3',
                 'slug' => 'a3',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
             [
@@ -141,7 +127,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3 v2',
                 'slug' => 'a3-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
             [
@@ -149,7 +135,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3 v3',
                 'slug' => 'a3-v3',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
             [
@@ -157,7 +143,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3 v4',
                 'slug' => 'a3-v4',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
             [
@@ -165,7 +151,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3 v5',
                 'slug' => 'a3-v5',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
         )->create();
@@ -178,7 +164,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4',
                 'slug' => 'a4',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
             [
@@ -186,7 +172,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4 v2',
                 'slug' => 'a4-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
             [
@@ -194,7 +180,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4 v3',
                 'slug' => 'a4-v3',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
             [
@@ -202,7 +188,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4 v4',
                 'slug' => 'a4-v4',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
             [
@@ -210,7 +196,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4 v5',
                 'slug' => 'a4-v5',
                 'images' => [
-                    $this->fileURL('images/asset/products/flayer.jpg'),
+                    'images/asset/products/flayer.jpg',
                 ],
             ],
         )->create();
@@ -223,10 +209,10 @@ class ProductSeeder extends Seeder
                 'name' => 'Kotak Makanan Bento',
                 'slug' => 'kotak-makanan-bento',
                 'images' => [
-                    $this->fileURL('images/asset/products/Box1.png'),
-                    $this->fileURL('images/asset/products/Box2.png'),
-                    $this->fileURL('images/asset/products/Box3.png'),
-                    $this->fileURL('images/asset/products/Box4.png'),
+                    'images/asset/products/Box1.png',
+                    'images/asset/products/Box2.png',
+                    'images/asset/products/Box3.png',
+                    'images/asset/products/Box4.png',
                 ],
             ],
             [
@@ -234,8 +220,8 @@ class ProductSeeder extends Seeder
                 'name' => 'Kotak Makanan Bento v2',
                 'slug' => 'kotak-makanan-bento-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/Bento-Box1.png'),
-                    $this->fileURL('images/asset/products/Bento-Box2.png'),
+                    'images/asset/products/Bento-Box1.png',
+                    'images/asset/products/Bento-Box2.png',
                 ],
             ],
             [
@@ -243,10 +229,10 @@ class ProductSeeder extends Seeder
                 'name' => 'Box Makanan',
                 'slug' => 'box-makanan',
                 'images' => [
-                    $this->fileURL('images/asset/products/Food-Box1.png'),
-                    $this->fileURL('images/asset/products/Food-Box2.png'),
-                    $this->fileURL('images/asset/products/Food-Box3.png'),
-                    $this->fileURL('images/asset/products/Food-Box4.png'),
+                    'images/asset/products/Food-Box1.png',
+                    'images/asset/products/Food-Box2.png',
+                    'images/asset/products/Food-Box3.png',
+                    'images/asset/products/Food-Box4.png',
                 ],
             ],
             [
@@ -254,9 +240,9 @@ class ProductSeeder extends Seeder
                 'name' => 'Rounded Box Makanan',
                 'slug' => 'rounded-box-makanan',
                 'images' => [
-                    $this->fileURL('images/asset/products/Rounded-Bento1.png'),
-                    $this->fileURL('images/asset/products/Rounded-Bento2.png'),
-                    $this->fileURL('images/asset/products/Rounded-Bento3.png'),
+                    'images/asset/products/Rounded-Bento1.png',
+                    'images/asset/products/Rounded-Bento2.png',
+                    'images/asset/products/Rounded-Bento3.png',
                 ],
             ],
             [
@@ -264,10 +250,10 @@ class ProductSeeder extends Seeder
                 'name' => 'Box Cartoon Makanan',
                 'slug' => 'box-cartoon-makanan',
                 'images' => [
-                    $this->fileURL('images/asset/products/Cartoon-Box1.png'),
-                    $this->fileURL('images/asset/products/Cartoon-Box2.png'),
-                    $this->fileURL('images/asset/products/Cartoon-Box3.png'),
-                    $this->fileURL('images/asset/products/Cartoon-Box4.png'),
+                    'images/asset/products/Cartoon-Box1.png',
+                    'images/asset/products/Cartoon-Box2.png',
+                    'images/asset/products/Cartoon-Box3.png',
+                    'images/asset/products/Cartoon-Box4.png',
                 ],
             ],
         )->create();
@@ -280,9 +266,9 @@ class ProductSeeder extends Seeder
                 'name' => 'Cover Buku',
                 'slug' => 'cover-buku',
                 'images' => [
-                    $this->fileURL('images/asset/products/book-cover-1.png'),
-                    $this->fileURL('images/asset/products/book-cover-2.png'),
-                    $this->fileURL('images/asset/products/book-cover-3.png'),
+                    'images/asset/products/book-cover-1.png',
+                    'images/asset/products/book-cover-2.png',
+                    'images/asset/products/book-cover-3.png',
                 ],
             ],
             [
@@ -290,9 +276,9 @@ class ProductSeeder extends Seeder
                 'name' => 'Cover Buku v2',
                 'slug' => 'cover-buku-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/book-cover-1.png'),
-                    $this->fileURL('images/asset/products/book-cover-2.png'),
-                    $this->fileURL('images/asset/products/book-cover-3.png'),
+                    'images/asset/products/book-cover-1.png',
+                    'images/asset/products/book-cover-2.png',
+                    'images/asset/products/book-cover-3.png',
                 ],
             ],
             [
@@ -300,9 +286,9 @@ class ProductSeeder extends Seeder
                 'name' => 'Cover Buku v3',
                 'slug' => 'cover-buku-v3',
                 'images' => [
-                    $this->fileURL('images/asset/products/book-cover-1.png'),
-                    $this->fileURL('images/asset/products/book-cover-2.png'),
-                    $this->fileURL('images/asset/products/book-cover-3.png'),
+                    'images/asset/products/book-cover-1.png',
+                    'images/asset/products/book-cover-2.png',
+                    'images/asset/products/book-cover-3.png',
                 ],
             ],
             [
@@ -310,9 +296,9 @@ class ProductSeeder extends Seeder
                 'name' => 'Cover Buku v4',
                 'slug' => 'cover-buku-v4',
                 'images' => [
-                    $this->fileURL('images/asset/products/book-cover-1.png'),
-                    $this->fileURL('images/asset/products/book-cover-2.png'),
-                    $this->fileURL('images/asset/products/book-cover-3.png'),
+                    'images/asset/products/book-cover-1.png',
+                    'images/asset/products/book-cover-2.png',
+                    'images/asset/products/book-cover-3.png',
                 ],
             ],
             [
@@ -320,13 +306,12 @@ class ProductSeeder extends Seeder
                 'name' => 'Cover Buku v5',
                 'slug' => 'cover-buku-v5',
                 'images' => [
-                    $this->fileURL('images/asset/products/book-cover-1.png'),
-                    $this->fileURL('images/asset/products/book-cover-2.png'),
-                    $this->fileURL('images/asset/products/book-cover-3.png'),
+                    'images/asset/products/book-cover-1.png',
+                    'images/asset/products/book-cover-2.png',
+                    'images/asset/products/book-cover-3.png',
                 ],
             ],
         )->create();
-
 
         $posters = Category::where('slug', 'poster')->first();
 
@@ -336,7 +321,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster',
                 'slug' => 'poster',
                 'images' => [
-                    $this->fileURL('images/asset/products/poster.jpg'),
+                    'images/asset/products/poster.jpg',
                 ],
             ],
             [
@@ -344,7 +329,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster v2',
                 'slug' => 'poster-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/poster.jpg'),
+                    'images/asset/products/poster.jpg',
                 ],
             ],
             [
@@ -352,7 +337,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster v3',
                 'slug' => 'poster-v3',
                 'images' => [
-                    $this->fileURL('images/asset/products/poster.jpg'),
+                    'images/asset/products/poster.jpg',
                 ],
             ],
             [
@@ -360,7 +345,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster v4',
                 'slug' => 'poster-v4',
                 'images' => [
-                    $this->fileURL('images/asset/products/poster.jpg'),
+                    'images/asset/products/poster.jpg',
                 ],
             ],
             [
@@ -368,7 +353,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster v5',
                 'slug' => 'poster-v5',
                 'images' => [
-                    $this->fileURL('images/asset/products/poster.jpg'),
+                    'images/asset/products/poster.jpg',
                 ],
             ],
         )->create();
@@ -381,7 +366,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure',
                 'slug' => 'brochure',
                 'images' => [
-                    $this->fileURL('images/asset/products/brochure.jpg'),
+                    'images/asset/products/brochure.jpg',
                 ],
             ],
             [
@@ -389,7 +374,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure v2',
                 'slug' => 'brochure-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/brochure.jpg'),
+                    'images/asset/products/brochure.jpg',
                 ],
             ],
             [
@@ -397,7 +382,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure v3',
                 'slug' => 'brochure-v3',
                 'images' => [
-                    $this->fileURL('images/asset/products/brochure.jpg'),
+                    'images/asset/products/brochure.jpg',
                 ],
             ],
             [
@@ -405,7 +390,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure v4',
                 'slug' => 'brochure-v4',
                 'images' => [
-                    $this->fileURL('images/asset/products/brochure.jpg'),
+                    'images/asset/products/brochure.jpg',
                 ],
             ],
             [
@@ -413,7 +398,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure v5',
                 'slug' => 'brochure-v5',
                 'images' => [
-                    $this->fileURL('images/asset/products/brochure.jpg'),
+                    'images/asset/products/brochure.jpg',
                 ],
             ],
         )->create();
@@ -426,7 +411,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker',
                 'slug' => 'sticker',
                 'images' => [
-                    $this->fileURL('images/asset/products/sticker.jpg'),
+                    'images/asset/products/sticker.jpg',
                 ],
             ],
             [
@@ -434,7 +419,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker v2',
                 'slug' => 'sticker-v2',
                 'images' => [
-                    $this->fileURL('images/asset/products/sticker.jpg'),
+                    'images/asset/products/sticker.jpg',
                 ],
             ],
             [
@@ -442,7 +427,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker v3',
                 'slug' => 'sticker-v3',
                 'images' => [
-                    $this->fileURL('images/asset/products/sticker.jpg'),
+                    'images/asset/products/sticker.jpg',
                 ],
             ],
             [
@@ -450,7 +435,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker v4',
                 'slug' => 'sticker-v4',
                 'images' => [
-                    $this->fileURL('images/asset/products/sticker.jpg'),
+                    'images/asset/products/sticker.jpg',
                 ],
             ],
             [
@@ -458,7 +443,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker v5',
                 'slug' => 'sticker-v5',
                 'images' => [
-                    $this->fileURL('images/asset/products/sticker.jpg'),
+                    'images/asset/products/sticker.jpg',
                 ],
             ],
         )->create();

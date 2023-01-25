@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Inertia\Inertia;
 
@@ -13,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         return Inertia::render('Product/Index', [
-            'products' => Product::with(['variants', 'variants.options', 'prices', 'category'])->get(),
+            'products' => new ProductCollection(Product::with(['variants', 'variants.options', 'prices', 'category'])->get()),
         ]);
     }
 
@@ -26,7 +28,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return Inertia::render('Product/Show', [
-            'product' => $product->load(['variants', 'variants.options', 'prices', 'category']),
+            'product' => new ProductResource($product->load(['variants', 'variants.options', 'prices', 'category'])),
         ]);
     }
 }

@@ -4,6 +4,7 @@ import Card from "@/Components/Card";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 
 export default function Products({ products, auth, cartCount }) {
+  console.log(products);
   return (
     <AuthenticatedLayout
       auth={auth}

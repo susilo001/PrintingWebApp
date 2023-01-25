@@ -22,6 +22,15 @@ class Discount extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<int, string>
+     */
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
+    /**
      * Has many products
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

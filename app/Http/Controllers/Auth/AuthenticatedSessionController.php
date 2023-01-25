@@ -38,7 +38,9 @@ class AuthenticatedSessionController extends Controller
 
         $response = $user->hasAnyRole('administrator', 'super-admin') ? RouteServiceProvider::ADMIN : RouteServiceProvider::HOME;
 
-        return redirect()->intended($response)->with('message', 'Welcome '.$user->name);
+        return redirect()
+            ->intended($response)
+            ->with('success', 'Welcome back, ' . $user->name . '!');
     }
 
     /**
