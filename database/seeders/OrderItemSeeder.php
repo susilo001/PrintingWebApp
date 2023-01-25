@@ -20,7 +20,7 @@ class OrderItemSeeder extends Seeder
         $order = Order::all();
 
         foreach ($order as $order) {
-            OrderItem::factory()->create([
+            OrderItem::factory()->count(3)->create([
                 'order_id' => $order->id,
                 'product_id' => $product->random()->id,
             ]);

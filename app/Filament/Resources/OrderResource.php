@@ -2,14 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use App\Models\Order;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
-use App\Models\Order;
-use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
-use Filament\Tables;
 
 class OrderResource extends Resource
 {
@@ -22,18 +28,32 @@ class OrderResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('user_id')
+                    ->disabled()
                     ->required(),
-                Forms\Components\TextInput::make('status')
+                Select::make('status')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('subtotal')
-                    ->required(),
-                Forms\Components\TextInput::make('discount')
-                    ->required(),
-                Forms\Components\TextInput::make('tax')
-                    ->required(),
-                Forms\Components\TextInput::make('total_amount')
-                    ->required(),
+                    ->options([
+                        'pending' => 'Pending',
+                        'processing' => 'Processing',
+                        'completed' => 'Completed',
+                        'cancelled' => 'Cancelled',
+                    ]),
+                Card::make()->columns(1)->schema([
+                    Grid::make()->schema([
+                        Forms\Components\TextInput::make('subtotal')
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\TextInput::make('discount')
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\TextInput::make('tax')
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\TextInput::make('total_amount')
+                            ->numeric()
+                            ->required(),
+                    ]),
+                ]),
             ]);
     }
 
@@ -41,6 +61,9 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
                         'primary',
@@ -52,11 +75,16 @@ class OrderResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('subtotal')->money('idr'),
-                Tables\Columns\TextColumn::make('discount')->money('idr'),
-                Tables\Columns\TextColumn::make('tax')->money('idr'),
-                Tables\Columns\TextColumn::make('total_amount')->money('idr'),
+                Tables\Columns\TextColumn::make('subtotal')
+                    ->money('IDR', true),
+                Tables\Columns\TextColumn::make('discount')
+                    ->money('IDR', true),
+                Tables\Columns\TextColumn::make('tax')
+                    ->money('IDR', true),
+                Tables\Columns\TextColumn::make('total_amount')
+                    ->money('IDR', true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->sortable()
                     ->dateTime('d/m/Y'),
             ])
             ->filters([
