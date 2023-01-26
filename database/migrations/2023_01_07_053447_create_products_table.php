@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->longText('description');
-            $table->json('highlights');
-            $table->string('details');
             $table->json('images');
             $table->bigInteger('weight');
             $table->bigInteger('tax');

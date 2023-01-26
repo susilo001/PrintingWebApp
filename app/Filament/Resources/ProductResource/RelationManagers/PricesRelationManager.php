@@ -29,7 +29,8 @@ class PricesRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('price')->money('idr'),
+                Tables\Columns\TextColumn::make('price')
+                    ->money('idr', true),
                 Tables\Columns\TextColumn::make('min_order'),
                 Tables\Columns\TextColumn::make('max_order'),
             ])

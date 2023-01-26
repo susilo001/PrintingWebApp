@@ -11,12 +11,16 @@ use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Support\Str;
+
+use function Pest\Laravel\options;
 
 class ProductResource extends Resource
 {
@@ -32,7 +36,7 @@ class ProductResource extends Resource
                     Grid::make()->schema([
                         Forms\Components\TextInput::make('name')
                             ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
-                                if (! $get('is_slug_changed_manually') && filled($state)) {
+                                if (!$get('is_slug_changed_manually') && filled($state)) {
                                     $set('slug', Str::slug($state));
                                 }
                             })
@@ -60,13 +64,11 @@ class ProductResource extends Resource
                         Select::make('category_id')
                             ->label('Category')
                             ->options(Category::all()->pluck('name', 'id'))
-                            ->relationship('category', 'name')
-                            ->searchable(),
+                            ->relationship('category', 'name'),
                         Select::make('discount_id')
                             ->label('Discount')
                             ->options(Category::all()->pluck('name', 'id'))
-                            ->relationship('discount', 'name')
-                            ->searchable(),
+                            ->relationship('discount', 'name'),
                     ]),
                     Grid::make()->schema([
                         Forms\Components\TextInput::make('weight')
@@ -81,6 +83,46 @@ class ProductResource extends Resource
                     Forms\Components\Toggle::make('featured')
                         ->required(),
                 ]),
+
+
+                Section::make('Prices')->columns(1)->schema([
+                    Repeater::make('prices')
+                        ->relationship()
+                        ->schema([
+                            Grid::make(4)->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('price')
+                                    ->numeric()
+                                    ->type('number')
+                                    ->required(),
+                                Forms\Components\TextInput::make('min_order')
+                                    ->numeric()
+                                    ->type('number')
+                                    ->required(),
+                                Forms\Components\TextInput::make('max_order')
+                                    ->numeric()
+                                    ->type('number')
+                                    ->required(),
+                            ]),
+                        ])->createItemButtonLabel('Add New Price'),
+
+                ]),
+                Section::make('Variant')->columns(1)->schema([
+                    Repeater::make('variants')
+                        ->relationship()
+                        ->schema([
+                            Grid::make(1)->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Repeater::make('options')->schema([
+                                    Forms\Components\TextInput::make('value')
+                                        ->required(),
+                                ])->createItemButtonLabel('Add New Option'),
+                            ]),
+                        ])->createItemButtonLabel('Add New Variant'),
+                ]),
+
                 Card::make()->columns(1)->schema([
                     FileUpload::make('images')
                         ->multiple()
@@ -95,6 +137,9 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\ImageColumn::make('images.0')
                     ->square()
                     ->label('Image'),

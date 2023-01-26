@@ -287,31 +287,6 @@ export default function Product({ auth, error, product }) {
                     <p className="text-base ">{product.description}</p>
                   </div>
                 </div>
-
-                <div className="mt-10">
-                  <h3 className="text-sm font-medium ">Highlights</h3>
-
-                  <div className="mt-4">
-                    <ul
-                      role="list"
-                      className="list-disc space-y-2 pl-4 text-sm"
-                    >
-                      {JSON.parse(product.highlights).map((highlight) => (
-                        <li key={highlight}>
-                          <span>{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="mt-10">
-                  <h2 className="text-sm font-medium ">Details</h2>
-
-                  <div className="mt-4 space-y-6">
-                    <p className="text-sm ">{product.details}</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

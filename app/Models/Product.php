@@ -20,8 +20,6 @@ class Product extends Model implements Buyable
         'name',
         'slug',
         'description',
-        'highlights',
-        'details',
         'images',
         'tax',
         'featured',
@@ -37,7 +35,6 @@ class Product extends Model implements Buyable
      */
     protected $casts = [
         'featured' => 'boolean',
-        'highlights' => 'array',
         'images' => 'array',
     ];
 
@@ -89,5 +86,15 @@ class Product extends Model implements Buyable
     public function variants()
     {
         return $this->hasMany(Variant::class);
+    }
+
+    /**
+     * Has many variant values through variantOprions table
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function variantValues()
+    {
+        return $this->hasManyThrough(VariantValue::class, VariantOption::class);
     }
 }

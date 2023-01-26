@@ -17,6 +17,16 @@ class Variant extends Model
     protected $fillable = [
         'product_id',
         'name',
+        'options',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'options' => 'array',
     ];
 
     /**
