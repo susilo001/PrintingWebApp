@@ -2,20 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
-use Filament\Resources\Form;
-use Filament\Resources\Table;
-use Filament\Resources\Resource;
+use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\BadgeColumn;
-use App\Filament\Resources\OrderResource\Pages;
-use App\Filament\Resources\OrderResource\RelationManagers;
+use Filament\Resources\Form;
+use Filament\Resources\Resource;
+use Filament\Resources\Table;
+use Filament\Tables;
 
 class OrderResource extends Resource
 {

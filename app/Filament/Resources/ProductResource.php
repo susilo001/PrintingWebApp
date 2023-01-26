@@ -20,8 +20,6 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Support\Str;
 
-use function Pest\Laravel\options;
-
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
@@ -36,7 +34,7 @@ class ProductResource extends Resource
                     Grid::make()->schema([
                         Forms\Components\TextInput::make('name')
                             ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
-                                if (!$get('is_slug_changed_manually') && filled($state)) {
+                                if (! $get('is_slug_changed_manually') && filled($state)) {
                                     $set('slug', Str::slug($state));
                                 }
                             })
@@ -84,7 +82,6 @@ class ProductResource extends Resource
                         ->required(),
                 ]),
 
-
                 Section::make('Prices')->columns(1)->schema([
                     Repeater::make('prices')
                         ->relationship()
@@ -125,6 +122,11 @@ class ProductResource extends Resource
 
                 Card::make()->columns(1)->schema([
                     FileUpload::make('images')
+                        ->image()
+                        ->imageResizeMode('cover')
+                        ->imageCropAspectRatio('16:9')
+                        ->imageResizeTargetWidth('1920')
+                        ->imageResizeTargetHeight('1080')
                         ->multiple()
                         ->directory('images/asset/products')
                         ->maxFiles(4)

@@ -15,9 +15,9 @@ class Variant extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'product_id',
         'name',
         'options',
+        'product_id',
     ];
 
     /**
@@ -37,15 +37,5 @@ class Variant extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    /**
-     * Had many variant options
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function options()
-    {
-        return $this->hasMany(VariantOption::class);
     }
 }

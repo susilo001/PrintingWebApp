@@ -7,7 +7,6 @@ use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 
 class VariantsRelationManager extends RelationManager
 {
@@ -30,7 +29,8 @@ class VariantsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('options.value'),
+                Tables\Columns\TextColumn::make('options')
+                    ->getStateUsing(fn ($record) => array_map(fn ($option) => $option['value'], $record->options)),
             ])
             ->filters([
                 //

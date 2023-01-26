@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
 
         return redirect()
             ->intended($response)
-            ->with('success', 'Welcome back, ' . $user->name . '!');
+            ->with('success', 'Welcome back, '.$user->name.'!');
     }
 
     /**

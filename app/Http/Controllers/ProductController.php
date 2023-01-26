@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         return Inertia::render('Product/Index', [
-            'products' => new ProductCollection(Product::with(['variants', 'variants.options', 'prices', 'category'])->get()),
+            'products' => new ProductCollection(Product::with(['prices', 'category'])->get()),
         ]);
     }
 
@@ -28,7 +28,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return Inertia::render('Product/Show', [
-            'product' => new ProductResource($product->load(['variants', 'variants.options', 'prices', 'category'])),
+            'product' => new ProductResource($product->load(['variants', 'prices', 'category'])),
         ]);
     }
 }

@@ -20,6 +20,7 @@ class VariantFactory extends Factory
         return [
             'product_id' => Product::factory(),
             'name' => fake()->name(),
+            'options' => [],
         ];
     }
 }

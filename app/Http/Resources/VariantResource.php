@@ -17,8 +17,8 @@ class VariantResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'product' => new ProductResource($this->whenLoaded('product')),
             'options' => $this->options,
+            'product' => new ProductResource($this->whenLoaded('product')),
         ];
     }
 }

@@ -19,12 +19,54 @@ class VariantSeeder extends Seeder
 
         foreach ($products as $product) {
             Variant::factory()->count(6)->forEachSequence(
-                ['name' => 'Size'],
-                ['name' => 'Color'],
-                ['name' => 'Material'],
-                ['name' => 'Style'],
-                ['name' => 'Pattern'],
-                ['name' => 'Margin'],
+                ['name' => 'Size', 'options' => [
+                    ['value' => 'S'],
+                    ['value' => 'M'],
+                    ['value' => 'L'],
+                    ['value' => 'XL'],
+                    ['value' => 'XXL'],
+                    ['value' => 'XXXL'],
+                ]],
+                ['name' => 'Color', 'options' => [
+                    ['value' => 'Black'],
+                    ['value' => 'White'],
+                    ['value' => 'Red'],
+                    ['value' => 'Blue'],
+                    ['value' => 'Green'],
+                    ['value' => 'Yellow'],
+                ]],
+                ['name' => 'Material', 'options' => [
+                    ['value' => 'Cotton'],
+                    ['value' => 'Polyester'],
+                    ['value' => 'Nylon'],
+                    ['value' => 'Silk'],
+                    ['value' => 'Wool'],
+                    ['value' => 'Leather'],
+                ]],
+                ['name' => 'Style', 'options' => [
+                    ['value' => 'Solid'],
+                    ['value' => 'Striped'],
+                    ['value' => 'Printed'],
+                    ['value' => 'Plaid'],
+                    ['value' => 'Checked'],
+                    ['value' => 'Floral'],
+                ]],
+                ['name' => 'Pattern', 'options' => [
+                    ['value' => 'Casual'],
+                    ['value' => 'Formal'],
+                    ['value' => 'Vintage'],
+                    ['value' => 'Bohemian'],
+                    ['value' => 'Sporty'],
+                    ['value' => 'Gothic'],
+                ]],
+                ['name' => 'Margin', 'options' => [
+                    ['value' => '10%'],
+                    ['value' => '20%'],
+                    ['value' => '30%'],
+                    ['value' => '40%'],
+                    ['value' => '50%'],
+                    ['value' => '60%'],
+                ]],
             )->create([
                 'product_id' => $product->id,
             ]);

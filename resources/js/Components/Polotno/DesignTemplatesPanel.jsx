@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { SectionTab } from "polotno/side-panel/tab-button";
-import { PrinterIcon } from "@heroicons/react/24/solid";
+import { RectangleGroupIcon } from "@heroicons/react/24/solid";
 import { ImagesGrid } from "polotno/side-panel/images-grid";
 import { useEffect, useState } from "react";
 
@@ -18,7 +18,7 @@ export const DesignTemplatesPanel = observer(({ store }) => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-row items-center justify-between">
-        <SectionTab title="Design Templates" icon={<PrinterIcon />} />
+        <SectionTab title="Design Templates" icon={<RectangleGroupIcon />} />
       </div>
       <div className="flex flex-col flex-grow overflow-y-auto">
         <ImagesGrid
@@ -40,7 +40,7 @@ export const DesignTemplatesSection = {
   name: "design templates",
   Tab: (props) => (
     <SectionTab name="Custom" iconSize={20} {...props}>
-      <PrinterIcon className="bp4-icon w-5 h-5" />
+      <RectangleGroupIcon className="bp4-icon w-5 h-5" />
     </SectionTab>
   ),
 

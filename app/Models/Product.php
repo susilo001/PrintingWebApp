@@ -87,14 +87,4 @@ class Product extends Model implements Buyable
     {
         return $this->hasMany(Variant::class);
     }
-
-    /**
-     * Has many variant values through variantOprions table
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
-     */
-    public function variantValues()
-    {
-        return $this->hasManyThrough(VariantValue::class, VariantOption::class);
-    }
 }
