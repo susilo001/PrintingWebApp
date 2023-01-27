@@ -1,4 +1,5 @@
 import { Link } from "@inertiajs/inertia-react";
+import { CheckIcon } from "@heroicons/react/24/outline";
 
 export default function HeroSection() {
   return (
@@ -17,121 +18,47 @@ export default function HeroSection() {
           </p>
           <div className="grid gap-6 my-8 sm:grid-cols-2">
             <div className="flex items-center">
-              <svg
-                className="w-5 h-5 mx-3"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckIcon className="w-6 h-5" />
 
               <span className="mx-3">Premium selection</span>
             </div>
 
             <div className="flex items-center -px-3 ">
-              <svg
-                className="w-5 h-5 mx-3"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckIcon className="w-6 h-5" />
 
               <span className="mx-3">Insurance</span>
             </div>
 
             <div className="flex items-center -px-3">
-              <svg
-                className="w-5 h-5 mx-3"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckIcon className="w-6 h-5" />
 
               <span className="mx-3">All legal documents</span>
             </div>
 
             <div className="flex items-center  -px-3 ">
-              <svg
-                className="w-5 h-5 mx-3"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckIcon className="w-6 h-5" />
 
               <span className="mx-3">From US glasses dealers</span>
             </div>
 
             <div className="flex items-center  -px-3 ">
-              <svg
-                className="w-5 h-5 mx-3"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckIcon className="w-6 h-5" />
 
               <span className="mx-3">Payment Security</span>
             </div>
 
             <div className="flex items-center  -px-3 ">
-              <svg
-                className="w-5 h-5 mx-3"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckIcon className="w-6 h-5" />
 
               <span className="mx-3">Fast shipping (+ Express)</span>
             </div>
           </div>
-          <Link href="/design" className="btn btn-primary text-base-100">
-            Try our Design Tool
+          <Link
+            href="/design"
+            as="button"
+            className="btn btn-primary text-base-100"
+          >
+            Try Design Tool
           </Link>
         </div>
       </div>
@@ -139,8 +66,8 @@ export default function HeroSection() {
       <div className="flex items-center justify-center w-full h-96 lg:w-1/2">
         <img
           className="object-cover w-full h-full max-w-2xl rounded-md"
-          src="storage/asset/hero section.jpg"
-          alt="glasses photo"
+          src="../asset/hero-section.jpg"
+          alt="Printing Services"
         />
       </div>
     </div>
