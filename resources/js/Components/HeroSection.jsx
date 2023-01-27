@@ -1,3 +1,5 @@
+import { Link } from "@inertiajs/inertia-react";
+
 export default function HeroSection() {
   return (
     <div className="container flex flex-col px-6 py-10 mx-auto space-y-6 lg:h-[32rem] lg:py-16 lg:flex-row lg:items-center">
@@ -13,7 +15,7 @@ export default function HeroSection() {
             your expectations. Trust us for your next project and experience the
             difference in quality.
           </p>
-          <div className="grid gap-6 mt-8 sm:grid-cols-2">
+          <div className="grid gap-6 my-8 sm:grid-cols-2">
             <div className="flex items-center">
               <svg
                 className="w-5 h-5 mx-3"
@@ -128,13 +130,16 @@ export default function HeroSection() {
               <span className="mx-3">Fast shipping (+ Express)</span>
             </div>
           </div>
+          <Link href="/design" className="btn btn-primary text-base-100">
+            Try our Design Tool
+          </Link>
         </div>
       </div>
 
       <div className="flex items-center justify-center w-full h-96 lg:w-1/2">
         <img
           className="object-cover w-full h-full max-w-2xl rounded-md"
-          src="storage/images/asset/hero section.jpg"
+          src="storage/asset/hero section.jpg"
           alt="glasses photo"
         />
       </div>

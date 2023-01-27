@@ -83,7 +83,11 @@ export default function ExploreByCategory({ categories }) {
               >
                 <Card className={"image-full h-80"}>
                   <Card.Image
-                    src={product.images[0]}
+                    src={
+                      product.images[0]
+                        ? product.images[0]
+                        : "https://picsum.photos/200"
+                    }
                     className={"object-cover object-center"}
                     alt={product.name}
                   />
