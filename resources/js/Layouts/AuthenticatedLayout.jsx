@@ -1,11 +1,10 @@
-import { useState } from "react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import ToggleDarkMode from "@/Components/ToggleDarkMode";
-import { Link, usePage } from "@inertiajs/inertia-react";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import { Link, usePage } from "@inertiajs/inertia-react";
+import { useState } from "react";
 
 export default function Authenticated({ auth, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -16,47 +15,43 @@ export default function Authenticated({ auth, header, children }) {
   const { errors } = usePage().props;
 
   return (
-    <div className="min-h-screen relative">
-      <nav className="shadow-md fixed top-0 left-0 right-0 z-50 bg-base-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+    <div className="relative min-h-screen">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-base-100 shadow-md">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 justify-between">
             <div className="flex">
-              <div className="shrink-0 flex items-center">
+              <div className="flex shrink-0 items-center">
                 <Link href="/">
                   <ApplicationLogo className="block h-9 w-auto fill-current" />
                 </Link>
               </div>
 
               <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                <NavLink
-                  href={route("home")}
-                  active={route().current("dashboard")}
-                >
+                <NavLink href={route("home")} active={route().current("home")}>
                   Home
                 </NavLink>
                 <NavLink
                   href={route("product.index")}
-                  active={route().current("dashboard")}
+                  active={route().current("product.index")}
                 >
                   Products
                 </NavLink>
                 <NavLink
                   href={route("design.index")}
-                  active={route().current("dashboard")}
+                  active={route().current("design.index")}
                 >
                   Design Tools
                 </NavLink>
               </div>
             </div>
 
-            <div className="hidden sm:flex sm:items-center sm:ml-6">
-              <ToggleDarkMode />
+            <div className="hidden sm:ml-6 sm:flex sm:items-center">
               {auth?.user ? (
                 <>
                   <Link href={route("cart.index")}>
-                    <button className="btn btn-ghost btn-circle">
+                    <button className="btn-ghost btn-circle btn">
                       <div className="indicator">
-                        <span className="indicator-item badge badge-secondary badge-sm">
+                        <span className="badge-secondary badge badge-sm indicator-item">
                           {cartCount}
                         </span>
                         <ShoppingBagIcon className="h-6 w-6" />
@@ -69,7 +64,7 @@ export default function Authenticated({ auth, header, children }) {
                         <span className="inline-flex rounded-md">
                           <button
                             type="button"
-                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md focus:outline-none transition ease-in-out duration-150"
+                            className="inline-flex items-center rounded-md border border-transparent px-3 py-2 text-sm font-medium leading-4 transition duration-150 ease-in-out focus:outline-none"
                           >
                             <div className="avatar">
                               <div className="w-10 rounded-full">
@@ -100,13 +95,13 @@ export default function Authenticated({ auth, header, children }) {
                 </>
               ) : (
                 <div className="ml-3 space-x-4">
-                  <Link href={route("login")} className="btn btn-sm btn-ghost">
+                  <Link href={route("login")} className="btn-ghost btn-sm btn">
                     Login
                   </Link>
 
                   <Link
                     href={route("register")}
-                    className="btn btn-sm btn-ghost"
+                    className="btn-ghost btn-sm btn"
                   >
                     Register
                   </Link>
@@ -121,7 +116,7 @@ export default function Authenticated({ auth, header, children }) {
                     (previousState) => !previousState
                   )
                 }
-                className="inline-flex items-center justify-center p-2 rounded-md  hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+                className="inline-flex items-center justify-center rounded-md p-2  transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
               >
                 <svg
                   className="h-6 w-6"
@@ -158,23 +153,64 @@ export default function Authenticated({ auth, header, children }) {
             (showingNavigationDropdown ? "block" : "hidden") + " sm:hidden"
           }
         >
-          <div className="pt-2 pb-3 space-y-1">
+          <div className="space-y-1 pt-2 pb-3">
             <ResponsiveNavLink
               href={route("home")}
-              active={route().current("dashboard")}
+              active={route().current("home")}
             >
               Home
             </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("product.index")}
+              active={route().current("product.index")}
+            >
+              Products
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("design.index")}
+              active={route().current("design.index")}
+            >
+              Design Tools
+            </ResponsiveNavLink>
           </div>
 
-          <div className="pt-4 pb-1 border-t">
+          <div className="border-t pt-4 pb-1">
             {auth?.user ? (
-              <div className="px-4">
-                <div className="font-medium text-base">{auth?.user.name}</div>
-                <div className="font-medium text-sm text-gray-500">
-                  {auth?.user.email}
+              <>
+                <div className="px-4">
+                  <div className="text-base font-medium">{auth?.user.name}</div>
+                  <div className="text-sm font-medium text-gray-500">
+                    {auth?.user.email}
+                  </div>
                 </div>
-              </div>
+                <div className="mt-3 space-y-1">
+                  <ResponsiveNavLink
+                    href={route("cart.index")}
+                    active={route().current("cart.index")}
+                  >
+                    Cart ({cartCount})
+                  </ResponsiveNavLink>
+                  <ResponsiveNavLink
+                    href={route("order.index")}
+                    active={route().current("order.index")}
+                  >
+                    Orders History
+                  </ResponsiveNavLink>
+                  <ResponsiveNavLink
+                    href={route("profile.edit")}
+                    active={route().current("profile.edit")}
+                  >
+                    Profile
+                  </ResponsiveNavLink>
+                  <ResponsiveNavLink
+                    method="post"
+                    href={route("logout")}
+                    as="button"
+                  >
+                    Log Out
+                  </ResponsiveNavLink>
+                </div>
+              </>
             ) : (
               <>
                 <ResponsiveNavLink href={route("login")}>
@@ -185,26 +221,13 @@ export default function Authenticated({ auth, header, children }) {
                 </ResponsiveNavLink>
               </>
             )}
-
-            <div className="mt-3 space-y-1">
-              <ResponsiveNavLink href={route("profile.edit")}>
-                Profile
-              </ResponsiveNavLink>
-              <ResponsiveNavLink
-                method="post"
-                href={route("logout")}
-                as="button"
-              >
-                Log Out
-              </ResponsiveNavLink>
-            </div>
           </div>
         </div>
       </nav>
 
       {header && (
-        <header className="shadow mt-16">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <header className="mt-16 shadow">
+          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
             {header}
           </div>
         </header>
@@ -212,14 +235,14 @@ export default function Authenticated({ auth, header, children }) {
 
       {/* Flash Message */}
       {flash.message && (
-        <div className="mt-20 max-w-7xl mx-auto alert shadow-lg">
+        <div className="alert mx-auto mt-20 max-w-7xl shadow-lg">
           {flash.message}
         </div>
       )}
 
       {errors.message && (
-        <div className="mt-20 max-w-7xl mx-auto alert alert-error shadow-lg">
-          <ul className="list-disc list-inside">
+        <div className="alert alert-error mx-auto mt-20 max-w-7xl shadow-lg">
+          <ul className="list-inside list-disc">
             {Object.values(errors).map((error, index) => (
               <li key={index}>{error}</li>
             ))}
@@ -228,8 +251,8 @@ export default function Authenticated({ auth, header, children }) {
       )}
 
       <main className="py-4">{children}</main>
-      <footer className="p-10 bg-base-200 text-base-content">
-        <div className="max-w-7xl mx-auto footer py-6 px-4 sm:px-6 lg:px-8">
+      <footer className="bg-base-200 p-10 text-base-content">
+        <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
             <ApplicationLogo className="block h-10 w-auto fill-current" />
             <p>
@@ -240,23 +263,23 @@ export default function Authenticated({ auth, header, children }) {
           </div>
           <div>
             <span className="footer-title">Services</span>
-            <a className="link link-hover">Branding</a>
-            <a className="link link-hover">Design</a>
-            <a className="link link-hover">Marketing</a>
-            <a className="link link-hover">Advertisement</a>
+            <a className="link-hover link">Branding</a>
+            <a className="link-hover link">Design</a>
+            <a className="link-hover link">Marketing</a>
+            <a className="link-hover link">Advertisement</a>
           </div>
           <div>
             <span className="footer-title">Company</span>
-            <a className="link link-hover">About us</a>
-            <a className="link link-hover">Contact</a>
-            <a className="link link-hover">Jobs</a>
-            <a className="link link-hover">Press kit</a>
+            <a className="link-hover link">About us</a>
+            <a className="link-hover link">Contact</a>
+            <a className="link-hover link">Jobs</a>
+            <a className="link-hover link">Press kit</a>
           </div>
           <div>
             <span className="footer-title">Legal</span>
-            <a className="link link-hover">Terms of use</a>
-            <a className="link link-hover">Privacy policy</a>
-            <a className="link link-hover">Cookie policy</a>
+            <a className="link-hover link">Terms of use</a>
+            <a className="link-hover link">Privacy policy</a>
+            <a className="link-hover link">Cookie policy</a>
           </div>
         </div>
       </footer>

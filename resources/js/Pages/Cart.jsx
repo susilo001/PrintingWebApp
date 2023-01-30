@@ -1,15 +1,15 @@
+import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/inertia-react";
+import CurrencyFormater from "@/lib/CurrencyFormater";
 import {
-  ShoppingCartIcon,
-  TrashIcon,
   BanknotesIcon,
   CreditCardIcon,
+  ShoppingCartIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
-import Input from "@/Components/Input";
-import CurrencyFormater from "@/lib/CurrencyFormater";
-import { useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
+import { Head, Link } from "@inertiajs/inertia-react";
+import { useEffect } from "react";
 
 export default function Cart({
   auth,
@@ -49,7 +49,6 @@ export default function Cart({
         preserveScroll: true,
         preserveState: true,
         onSuccess: (page) => {
-          console.log(page);
           Inertia.put(
             route("order.update", {
               order: page.props.token.id,
@@ -105,8 +104,8 @@ export default function Cart({
       auth={auth}
       cartCount={cartCount}
       header={
-        <div className="flex justify-between items-center">
-          <div className="flex space-x-4 items-center">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
             <h1 className="text-2xl font-bold">Cart</h1>
             <ShoppingCartIcon className="h-6 w-6" />
           </div>
@@ -114,16 +113,16 @@ export default function Cart({
       }
     >
       <Head title="Cart" />
-      <div className="max-w-7xl mx-auto px-8 my-10">
-        <div className="grid grid-cols-3 grid-flow-row-dense gap-x-8">
+      <div className="mx-auto my-10 max-w-7xl px-8">
+        <div className="grid grid-flow-row-dense grid-cols-3 gap-x-8">
           <div className="col-span-2">
             {data.map((item) => (
-              <div key={item.id} className="py-10 border-y">
-                <div className="flex space-x-8 justify-between">
+              <div key={item.id} className="border-y py-10">
+                <div className="flex justify-between space-x-8">
                   <div className="rounded-lg">
                     <img
                       src={item.options.design}
-                      className="rounded-lg bg-contain w-60 h-60"
+                      className="h-60 w-60 rounded-lg bg-contain"
                       alt={item.name}
                     />
                   </div>
@@ -156,7 +155,7 @@ export default function Cart({
                     <Link
                       href={route("cart.destroy", { cart: item.rowId })}
                       method="delete"
-                      className="btn btn-circle btn-ghost"
+                      className="btn-ghost btn-circle btn"
                       as="button"
                     >
                       <TrashIcon className="h-6 w-6 text-error" />
@@ -167,7 +166,7 @@ export default function Cart({
             ))}
           </div>
           <div className="h-fit rounded-lg bg-base-200">
-            <div className="p-8 space-y-4">
+            <div className="space-y-4 p-8">
               <h2 className="text-xl font-bold">Order Summary</h2>
               <div className="space-y-4">
                 <div className="flex justify-between border-b border-base-content pb-4">
@@ -193,14 +192,14 @@ export default function Cart({
               </div>
               <div className="space-y-4">
                 <button
-                  className="btn btn-secondary btn-block gap-2"
+                  className="btn-secondary btn-block btn gap-2"
                   onClick={() => handleSnapPayment()}
                 >
                   Pay with Midtrans
                   <CreditCardIcon className="h-6 w-6" />
                 </button>
                 <button
-                  className="btn btn-success btn-block gap-2"
+                  className="btn-success btn-block btn gap-2"
                   onClick={() => handleCashPayment()}
                 >
                   Cash on Delivery

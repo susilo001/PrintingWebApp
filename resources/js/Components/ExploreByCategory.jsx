@@ -16,14 +16,16 @@ export default function ExploreByCategory({ categories }) {
   }, [category]);
 
   const handleSearch = (e) => {
-    console.log(e.target.value);
+    const filteredProducts = [];
+    categories.forEach((category) => {
+      category.products.forEach((product) => {
+        if (product.name.toLowerCase().includes(e.target.value.toLowerCase())) {
+          filteredProducts.push(product);
+        }
+      });
+    });
 
-    const filteredProducts = category.products.filter((product) =>
-      product.name.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setTimeout(() => {
-      setProducts(filteredProducts);
-    }, 1000);
+    setProducts(filteredProducts);
   };
 
   return (
