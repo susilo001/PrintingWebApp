@@ -16,7 +16,7 @@ const Testimonial = () => {
                     loading="lazy"
                   />
                 </div>
-                <div className="space-y-4 flex flex-col justify-center">
+                <div className="flex flex-col justify-center space-y-4">
                   <p className="text-left">
                     <span className="font-serif">"</span>
                     {item.testimonial}
@@ -24,12 +24,12 @@ const Testimonial = () => {
                   </p>
                   <div className="flex space-x-4 pl-4">
                     <div className="avatar">
-                      <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                      <div className="h-10 w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
                         <img src={item.img} alt="user avatar" loading="lazy" />
                       </div>
                     </div>
                     <div>
-                      <h6 className="text-lg text-left font-semibold leading-none">
+                      <h6 className="text-left text-lg font-semibold leading-none">
                         {item.name}
                       </h6>
                       <span className="text-xs ">{item.designation}</span>
@@ -42,7 +42,7 @@ const Testimonial = () => {
         ))}
       </div>
 
-      <div className="swiper-pagination"></div>
+      <div className="swiper-pagination" />
     </Swiper>
   );
 };

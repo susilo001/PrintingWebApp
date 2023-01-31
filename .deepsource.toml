@@ -7,8 +7,8 @@ name = "test-coverage"
 name = "javascript"
 
   [analyzers.meta]
-  plugins = ["react"]
-  skip_doc_coverage = ["class-expression", "method-definition"]
+    plugins = ["react"]
+    skip_doc_coverage = ["class-expression", "method-definition"]
 
 [[analyzers]]
 name = "php"

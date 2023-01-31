@@ -2,8 +2,8 @@
 
 namespace App\Filters;
 
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 abstract class QueryFilters
 {
@@ -24,7 +24,7 @@ abstract class QueryFilters
     /**
      * Create a new QueryFilters instance.
      *
-     * @param Request $request
+     * @param  Request  $request
      */
     public function __construct(Request $request)
     {
@@ -34,7 +34,7 @@ abstract class QueryFilters
     /**
      * Apply the filters to the builder.
      *
-     * @param  Builder $builder
+     * @param  Builder  $builder
      * @return Builder
      */
     public function apply(Builder $builder)
@@ -42,7 +42,7 @@ abstract class QueryFilters
         $this->builder = $builder;
 
         foreach ($this->filters() as $name => $value) {
-            if (!method_exists($this, $name)) {
+            if (! method_exists($this, $name)) {
                 continue;
             }
 

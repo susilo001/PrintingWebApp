@@ -1,16 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Design\DesignController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Invoice\InvoiceController;
+use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\User\AddressController;
-use App\Http\Controllers\Design\DesignController;
-use App\Http\Controllers\Invoice\InvoiceController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,16 +72,19 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['prefix' => 'artisan'], function () {
     Route::get('migrate', function () {
         Artisan::call('migrate');
+
         return redirect()->back();
     });
     Route::get('ssr', function () {
         Artisan::call('inertia:start-ssr');
+
         return redirect()->back();
     });
     Route::get('optimize', function () {
         Artisan::call('optimize');
+
         return redirect()->back();
     });
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

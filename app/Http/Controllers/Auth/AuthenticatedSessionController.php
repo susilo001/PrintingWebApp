@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
 
         return redirect()
             ->intended($response)
-            ->with('message', 'Welcome back, ' . $user->name . '!');
+            ->with('message', 'Welcome back, '.$user->name.'!');
     }
 
     /**

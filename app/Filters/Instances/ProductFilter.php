@@ -9,7 +9,7 @@ class ProductFilter extends QueryFilters
     /**
      * Filter by name.
      *
-     * @param  string $name
+     * @param  string  $name
      * @return Builder
      */
     public function name($name)
@@ -20,7 +20,7 @@ class ProductFilter extends QueryFilters
     /**
      * Filter by category.
      *
-     * @param  string $category
+     * @param  string  $category
      * @return Builder
      */
     public function category($category)

@@ -17,13 +17,13 @@ class DesignController extends Controller
 
     public function store(Request $request)
     {
-        $fileName = 'templates/' . Date::now()->timestamp;
+        $fileName = 'templates/'.Date::now()->timestamp;
 
         $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->image));
 
-        Storage::disk('public')->put($fileName . '.json', json_encode($request->data));
+        Storage::disk('public')->put($fileName.'.json', json_encode($request->data));
 
-        Storage::disk('public')->put($fileName . '.png', $image);
+        Storage::disk('public')->put($fileName.'.png', $image);
 
         return redirect()->route('design.index')->with('message', 'Design created successfully');
     }
