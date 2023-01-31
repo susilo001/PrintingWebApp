@@ -7,6 +7,7 @@ import {
   ExclamationTriangleIcon,
   ShoppingCartIcon,
   TrashIcon,
+  WalletIcon,
 } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect } from "react";
@@ -131,80 +132,84 @@ export default function Cart({
             </div>
           </div>
         ) : (
-          <div className="grid grid-flow-row-dense grid-cols-3 gap-x-8">
-            <div className="col-span-2">
+          <div className="grid grid-flow-row-dense gap-y-4 lg:grid-cols-3 lg:gap-x-8">
+            <div className="lg:col-span-2">
               {data.map((item) => (
                 <div key={item.id} className="border-y py-10">
-                  <div className="flex justify-between space-x-8">
-                    <div className="rounded-lg">
+                  <div className="flex flex-col items-center justify-between lg:flex-row lg:items-stretch lg:space-x-8">
+                    <div className="rounded-xl">
                       <img
                         src={item.options.design}
-                        className="h-60 w-60 rounded-lg bg-contain"
+                        className="aspect-square rounded-lg object-cover"
                         alt={item.name}
                       />
                     </div>
-                    <div className="grow">
+                    <div className="mt-8 grow lg:mt-0">
                       <div className="space-y-4">
                         <h3 className="text-lg font-bold">{item.name}</h3>
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-3 items-center justify-center gap-2">
                           {item.options.variants.map((variant, index) => (
                             <div key={index}>{variant.value}</div>
                           ))}
                         </div>
                         <div>{item.weight + "/kg"}</div>
+                      </div>
+                      <div className="mt-4 flex items-center justify-between space-x-8">
                         <div>
                           <span className="font-bold">
                             {CurrencyFormater(item.price)}
                           </span>
                         </div>
+                        <Input
+                          type="number"
+                          label={""}
+                          value={item.qty}
+                          onChange={(e) => console.log(e.target.value)}
+                          className={"input-bordered input-sm w-24"}
+                        />
+                        <Link
+                          href={route("cart.destroy", { cart: item.rowId })}
+                          method="delete"
+                          className="btn-ghost btn-circle btn"
+                          as="button"
+                        >
+                          <TrashIcon className="h-6 w-6 text-error" />
+                        </Link>
                       </div>
-                    </div>
-                    <div className="w-24">
-                      <Input
-                        type="number"
-                        label={"Quantity"}
-                        value={item.qty}
-                        onChange={(e) => console.log(e.target.value)}
-                        className={"input-bordered input-sm"}
-                      />
-                    </div>
-                    <div className="w-24">
-                      <Link
-                        href={route("cart.destroy", { cart: item.rowId })}
-                        method="delete"
-                        className="btn-ghost btn-circle btn"
-                        as="button"
-                      >
-                        <TrashIcon className="h-6 w-6 text-error" />
-                      </Link>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="h-fit rounded-lg bg-base-200">
+            <div className="h-fit  rounded-lg bg-base-300">
               <div className="space-y-4 p-8">
                 <h2 className="text-xl font-bold">Order Summary</h2>
                 <div className="space-y-4">
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Subtotal</div>
-                    <span>{CurrencyFormater(subtotal)}</span>
+                    <span className="font-bold">
+                      {CurrencyFormater(subtotal)}
+                    </span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Weight</div>
-                    <span>{CurrencyFormater(weight)}</span>
+                    <span className="font-bold">
+                      {CurrencyFormater(weight)}
+                    </span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Tax</div>
-                    <span>{CurrencyFormater(tax)}</span>
+                    <span className="font-bold">{CurrencyFormater(tax)}</span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Discount</div>
-                    <span>{CurrencyFormater(discount)}</span>
+                    <span className="font-bold">
+                      {CurrencyFormater(discount)}
+                    </span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Total</div>
-                    <span>{CurrencyFormater(total)}</span>
+                    <span className="font-bold">{CurrencyFormater(total)}</span>
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -214,9 +219,10 @@ export default function Cart({
                   >
                     Pay with Midtrans
                     <CreditCardIcon className="h-6 w-6" />
+                    <WalletIcon className="h-6 w-6" />
                   </button>
                   <button
-                    className="btn-success btn-block btn gap-2"
+                    className="btn-primary btn-block btn gap-2"
                     onClick={() => handleCashPayment()}
                   >
                     Cash on Delivery

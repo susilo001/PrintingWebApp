@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
+import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link } from "@inertiajs/react";
 import axios from "axios";
 
@@ -16,8 +17,10 @@ export default function Order({ orders, auth, cartCount }) {
       header={
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Order History</h1>
-            <p className="text-gray-500">View your order history</p>
+            <h1 className="text-lg font-bold lg:text-3xl">Order History</h1>
+            <p className="text-xs text-gray-500 lg:text-sm">
+              View your order history
+            </p>
           </div>
           <div className="flex space-x-4">
             <button className="btn-ghost btn">Filter</button>
@@ -27,7 +30,7 @@ export default function Order({ orders, auth, cartCount }) {
       }
     >
       <Head title="Order History" />
-      <div className="mx-auto my-10 max-w-7xl px-8">
+      <div className="mx-auto my-4 max-w-7xl px-8">
         {orders.length === 0 && (
           <div className="flex h-96 items-center justify-center">
             <div className="text-center">
@@ -44,49 +47,56 @@ export default function Order({ orders, auth, cartCount }) {
         {orders.map((order) => (
           <div key={order.id} className="mt-10 rounded-xl border">
             <div className="flex items-center justify-between p-8">
-              <div className="flex flex-col">
-                <span className="text-lg font-bold">Order number</span>
-                <span>#{order.id}</span>
+              <div className="flex flex-col text-xs lg:text-lg">
+                <span>ID</span>
+                <span className="font-bold">#{order.id}</span>
               </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold">Order placed</span>
-                <span>{order.created_at}</span>
+              <div className="flex flex-col text-xs lg:text-lg">
+                <span>Date</span>
+                <span className="font-bold">{order.created_at}</span>
               </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold">Total amount</span>
-                <span>{CurrencyFormater(order.total_amount)}</span>
+              <div className="flex flex-col text-xs lg:text-lg">
+                <span>Total</span>
+                <span className="font-bold">
+                  {CurrencyFormater(order.total_amount)}
+                </span>
               </div>
-              <div className="flex flex-col">
-                <button
-                  className="btn-outline btn-ghost btn font-bold "
-                  onClick={() => handleRequestInvoice(order.id)}
-                >
-                  Invoice
-                </button>
-              </div>
+              <button
+                className="btn-outline btn-ghost btn-sm btn gap-2 font-bold"
+                onClick={() => handleRequestInvoice(order.id)}
+              >
+                <span className="hidden lg:block">Invoice</span>
+                <ReceiptPercentIcon className="h-5 w-5" />
+              </button>
             </div>
             {order.order_items.map((item) => (
               <div key={item.id}>
-                <div className="flex space-x-4 border-t p-8">
-                  <img src="http://picsum.photos/200" className="rounded-lg" />
-                  <div className="flex-grow space-y-4 pl-8">
+                <div className="flex flex-col border-t p-8 lg:flex-row lg:space-x-4">
+                  <img
+                    src="http://picsum.photos/200"
+                    className="aspect-square rounded-lg object-cover"
+                    alt={item.name}
+                  />
+                  <div className="my-4 flex-grow space-y-4 lg:my-0 lg:pl-8">
                     <h2 className="text-lg font-bold">{item.name}</h2>
-                    <div className="grid grid-cols-3 gap-y-4">
+                    <p>{item.description}</p>
+                    <div className="grid grid-cols-3 place-items-center gap-4">
                       {item.variants.map((variant, index) => (
-                        <span key={index}>{variant.value}</span>
+                        <span className="p-4" key={index}>
+                          {variant.value}
+                        </span>
                       ))}
                     </div>
-                    <p>{item.description}</p>
                   </div>
-                  <div>
+                  <div className="flex items-center justify-between lg:flex-col lg:justify-start">
                     <p className="font-bold">{CurrencyFormater(item.price)}</p>
                     <div className="space-x-2">
-                      <span>Quantity:</span>
+                      <span>Quantity :</span>
                       <span>{item.qty}</span>
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-between p-8">
+                <div className="flex items-center justify-between p-8">
                   <p className={"font-lg badge"}>{order.status}</p>
                   <div>
                     <Link

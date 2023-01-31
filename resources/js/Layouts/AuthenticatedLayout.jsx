@@ -250,7 +250,9 @@ export default function Authenticated({ auth, header, children }) {
           <div>
             <Button
               className={"btn-ghost btn-sm btn-circle"}
-              onClick={() => setFlash({})}
+              onClick={() => {
+                flash.clear();
+              }}
             >
               <XMarkIcon className="h-6 w-6 text-error" />
             </Button>
