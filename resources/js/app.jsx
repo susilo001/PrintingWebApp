@@ -3,7 +3,7 @@ import "./bootstrap";
 
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { createRoot } from "react-dom/client";
+import { hydrateRoot } from "react-dom/client";
 
 const appName =
   window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
@@ -11,7 +11,8 @@ const appName =
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
   progress: {
-    color: "#4B5563",
+    color: "#29d",
+    showSpinner: true,
   },
   resolve: (name) =>
     resolvePageComponent(
@@ -19,8 +20,8 @@ createInertiaApp({
       import.meta.glob("./Pages/**/*.jsx")
     ),
   setup({ el, App, props }) {
-    const root = createRoot(el);
-
-    root.render(<App {...props} />);
+    // const root = createRoot(el);
+    // root.render(<App {...props} />);
+    hydrateRoot(el, <App {...props} />);
   },
 });

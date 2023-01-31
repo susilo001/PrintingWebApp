@@ -4,6 +4,7 @@ import CurrencyFormater from "@/lib/CurrencyFormater";
 import {
   BanknotesIcon,
   CreditCardIcon,
+  ExclamationTriangleIcon,
   ShoppingCartIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
@@ -111,15 +112,18 @@ export default function Cart({
         </div>
       }
     >
-      <Head title="Cart" />
-      <div className="mx-auto my-10 max-w-7xl px-8">
+      <Head title="Shopping Cart" />
+      <div className="mx-auto my-4 max-w-7xl px-8">
         {data.length === 0 ? (
           <div className="flex h-96 items-center justify-center">
             <div className="text-center">
-              <h2 className="text-2xl font-bold">Your cart is empty</h2>
+              <div className="flex items-center space-x-2">
+                <h2 className="text-2xl font-bold">Your cart is empty</h2>
+                <ExclamationTriangleIcon className="h-8 w-8 text-error" />
+              </div>
               <Link
                 href={route("home")}
-                className="btn-primary btn mt-4"
+                className="btn-error btn-sm btn mt-4"
                 as="button"
               >
                 Shop Now

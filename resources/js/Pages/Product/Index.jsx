@@ -2,7 +2,7 @@ import Card from "@/Components/Card";
 import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
-import { Link, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Products({ products, categories, auth, cartCount }) {
@@ -61,6 +61,7 @@ export default function Products({ products, categories, auth, cartCount }) {
         </div>
       }
     >
+      <Head title="Products Page" />
       <div className="mx-auto my-10 flex max-w-7xl justify-center">
         {products.length === 0 && (
           <div className="text-center">

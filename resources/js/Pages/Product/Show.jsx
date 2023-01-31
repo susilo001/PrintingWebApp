@@ -78,12 +78,16 @@ export default function Product({ auth, error, product }) {
   };
 
   return (
-    <AuthenticatedLayout auth={auth} errors={error}>
-      <Head title="Product" />
-
-      <div className="mx-auto mt-10 max-w-7xl sm:px-6 lg:px-8">
-        <div>
-          <div className="pt-6">
+    <AuthenticatedLayout
+      auth={auth}
+      errors={error}
+      header={
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">{product.name}</h1>
+            <p className="text-gray-500">View product details</p>
+          </div>
+          <div className="flex items-center space-x-2">
             <nav aria-label="Breadcrumb">
               <div className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="flex items-center">
@@ -111,7 +115,15 @@ export default function Product({ auth, error, product }) {
                 </a>
               </div>
             </nav>
+          </div>
+        </div>
+      }
+    >
+      <Head title={product.name} />
 
+      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div>
+          <div className="pt-6">
             {/* Image gallery */}
             <ImageGallery images={product.images} />
 

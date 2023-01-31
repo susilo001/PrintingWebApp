@@ -44,7 +44,7 @@ class CartController extends Controller
     {
         $this->cartService->add($request);
 
-        return redirect()->route('cart.index')->with('success', 'Product added to cart successfully');
+        return redirect()->route('cart.index')->with('message', 'Product added to cart successfully');
     }
 
     /**
@@ -58,7 +58,7 @@ class CartController extends Controller
     {
         Cart::update($request->rowId, $request->quantity);
 
-        return redirect()->route('cart.index')->with('success', 'Cart updated successfully');
+        return redirect()->route('cart.index')->with('message', 'Cart updated successfully');
     }
 
     /**
@@ -71,7 +71,7 @@ class CartController extends Controller
     {
         Cart::remove($rowId);
 
-        return redirect()->route('cart.index')->with('success', 'Item cart deleted successfully');
+        return to_route('cart.index', '', 302)->with('message', 'Item cart deleted successfully');
     }
 
     /**

@@ -1,8 +1,13 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
+import Button from "@/Components/Button";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import {
+  InformationCircleIcon,
+  ShoppingBagIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -15,13 +20,13 @@ export default function Authenticated({ auth, header, children }) {
   const { errors } = usePage().props;
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative flex min-h-screen flex-col">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-base-100 shadow-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
               <div className="flex shrink-0 items-center">
-                <Link href="/">
+                <Link href={route("home")}>
                   <ApplicationLogo className="block h-9 w-auto fill-current" />
                 </Link>
               </div>
@@ -79,10 +84,10 @@ export default function Authenticated({ auth, header, children }) {
                       </Dropdown.Trigger>
 
                       <Dropdown.Content>
-                        <Dropdown.Link href={route("profile.edit")}>
+                        <Dropdown.Link href={route("profile.edit")} as="button">
                           Profile
                         </Dropdown.Link>
-                        <Dropdown.Link href={route("order.index")}>
+                        <Dropdown.Link href={route("order.index")} as="button">
                           Order History
                         </Dropdown.Link>
                         <Dropdown.Link
@@ -98,13 +103,17 @@ export default function Authenticated({ auth, header, children }) {
                 </>
               ) : (
                 <div className="ml-3 space-x-4">
-                  <Link href={route("login")} className="btn-ghost btn-sm btn">
+                  <Link
+                    href={route("login")}
+                    className="btn-ghost btn-sm btn"
+                    as="button"
+                  >
                     Login
                   </Link>
-
                   <Link
                     href={route("register")}
                     className="btn-ghost btn-sm btn"
+                    as="button"
                   >
                     Register
                   </Link>
@@ -190,18 +199,21 @@ export default function Authenticated({ auth, header, children }) {
                   <ResponsiveNavLink
                     href={route("cart.index")}
                     active={route().current("cart.index")}
+                    as="button"
                   >
                     Cart ({cartCount})
                   </ResponsiveNavLink>
                   <ResponsiveNavLink
                     href={route("order.index")}
                     active={route().current("order.index")}
+                    as="button"
                   >
                     Orders History
                   </ResponsiveNavLink>
                   <ResponsiveNavLink
                     href={route("profile.edit")}
                     active={route().current("profile.edit")}
+                    as="button"
                   >
                     Profile
                   </ResponsiveNavLink>
@@ -216,10 +228,10 @@ export default function Authenticated({ auth, header, children }) {
               </>
             ) : (
               <>
-                <ResponsiveNavLink href={route("login")}>
+                <ResponsiveNavLink href={route("login")} as="button">
                   Login
                 </ResponsiveNavLink>
-                <ResponsiveNavLink href={route("register")}>
+                <ResponsiveNavLink href={route("register")} as="button">
                   Register
                 </ResponsiveNavLink>
               </>
@@ -239,7 +251,18 @@ export default function Authenticated({ auth, header, children }) {
       {/* Flash Message */}
       {flash.message && (
         <div className="alert mx-auto mt-20 max-w-7xl shadow-lg">
-          {flash.message}
+          <div>
+            <InformationCircleIcon className="h-6 w-6 text-info" />
+            <p>{flash.message}</p>
+          </div>
+          <div>
+            <Button
+              className={"btn-ghost btn-sm btn-circle"}
+              onClick={() => setFlash({})}
+            >
+              <XMarkIcon className="h-6 w-6 text-error" />
+            </Button>
+          </div>
         </div>
       )}
 
@@ -253,7 +276,7 @@ export default function Authenticated({ auth, header, children }) {
         </div>
       )}
 
-      <main className="py-4">{children}</main>
+      <main className="mb-auto py-4">{children}</main>
       <footer className="bg-base-200 p-10 text-base-content">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
@@ -266,10 +289,12 @@ export default function Authenticated({ auth, header, children }) {
           </div>
           <div>
             <span className="footer-title">Services</span>
-            <a className="link-hover link">Branding</a>
-            <a className="link-hover link">Design</a>
-            <a className="link-hover link">Marketing</a>
-            <a className="link-hover link">Advertisement</a>
+            <Link href={route("product.index")} className="link-hover link">
+              Products
+            </Link>
+            <Link href={route("design.index")} className="link-hover link">
+              Design
+            </Link>
           </div>
           <div>
             <span className="footer-title">Company</span>

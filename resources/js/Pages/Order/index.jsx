@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import axios from "axios";
 
 export default function Order({ orders, auth, cartCount }) {
@@ -26,6 +26,7 @@ export default function Order({ orders, auth, cartCount }) {
         </div>
       }
     >
+      <Head title="Order History" />
       <div className="mx-auto my-10 max-w-7xl px-8">
         {orders.length === 0 && (
           <div className="flex h-96 items-center justify-center">

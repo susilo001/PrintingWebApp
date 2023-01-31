@@ -43,10 +43,10 @@ export default function ExploreByCategory({ categories }) {
           />
         </div>
 
-        <div className="flex h-full flex-row flex-wrap items-center  justify-center overflow-y-auto">
+        <div className="flex h-full flex-row flex-wrap items-center justify-center space-x-4">
           {categories.map((category, index) => (
             <button
-              className="btn-ghost btn text-left"
+              className="btn-ghost btn"
               key={category.id}
               onClick={() => setCategory(categories[index])}
             >
@@ -66,42 +66,40 @@ export default function ExploreByCategory({ categories }) {
           </Link>
         </div>
       </div>
-      <div className="grid justify-center gap-x-4">
-        <div className="max-h-screen snap-y scroll-pt-12 overflow-y-auto overscroll-x-none">
-          {products.length === 0 && (
-            <div className="flex items-center justify-center space-x-4 rounded border border-error p-8">
-              <ExclamationTriangleIcon className={"h-6 w-6 text-error"} />
-              <h2 className="text-xl font-bold text-error md:text-2xl">
-                Product Not Found
-              </h2>
-            </div>
-          )}
-          <div className="grid snap-start justify-center gap-x-10 gap-y-12 px-8 pb-8 md:grid-cols-2 xl:grid-cols-3">
-            {products.map((product) => (
-              <Link
-                href={route("product.show", product.id)}
-                key={product.id}
-                className="md:h-72 md:w-96"
-              >
-                <Card className={"image-full h-80"}>
-                  <Card.Image
-                    src={
-                      product.images[0]
-                        ? product.images[0]
-                        : "https://picsum.photos/200"
-                    }
-                    className={"object-cover object-center"}
-                    alt={product.name}
-                  />
-                  <Card.Body className={"items-center justify-end"}>
-                    <Card.Title className={"text-2xl hover:font-bold"}>
-                      {product.name}
-                    </Card.Title>
-                  </Card.Body>
-                </Card>
-              </Link>
-            ))}
+      <div className="max-h-screen snap-y scroll-pt-12 overflow-y-auto overscroll-x-none">
+        {products.length === 0 && (
+          <div className="flex items-center justify-center space-x-4 rounded border border-error p-8">
+            <ExclamationTriangleIcon className={"h-6 w-6 text-error"} />
+            <h2 className="text-xl font-bold text-error md:text-2xl">
+              Product Not Found
+            </h2>
           </div>
+        )}
+        <div className="grid snap-start justify-center gap-x-10 gap-y-12 px-4 md:grid-cols-2 md:px-8 xl:grid-cols-3">
+          {products.map((product) => (
+            <Link
+              href={route("product.show", product.id)}
+              key={product.id}
+              className="md:h-72 md:w-96"
+            >
+              <Card className={"image-full h-80"}>
+                <Card.Image
+                  src={
+                    product.images[0]
+                      ? product.images[0]
+                      : "https://picsum.photos/200"
+                  }
+                  className={"object-cover"}
+                  alt={product.name}
+                />
+                <Card.Body className={"items-center justify-end"}>
+                  <Card.Title className={"text-2xl hover:font-bold"}>
+                    {product.name}
+                  </Card.Title>
+                </Card.Body>
+              </Card>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

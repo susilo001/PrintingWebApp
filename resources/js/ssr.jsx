@@ -10,6 +10,10 @@ createServer((page) =>
   createInertiaApp({
     page,
     render: ReactDOMServer.renderToString,
+    progress: {
+      color: "#29d",
+      showSpinner: true,
+    },
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
       resolvePageComponent(
