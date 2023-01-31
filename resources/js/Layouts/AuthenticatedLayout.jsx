@@ -26,7 +26,7 @@ export default function Authenticated({ auth, header, children }) {
           <div className="flex h-16 justify-between">
             <div className="flex">
               <div className="flex shrink-0 items-center">
-                <Link href={route("home")}>
+                <Link href={route("home")} as="a">
                   <ApplicationLogo className="block h-9 w-auto fill-current" />
                 </Link>
               </div>
@@ -53,34 +53,26 @@ export default function Authenticated({ auth, header, children }) {
             <div className="hidden sm:ml-6 sm:flex sm:items-center">
               {auth?.user ? (
                 <>
-                  <Link href={route("cart.index")}>
-                    <button className="btn-ghost btn-circle btn" name="Avatar">
-                      <div className="indicator">
-                        <span className="badge-secondary badge badge-sm indicator-item">
-                          {cartCount}
-                        </span>
-                        <ShoppingBagIcon className="h-6 w-6" />
-                      </div>
-                    </button>
+                  <Link
+                    href={route("cart.index")}
+                    as="button"
+                    className="btn-ghost btn-circle btn"
+                  >
+                    <div className="indicator">
+                      <span className="badge-secondary badge badge-sm indicator-item">
+                        {cartCount}
+                      </span>
+                      <ShoppingBagIcon className="h-6 w-6" />
+                    </div>
                   </Link>
                   <div className="relative">
                     <Dropdown>
                       <Dropdown.Trigger>
-                        <span className="inline-flex rounded-md">
-                          <button
-                            type="button"
-                            className="inline-flex items-center rounded-md border border-transparent px-3 py-2 text-sm font-medium leading-4 transition duration-150 ease-in-out focus:outline-none"
-                          >
-                            <div className="avatar">
-                              <div className="w-10 rounded-full">
-                                <img
-                                  src={auth.user.avatar}
-                                  alt={auth.user.name}
-                                />
-                              </div>
-                            </div>
-                          </button>
-                        </span>
+                        <div className="avatar">
+                          <div className="w-10 rounded-full">
+                            <img src={auth.user.avatar} alt={auth.user.name} />
+                          </div>
+                        </div>
                       </Dropdown.Trigger>
 
                       <Dropdown.Content>

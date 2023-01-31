@@ -23,10 +23,12 @@ const Trigger = ({ children }) => {
 
   return (
     <>
-      <div onClick={toggleOpen}>{children}</div>
+      <button className="btn-ghost btn-circle btn" onClick={toggleOpen}>
+        {children}
+      </button>
 
       {open && (
-        <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+        <button className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
       )}
     </>
   );

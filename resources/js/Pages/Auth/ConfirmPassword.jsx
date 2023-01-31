@@ -28,10 +28,10 @@ export default function ConfirmPassword() {
     <GuestLayout>
       <Head title="Confirm Password" />
 
-      <div className="mb-4 text-sm">
+      <p className="mb-4 text-sm">
         This is a secure area of the application. Please confirm your password
         before continuing.
-      </div>
+      </p>
 
       <form onSubmit={submit}>
         <div className="mt-4">
@@ -41,7 +41,6 @@ export default function ConfirmPassword() {
             type="password"
             value={data.password}
             name="password"
-            isFocused={true}
             handleChange={onHandleChange}
             className="input-bordered"
             errors={errors.password}

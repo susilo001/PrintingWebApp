@@ -54,7 +54,6 @@ export default function ResetPassword({ token, email }) {
             name="password"
             value={data.password}
             autoComplete="new-password"
-            isFocused={true}
             handleChange={onHandleChange}
             errors={errors.password}
           />
