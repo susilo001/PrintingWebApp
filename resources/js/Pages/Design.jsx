@@ -1,12 +1,12 @@
-import { Head } from "@inertiajs/inertia-react";
-import store from "@/lib/polotno";
-import { PolotnoContainer, SidePanelWrap, WorkspaceWrap } from "polotno";
-import { SidePanel, DEFAULT_SECTIONS } from "polotno/side-panel";
+import ActionControls from "@/Components/Polotno/ActionControls";
 import { DesignTemplatesSection } from "@/Components/Polotno/DesignTemplatesPanel";
+import store from "@/lib/polotno";
+import { Head } from "@inertiajs/react";
+import { PolotnoContainer, SidePanelWrap, WorkspaceWrap } from "polotno";
 import { Workspace } from "polotno/canvas/workspace";
+import { DEFAULT_SECTIONS, SidePanel } from "polotno/side-panel";
 import { Toolbar } from "polotno/toolbar/toolbar";
 import { ZoomButtons } from "polotno/toolbar/zoom-buttons";
-import ActionControls from "@/Components/Polotno/ActionControls";
 
 export default function Design() {
   const sections = [DesignTemplatesSection, ...DEFAULT_SECTIONS];

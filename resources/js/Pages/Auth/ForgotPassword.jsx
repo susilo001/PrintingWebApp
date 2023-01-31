@@ -1,6 +1,6 @@
-import GuestLayout from "@/Layouts/GuestLayout";
-import { Head, useForm } from "@inertiajs/inertia-react";
 import Input from "@/Components/Input";
+import GuestLayout from "@/Layouts/GuestLayout";
+import { Head, useForm } from "@inertiajs/react";
 
 export default function ForgotPassword({ status }) {
   const { data, setData, post, processing, errors } = useForm({
@@ -28,7 +28,7 @@ export default function ForgotPassword({ status }) {
       </div>
 
       {status && (
-        <div className="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
+        <div className="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
           {status}
         </div>
       )}
@@ -45,8 +45,8 @@ export default function ForgotPassword({ status }) {
           errors={errors.email}
         />
 
-        <div className="flex items-center justify-end mt-4">
-          <button className="btn btn-ghost ml-4" disabled={processing}>
+        <div className="mt-4 flex items-center justify-end">
+          <button className="btn-ghost btn ml-4" disabled={processing}>
             Email Password Reset Link
           </button>
         </div>

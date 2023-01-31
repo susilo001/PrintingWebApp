@@ -1,13 +1,12 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/inertia-react";
-import { StarIcon, ShoppingBagIcon } from "@heroicons/react/20/solid";
-import { RadioGroup } from "@headlessui/react";
-import CurrencyFormater from "@/lib/CurrencyFormater";
+import ImageGallery from "@/Components/ImageGallery";
 import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
-import { useForm } from "@inertiajs/inertia-react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import CurrencyFormater from "@/lib/CurrencyFormater";
+import { RadioGroup } from "@headlessui/react";
+import { ShoppingBagIcon, StarIcon } from "@heroicons/react/20/solid";
+import { Head, useForm } from "@inertiajs/react";
 import { useRef } from "react";
-import ImageGallery from "@/Components/ImageGallery";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -82,7 +81,7 @@ export default function Product({ auth, error, product }) {
     <AuthenticatedLayout auth={auth} errors={error}>
       <Head title="Product" />
 
-      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
+      <div className="mx-auto mt-10 max-w-7xl sm:px-6 lg:px-8">
         <div>
           <div className="pt-6">
             <nav aria-label="Breadcrumb">
@@ -129,7 +128,9 @@ export default function Product({ auth, error, product }) {
                 <h2 className="sr-only">Product information</h2>
                 <p className="text-3xl tracking-tight">
                   {CurrencyFormater(product.prices[0].price)}{" "}
-                  <span className="text-sm badge">/ Starting Price</span>
+                  <span className="badge badge-secondary">
+                    / Starting Price
+                  </span>
                 </p>
 
                 {/* Reviews */}
@@ -214,19 +215,18 @@ export default function Product({ auth, error, product }) {
                         className="mt-4"
                       >
                         <RadioGroup.Label className="sr-only">
-                          {" "}
                           Choose a {variant.name}{" "}
                         </RadioGroup.Label>
                         <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                           {variant.options.map((option) => (
                             <RadioGroup.Option
-                              key={option.id}
+                              key={option.value}
                               value={option.value}
                               className={({ active }) =>
                                 classNames(
-                                  "bg-white shadow-sm text-gray-900 cursor-pointer",
+                                  "cursor-pointer bg-white text-gray-900 shadow-sm",
                                   active ? "ring-2 ring-accent-focus" : "",
-                                  "group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
+                                  "group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
                                 )
                               }
                             >
@@ -262,7 +262,7 @@ export default function Product({ auth, error, product }) {
                       label="File Upload"
                       errors={errors.design}
                       handleChange={(e) => setData("design", e.target.files[0])}
-                      className={"file-input file-input-bordered"}
+                      className={"file-input-bordered file-input"}
                     />
                   </div>
 
@@ -270,10 +270,10 @@ export default function Product({ auth, error, product }) {
                     disabled={processing}
                     name="addToCart"
                     type="submit"
-                    className="btn btn-primary w-full mt-8 gap-2"
+                    className="btn-primary btn mt-8 w-full gap-2"
                   >
                     Add to Cart
-                    <ShoppingBagIcon className="w-6 h-6" />
+                    <ShoppingBagIcon className="h-6 w-6" />
                   </button>
                 </form>
               </div>

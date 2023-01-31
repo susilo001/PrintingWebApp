@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
-import Modal from "@/Components/Modal";
-import { useForm } from "@inertiajs/inertia-react";
 import Input from "@/Components/Input";
+import Modal from "@/Components/Modal";
+import { useForm } from "@inertiajs/react";
+import { useRef, useState } from "react";
 
 export default function DeleteUserForm({ className }) {
   const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -51,7 +51,7 @@ export default function DeleteUserForm({ className }) {
         </p>
       </header>
 
-      <button className="btn btn-error" onClick={confirmUserDeletion}>
+      <button className="btn-error btn" onClick={confirmUserDeletion}>
         Delete Account
       </button>
 
@@ -83,11 +83,11 @@ export default function DeleteUserForm({ className }) {
           </div>
 
           <div className="mt-6 flex justify-end">
-            <button className="btn btn-outline btn-ghost" onClick={closeModal}>
+            <button className="btn-outline btn-ghost btn" onClick={closeModal}>
               Cancel
             </button>
 
-            <button className="btn btn-error ml-3" disabled={processing}>
+            <button className="btn-error btn ml-3" disabled={processing}>
               Delete Account
             </button>
           </div>

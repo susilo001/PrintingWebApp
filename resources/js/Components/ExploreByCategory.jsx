@@ -1,11 +1,11 @@
-import Card from "./Card";
-import Input from "./Input";
 import {
   ArrowRightIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
+import { Link } from "@inertiajs/react";
 import { useEffect, useState } from "react";
-import { Link } from "@inertiajs/inertia-react";
+import Card from "./Card";
+import Input from "./Input";
 
 export default function ExploreByCategory({ categories }) {
   const [category, setCategory] = useState(categories[0]);
@@ -30,11 +30,11 @@ export default function ExploreByCategory({ categories }) {
 
   return (
     <div>
-      <div className="flex justify-center mb-8">
+      <div className="mb-8 flex justify-center">
         <h2 className="text-2xl font-bold">Explore by Category</h2>
       </div>
-      <div className="grid grid-flow-row-dense max-h-screen justify-center overflow-hidden gap-y-4 mb-8">
-        <div className="flex justify-center h-fit">
+      <div className="mb-8 grid max-h-screen grid-flow-row-dense justify-center gap-y-4 overflow-hidden">
+        <div className="flex h-fit justify-center">
           <Input
             type={"text"}
             placeholder={"Search"}
@@ -43,10 +43,10 @@ export default function ExploreByCategory({ categories }) {
           />
         </div>
 
-        <div className="flex flex-row flex-wrap items-center justify-center  h-full overflow-y-auto">
+        <div className="flex h-full flex-row flex-wrap items-center  justify-center overflow-y-auto">
           {categories.map((category, index) => (
             <button
-              className="text-left btn btn-ghost"
+              className="btn-ghost btn text-left"
               key={category.id}
               onClick={() => setCategory(categories[index])}
             >
@@ -59,29 +59,29 @@ export default function ExploreByCategory({ categories }) {
           <Link
             href={route("product.index")}
             as="button"
-            className="btn btn-primary btn-wide gap-2 h-fit text-white"
+            className="btn-primary btn-wide btn h-fit gap-2 text-white"
           >
             Explore More
-            <ArrowRightIcon className={"w-5 h-5"} />
+            <ArrowRightIcon className={"h-5 w-5"} />
           </Link>
         </div>
       </div>
-      <div className="grid gap-x-4 justify-center">
-        <div className="max-h-screen overflow-y-auto snap-y scroll-pt-12 overscroll-x-none">
+      <div className="grid justify-center gap-x-4">
+        <div className="max-h-screen snap-y scroll-pt-12 overflow-y-auto overscroll-x-none">
           {products.length === 0 && (
-            <div className="flex justify-center items-center space-x-4 border p-8 rounded border-error">
-              <ExclamationTriangleIcon className={"w-6 h-6 text-error"} />
-              <h2 className="text-xl md:text-2xl font-bold text-error">
+            <div className="flex items-center justify-center space-x-4 rounded border border-error p-8">
+              <ExclamationTriangleIcon className={"h-6 w-6 text-error"} />
+              <h2 className="text-xl font-bold text-error md:text-2xl">
                 Product Not Found
               </h2>
             </div>
           )}
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 justify-center gap-x-10 gap-y-12 snap-start pb-8 px-8">
+          <div className="grid snap-start justify-center gap-x-10 gap-y-12 px-8 pb-8 md:grid-cols-2 xl:grid-cols-3">
             {products.map((product) => (
               <Link
                 href={route("product.show", product.id)}
                 key={product.id}
-                className="md:w-96 md:h-72"
+                className="md:h-72 md:w-96"
               >
                 <Card className={"image-full h-80"}>
                   <Card.Image
@@ -93,7 +93,7 @@ export default function ExploreByCategory({ categories }) {
                     className={"object-cover object-center"}
                     alt={product.name}
                   />
-                  <Card.Body className={"justify-end items-center"}>
+                  <Card.Body className={"items-center justify-end"}>
                     <Card.Title className={"text-2xl hover:font-bold"}>
                       {product.name}
                     </Card.Title>

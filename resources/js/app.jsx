@@ -1,16 +1,18 @@
-import "./bootstrap";
 import "../css/app.css";
+import "./bootstrap";
 
-import { createRoot } from "react-dom/client";
-import { createInertiaApp } from "@inertiajs/inertia-react";
-import { InertiaProgress } from "@inertiajs/progress";
+import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { createRoot } from "react-dom/client";
 
 const appName =
   window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
+  progress: {
+    color: "#4B5563",
+  },
   resolve: (name) =>
     resolvePageComponent(
       `./Pages/${name}.jsx`,
@@ -22,5 +24,3 @@ createInertiaApp({
     root.render(<App {...props} />);
   },
 });
-
-InertiaProgress.init({ color: "#4B5563" });

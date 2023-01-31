@@ -3,7 +3,7 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
-import { Link, usePage } from "@inertiajs/inertia-react";
+import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Authenticated({ auth, header, children }) {
@@ -49,7 +49,7 @@ export default function Authenticated({ auth, header, children }) {
               {auth?.user ? (
                 <>
                   <Link href={route("cart.index")}>
-                    <button className="btn-ghost btn-circle btn">
+                    <button className="btn-ghost btn-circle btn" name="Avatar">
                       <div className="indicator">
                         <span className="badge-secondary badge badge-sm indicator-item">
                           {cartCount}
@@ -68,7 +68,10 @@ export default function Authenticated({ auth, header, children }) {
                           >
                             <div className="avatar">
                               <div className="w-10 rounded-full">
-                                <img src={auth.user.avatar} />
+                                <img
+                                  src={auth.user.avatar}
+                                  alt={auth.user.name}
+                                />
                               </div>
                             </div>
                           </button>

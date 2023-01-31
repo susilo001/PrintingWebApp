@@ -1,7 +1,7 @@
-import { useRef } from "react";
-import { useForm } from "@inertiajs/inertia-react";
-import { Transition } from "@headlessui/react";
 import Input from "@/Components/Input";
+import { Transition } from "@headlessui/react";
+import { useForm } from "@inertiajs/react";
+import { useRef } from "react";
 
 export default function UpdatePasswordForm({ className }) {
   const passwordInput = useRef();
@@ -87,7 +87,7 @@ export default function UpdatePasswordForm({ className }) {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="btn btn-ghost btn-outline" disabled={processing}>
+          <button className="btn-outline btn-ghost btn" disabled={processing}>
             Save
           </button>
 

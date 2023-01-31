@@ -1,8 +1,8 @@
-import { useEffect } from "react";
 import Checkbox from "@/Components/Checkbox";
-import GuestLayout from "@/Layouts/GuestLayout";
-import { Head, Link, useForm } from "@inertiajs/inertia-react";
 import Input from "@/Components/Input";
+import GuestLayout from "@/Layouts/GuestLayout";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { useEffect } from "react";
 
 export default function Login({ status, canResetPassword }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -37,7 +37,7 @@ export default function Login({ status, canResetPassword }) {
       <Head title="Log in" />
 
       {status && (
-        <div className="mb-4 font-medium text-sm text-green-600">{status}</div>
+        <div className="mb-4 text-sm font-medium text-green-600">{status}</div>
       )}
 
       <form onSubmit={submit}>
@@ -71,7 +71,7 @@ export default function Login({ status, canResetPassword }) {
           />
         </div>
 
-        <div className="block mt-4">
+        <div className="mt-4 block">
           <label className="flex items-center">
             <Checkbox
               name="remember"
@@ -82,15 +82,15 @@ export default function Login({ status, canResetPassword }) {
           </label>
         </div>
 
-        <div className="flex items-center justify-end mt-4">
+        <div className="mt-4 flex items-center justify-end">
           {canResetPassword && (
-            <Link href={route("password.request")} className="link link-hover">
+            <Link href={route("password.request")} className="link-hover link">
               Forgot your password?
             </Link>
           )}
 
           <button
-            className="btn btn-sm btn-ghost btn-outline ml-4"
+            className="btn-outline btn-ghost btn-sm btn ml-4"
             disabled={processing}
           >
             Login

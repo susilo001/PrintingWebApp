@@ -2,8 +2,7 @@ import Card from "@/Components/Card";
 import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
-import { Inertia } from "@inertiajs/inertia";
-import { Link } from "@inertiajs/inertia-react";
+import { Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Products({ products, categories, auth, cartCount }) {
@@ -13,10 +12,10 @@ export default function Products({ products, categories, auth, cartCount }) {
     setSearch(e.target.value);
 
     if (search === "") {
-      Inertia.reload();
+      router.reload();
     } else {
       setTimeout(() => {
-        Inertia.get(
+        router.get(
           route("product.index"),
           { name: search },
           { only: ["products"], preserveState: true }
@@ -26,7 +25,7 @@ export default function Products({ products, categories, auth, cartCount }) {
   };
 
   const handleCategoryChange = (e) => {
-    Inertia.get(
+    router.get(
       route("product.index"),
       { category: e.target.value },
       { only: ["products"] }
@@ -89,7 +88,7 @@ export default function Products({ products, categories, auth, cartCount }) {
                   <span className="font-bold">
                     {CurrencyFormater(product.prices[0].price)}
                   </span>
-                  <span className="badge-secondary badge badge-sm">
+                  <span className="badge badge-secondary badge-sm">
                     {product.category.name}
                   </span>
                 </Card.Body>

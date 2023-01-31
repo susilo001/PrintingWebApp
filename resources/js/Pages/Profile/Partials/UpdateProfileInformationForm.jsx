@@ -1,6 +1,6 @@
-import { Link, useForm, usePage } from "@inertiajs/inertia-react";
-import { Transition } from "@headlessui/react";
 import Input from "@/Components/Input";
+import { Transition } from "@headlessui/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 
 export default function UpdateProfileInformation({
   mustVerifyEmail,
@@ -62,20 +62,20 @@ export default function UpdateProfileInformation({
 
         {mustVerifyEmail && user.email_verified_at === null && (
           <div>
-            <p className="text-sm mt-2">
+            <p className="mt-2 text-sm">
               Your email address is unverified.
               <Link
                 href={route("verification.send")}
                 method="post"
                 as="button"
-                className="btn btn-link text-sm"
+                className="btn-link btn text-sm"
               >
                 Click here to re-send the verification email.
               </Link>
             </p>
 
             {status === "verification-link-sent" && (
-              <div className="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+              <div className="mt-2 text-sm font-medium text-green-600 dark:text-green-400">
                 A new verification link has been sent to your email address.
               </div>
             )}
@@ -83,7 +83,7 @@ export default function UpdateProfileInformation({
         )}
 
         <div className="flex items-center gap-4">
-          <button className="btn btn-ghost btn-outline" disabled={processing}>
+          <button className="btn-outline btn-ghost btn" disabled={processing}>
             Save
           </button>
 
