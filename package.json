@@ -4,6 +4,8 @@
     "dev": "vite",
     "test": "php artisan test --coverage-html tests/reports/coverage",
     "pint": "./vendor/bin/pint",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx",
+    "ssr": "php artisan inertia:start-ssr",
     "build": "vite build && vite build --ssr"
   },
   "devDependencies": {

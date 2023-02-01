@@ -292,16 +292,16 @@ export default function Authenticated({ auth, header, children }) {
           </div>
           <div>
             <span className="footer-title">Company</span>
-            <a className="link-hover link">About us</a>
+            {/* <a className="link-hover link">About us</a>
             <a className="link-hover link">Contact</a>
             <a className="link-hover link">Jobs</a>
-            <a className="link-hover link">Press kit</a>
+            <a className="link-hover link">Press kit</a> */}
           </div>
           <div>
             <span className="footer-title">Legal</span>
-            <a className="link-hover link">Terms of use</a>
+            {/* <a className="link-hover link">Terms of use</a>
             <a className="link-hover link">Privacy policy</a>
-            <a className="link-hover link">Cookie policy</a>
+            <a className="link-hover link">Cookie policy</a> */}
           </div>
         </div>
       </footer>

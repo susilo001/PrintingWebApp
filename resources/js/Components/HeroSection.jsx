@@ -53,11 +53,7 @@ export default function HeroSection() {
               <span className="mx-3">Fast shipping (+ Express)</span>
             </div>
           </div>
-          <Link
-            href="/design"
-            as="button"
-            className="btn-primary btn text-base-100"
-          >
+          <Link href="/design" as="button" className="btn-primary btn">
             Try Design Tool
           </Link>
         </div>

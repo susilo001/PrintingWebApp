@@ -59,7 +59,7 @@ export default function ExploreByCategory({ categories }) {
           <Link
             href={route("product.index")}
             as="button"
-            className="btn-primary btn-wide btn h-fit gap-2 text-white"
+            className="btn-primary btn-wide btn h-fit gap-2"
           >
             Explore More
             <ArrowRightIcon className={"h-5 w-5"} />
