@@ -16,7 +16,7 @@ class DesignTest extends TestCase
      *
      * @return void
      */
-    public function test_design_screen_can_be_rendered()
+    public function testDesignScreenCanBeRendered()
     {
         $user = User::factory()->create();
 
@@ -30,7 +30,7 @@ class DesignTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_upload_design()
+    public function testUserCanUploadDesign()
     {
         $user = User::factory()->create();
 
@@ -60,7 +60,7 @@ class DesignTest extends TestCase
      *
      * @return void
      */
-    public function test_design_api_can_be_accessed()
+    public function testDesignApiCanBeAccessed()
     {
         $user = User::factory()->create();
 

@@ -14,7 +14,7 @@ class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_email_verification_screen_can_be_rendered(): void
+    public function testEmailVerificationScreenCanBeRendered(): void
     {
         $user = User::factory()->create([
             'email_verified_at' => null,
@@ -25,7 +25,7 @@ class EmailVerificationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_email_can_be_verified(): void
+    public function testEmailCanBeVerified(): void
     {
         $user = User::factory()->create([
             'email_verified_at' => null,
@@ -43,10 +43,10 @@ class EmailVerificationTest extends TestCase
 
         Event::assertDispatched(Verified::class);
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect(RouteServiceProvider::HOME.'?verified=1');
+        $response->assertRedirect(RouteServiceProvider::HOME . '?verified=1');
     }
 
-    public function test_email_is_not_verified_with_invalid_hash(): void
+    public function testEmailIsNotVerifiedWithInvalidHash(): void
     {
         $user = User::factory()->create([
             'email_verified_at' => null,
@@ -68,7 +68,7 @@ class EmailVerificationTest extends TestCase
      *
      * @return void
      */
-    public function test_user_already_verified_email_then_redirect_to_home_page(): void
+    public function testUserAlreadyVerifiedEmailThenRedirectToHomePage(): void
     {
         $user = User::factory()->create([
             'email_verified_at' => now(),
@@ -86,7 +86,7 @@ class EmailVerificationTest extends TestCase
 
         $response = $this->actingAs($user)->get($verificationUrl);
 
-        $response->assertRedirect('/'.'?verified=1');
+        $response->assertRedirect('/' . '?verified=1');
     }
 
     /**
@@ -110,7 +110,7 @@ class EmailVerificationTest extends TestCase
      *
      * @return void
      */
-    public function test_user_need_to_resend_email_verification(): void
+    public function testUserNeedToResendEmailVerification(): void
     {
         $user = User::factory()->create([
             'email_verified_at' => null,
