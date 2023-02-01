@@ -45,14 +45,14 @@ class InvoiceController extends Controller
             ->series('INV')
             ->status('Paid')
             ->sequence(1)
-            ->serialNumberFormat('{SEQUENCE}/{SERIES}')
+            ->serialNumberFormat('{SERIES}{SEQUENCE}')
             ->buyer($customer)
             ->date(now()->subWeeks(3))
             ->dateFormat('m/d/Y')
             ->payUntilDays(14)
             ->filename($customer->name)
             ->addItems($items)
-            ->logo(public_path('vendor/invoices/sample-logo.png'))
+            ->logo(public_path('vendor/invoices/orbit-logo.jpg'))
             ->save('public');
 
         return response()->json([

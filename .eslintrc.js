@@ -9,14 +9,19 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
     ecmaFeatures: {
-      jsx: true,
+      jsx: true, // Enable JSX since we're using React
+    },
+  },
+  settings: {
+    react: {
+      version: "detect",
     },
   },
   plugins: ["react"],
   rules: {
-    "no-console": "off",
+    "no-console": "true",
     "no-undef": "off",
-    "react/display-name": false,
-    "react/prop-types": false,
+    "react/display-name": true,
+    "react/prop-types": "off",
   },
 };

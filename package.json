@@ -4,7 +4,7 @@
     "dev": "vite",
     "test": "php artisan test --coverage-html tests/reports/coverage",
     "pint": "./vendor/bin/pint",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint",
     "ssr": "php artisan inertia:start-ssr",
     "build": "vite build && vite build --ssr"
   },
@@ -38,7 +38,6 @@
     "filepond-plugin-image-transform": "^3.8.7",
     "polotno": "^1.4.3",
     "react-filepond": "^7.1.2",
-    "swiper": "^8.4.5",
-    "theme-change": "^2.3.0"
+    "swiper": "^8.4.5"
   }
 }
