@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import Input from "@/Components/Input";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import Input from "@/Components/Input";
+import { useEffect } from "react";
 
 export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -42,6 +42,7 @@ export default function Register() {
             id="name"
             label="Name"
             name="name"
+            placeholder="e.g. John Doe"
             value={data.name}
             handleChange={onHandleChange}
             autoComplete="name"
@@ -55,6 +56,7 @@ export default function Register() {
             id="email"
             label="Email"
             type="email"
+            placeholder="e.g. example@gmail.com"
             name="email"
             value={data.email}
             handleChange={onHandleChange}
@@ -69,6 +71,7 @@ export default function Register() {
             id="password"
             label="Password"
             type="password"
+            placeholder="Password"
             name="password"
             value={data.password}
             handleChange={onHandleChange}
@@ -83,6 +86,7 @@ export default function Register() {
             id="password_confirmation"
             type="password"
             name="password_confirmation"
+            placeholder="Confirm Password"
             value={data.password_confirmation}
             handleChange={onHandleChange}
             required
@@ -91,16 +95,14 @@ export default function Register() {
             errors={errors.password_confirmation}
           />
         </div>
-
-        <div className="flex items-center justify-end mt-4">
-          <Link href={route("login")} className="link link-hover">
-            Already registered?
+        <div className="mt-4">
+          <Link href={route("login")} className="link-hover link">
+            Already registered ? Click here to login
           </Link>
+        </div>
 
-          <button
-            className="btn btn-sm btn-ghost btn-outline ml-4"
-            disabled={processing}
-          >
+        <div className="mt-4">
+          <button className="btn-primary btn-block btn" disabled={processing}>
             Register
           </button>
         </div>

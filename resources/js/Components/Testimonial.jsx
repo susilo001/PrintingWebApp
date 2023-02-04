@@ -29,9 +29,9 @@ const Testimonial = () => {
                       </div>
                     </div>
                     <div>
-                      <h6 className="text-left text-lg font-semibold leading-none">
+                      <h3 className="text-left text-lg font-semibold leading-none">
                         {item.name}
-                      </h6>
+                      </h3>
                       <span className="text-xs ">{item.designation}</span>
                     </div>
                   </div>

@@ -2,11 +2,13 @@ import Card from "@/Components/Card";
 import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
+import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Products({ products, categories, auth, cartCount }) {
   const [search, setSearch] = useState(undefined);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -37,26 +39,58 @@ export default function Products({ products, categories, auth, cartCount }) {
       auth={auth}
       cartCount={cartCount}
       header={
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Products</h1>
-            <p className="text-gray-500">View all products</p>
+        <div>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Products</h1>
+              <p className="text-gray-500">View all products</p>
+            </div>
+            <div className="hidden sm:flex sm:items-center sm:space-x-4 ">
+              <Input
+                className="input-bordered input-sm"
+                placeholder="Search"
+                value={search}
+                handleChange={handleSearch}
+              />
+              <select className="select" onChange={handleCategoryChange}>
+                <option value="">All Categories</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="sm:hidden">
+              <button
+                className="btn-ghost btn-circle btn"
+                onClick={() => setIsOpen((previousState) => !previousState)}
+              >
+                {isOpen ? (
+                  <XMarkIcon className="h-5 w-5 text-gray-500" />
+                ) : (
+                  <FunnelIcon className="h-5 w-5 text-gray-500" />
+                )}
+              </button>
+            </div>
           </div>
-          <div className="flex items-center space-x-4">
-            <select className="select" onChange={handleCategoryChange}>
-              <option value="">All Categories</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <Input
-              className="input-bordered input-sm"
-              placeholder="Search"
-              value={search}
-              handleChange={handleSearch}
-            />
+          <div className={(isOpen ? "block" : "hidden") + " mt-4 sm:hidden"}>
+            <div>
+              <Input
+                className="input-bordered"
+                placeholder="Search"
+                value={search}
+                handleChange={handleSearch}
+              />
+              <select className="select" onChange={handleCategoryChange}>
+                <option value="">All Categories</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       }
@@ -78,20 +112,22 @@ export default function Products({ products, categories, auth, cartCount }) {
               key={product.id}
               href={route("product.show", product.id)}
             >
-              <Card className={"w-80 shadow-xl hover:bg-base-200"}>
+              <Card className={"w-80 border shadow-xl hover:bg-base-200"}>
                 <Card.Image
-                  className={"h-72 w-full object-cover"}
+                  className={"aspect-square h-72 w-full object-cover"}
                   src={product.images[0]}
                   alt={product.name}
                 />
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>
-                  <span className="font-bold">
-                    {CurrencyFormater(product.prices[0].price)}
-                  </span>
-                  <span className="badge badge-secondary badge-sm">
-                    {product.category.name}
-                  </span>
+                  <div className="flex justify-between">
+                    <span className="font-bold text-secondary">
+                      {CurrencyFormater(product.prices[0].price)}
+                    </span>
+                    <span className="badge-accent badge badge-sm p-2">
+                      {product.category.name}
+                    </span>
+                  </div>
                 </Card.Body>
               </Card>
             </Link>

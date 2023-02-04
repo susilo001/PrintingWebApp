@@ -82,17 +82,19 @@ export default function Login({ status, canResetPassword }) {
           </label>
         </div>
 
-        <div className="mt-4 flex items-center justify-end">
+        <div className="mt-4 flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
           {canResetPassword && (
             <Link href={route("password.request")} className="link-hover link">
               Forgot your password?
             </Link>
           )}
+          <Link href={route("register")} className="link-hover link">
+            Not registered yet ?
+          </Link>
+        </div>
 
-          <button
-            className="btn-outline btn-ghost btn-sm btn ml-4"
-            disabled={processing}
-          >
+        <div className="mt-4 flex justify-center">
+          <button className="btn-primary btn-block btn" disabled={processing}>
             Login
           </button>
         </div>
