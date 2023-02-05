@@ -78,7 +78,7 @@ class CartService
                 'project_name' => $request->project_name,
                 'description' => $request->description,
                 'design' => $path,
-                'variants' => $request->variants,
+                'variants' => json_decode($request->variants),
             ],
         ])->associate(Product::class);
 

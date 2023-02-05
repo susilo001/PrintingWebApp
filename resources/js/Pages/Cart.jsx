@@ -123,7 +123,7 @@ export default function Cart({
                 <ExclamationTriangleIcon className="h-8 w-8 text-error" />
               </div>
               <Link
-                href={route("home")}
+                href={route("product.index")}
                 className="btn-error btn-sm btn mt-4"
                 as="button"
               >
@@ -140,7 +140,7 @@ export default function Cart({
                     <div className="rounded-xl">
                       <img
                         src={item.options.design}
-                        className="aspect-square rounded-lg object-cover"
+                        className="aspect-square rounded-lg object-contain"
                         alt={item.name}
                       />
                     </div>

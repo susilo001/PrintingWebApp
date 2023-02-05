@@ -1,6 +1,3 @@
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import "filepond/dist/filepond.min.css";
-
 import { FilePond, registerPlugin } from "react-filepond";
 
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
@@ -18,6 +15,7 @@ registerPlugin(
 
 export default function Filepond({ name, allowMultiple, maxFiles, onChange }) {
   const [files, setFiles] = useState([]);
+
   return (
     <FilePond
       name={name}

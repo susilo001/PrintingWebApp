@@ -56,15 +56,15 @@ export default function Welcome({
             {featuredProducts.map((product, index) => (
               <SwiperSlide key={index}>
                 <Link href={route("product.show", product.id)}>
-                  <Card className={"card-compact h-96 bg-base-200 shadow-md"}>
+                  <Card className={"card-compact h-96 border shadow-lg"}>
                     <Card.Image
                       src={product.images[0]}
                       alt={product.name}
-                      className="h-52 object-cover"
+                      className="aspect-square object-contain"
                     />
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>
-                      <div className="mt-4 flex flex-col space-y-4">
+                      <div className="mt-4 flex items-center justify-between">
                         <span className="text-lg font-bold text-secondary">
                           {CurrencyFormater(product.prices[0].price)}
                         </span>

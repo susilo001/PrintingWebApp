@@ -17,12 +17,24 @@ class ProductSeeder extends Seeder
     {
         $other = Category::where('slug', 'others')->first();
 
-        Product::factory()->count(10)->create([
-            'category_id' => $other->id,
-            'images' => [
-                'asset/products/invitation.jpg',
+        Product::factory()->count(5)->forEachSequence(
+            [
+                'category_id' => $other->id,
+                'name' => 'Undangan type 1',
+                'slug' => 'undangan-type-1',
+                'images' => [
+                    'asset/products/invitation.png',
+                ],
             ],
-        ]);
+            [
+                'category_id' => $other->id,
+                'name' => 'Name Card',
+                'slug' => 'name-card',
+                'images' => [
+                    'asset/products/name-card.png',
+                ],
+            ]
+        )->create();
 
         $undagan = Category::where('slug', 'undangan')->first();
 
@@ -32,7 +44,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan',
                 'slug' => 'undangan',
                 'images' => [
-                    'asset/products/invitation.jpg',
+                    'asset/products/invitation.png',
                 ],
             ],
             [
@@ -40,7 +52,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan v2',
                 'slug' => 'undangan-v2',
                 'images' => [
-                    'asset/products/invitation.jpg',
+                    'asset/products/invitation.png',
                 ],
             ],
             [
@@ -48,7 +60,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan v3',
                 'slug' => 'undangan-v3',
                 'images' => [
-                    'asset/products/invitation.jpg',
+                    'asset/products/invitation.png',
                 ],
             ],
             [
@@ -56,7 +68,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan v4',
                 'slug' => 'undangan-v4',
                 'images' => [
-                    'asset/products/invitation.jpg',
+                    'asset/products/invitation.png',
                 ],
             ],
             [
@@ -64,7 +76,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan v5',
                 'slug' => 'undangan-v5',
                 'images' => [
-                    'asset/products/invitation.jpg',
+                    'asset/products/invitation.png',
                 ],
             ],
         )->create();
@@ -77,7 +89,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender',
                 'slug' => 'kalender',
                 'images' => [
-                    'asset/products/calendar.jpg',
+                    'asset/products/calendar.png',
                 ],
             ],
             [
@@ -85,7 +97,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender v2',
                 'slug' => 'kalender-v2',
                 'images' => [
-                    'asset/products/calendar.jpg',
+                    'asset/products/calendar.png',
                 ],
             ],
             [
@@ -93,7 +105,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender v3',
                 'slug' => 'kalender-v3',
                 'images' => [
-                    'asset/products/calendar.jpg',
+                    'asset/products/calendar.png',
                 ],
             ],
             [
@@ -101,7 +113,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender v4',
                 'slug' => 'kalender-v4',
                 'images' => [
-                    'asset/products/calendar.jpg',
+                    'asset/products/calendar.png',
                 ],
             ],
             [
@@ -109,7 +121,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kalender v5',
                 'slug' => 'kalender-v5',
                 'images' => [
-                    'asset/products/calendar.jpg',
+                    'asset/products/calendar.png',
                 ],
             ],
         )->create();
@@ -122,7 +134,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3',
                 'slug' => 'a3',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
             [
@@ -130,7 +142,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3 v2',
                 'slug' => 'a3-v2',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
             [
@@ -138,7 +150,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3 v3',
                 'slug' => 'a3-v3',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
             [
@@ -146,7 +158,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3 v4',
                 'slug' => 'a3-v4',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
             [
@@ -154,7 +166,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A3 v5',
                 'slug' => 'a3-v5',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
         )->create();
@@ -167,7 +179,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4',
                 'slug' => 'a4',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
             [
@@ -175,7 +187,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4 v2',
                 'slug' => 'a4-v2',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
             [
@@ -183,7 +195,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4 v3',
                 'slug' => 'a4-v3',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
             [
@@ -191,7 +203,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4 v4',
                 'slug' => 'a4-v4',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
             [
@@ -199,7 +211,7 @@ class ProductSeeder extends Seeder
                 'name' => 'A4 v5',
                 'slug' => 'a4-v5',
                 'images' => [
-                    'asset/products/flayer.jpg',
+                    'asset/products/flayer.png',
                 ],
             ],
         )->create();
@@ -212,19 +224,10 @@ class ProductSeeder extends Seeder
                 'name' => 'Kotak Makanan Bento',
                 'slug' => 'kotak-makanan-bento',
                 'images' => [
-                    'asset/products/Box1.png',
-                    'asset/products/Box2.png',
-                    'asset/products/Box3.png',
-                    'asset/products/Box4.png',
-                ],
-            ],
-            [
-                'category_id' => $packages->id,
-                'name' => 'Kotak Makanan Bento v2',
-                'slug' => 'kotak-makanan-bento-v2',
-                'images' => [
-                    'asset/products/Bento-Box1.png',
-                    'asset/products/Bento-Box2.png',
+                    'asset/products/box-1.png',
+                    'asset/products/box-2.png',
+                    'asset/products/box-3.png',
+                    'asset/products/box-4.png',
                 ],
             ],
             [
@@ -232,10 +235,9 @@ class ProductSeeder extends Seeder
                 'name' => 'Box Makanan',
                 'slug' => 'box-makanan',
                 'images' => [
-                    'asset/products/Food-Box1.png',
-                    'asset/products/Food-Box2.png',
-                    'asset/products/Food-Box3.png',
-                    'asset/products/Food-Box4.png',
+                    'asset/products/food-box-packages-1.png',
+                    'asset/products/food-box-packages-2.png',
+                    'asset/products/food-box-packages-3.png',
                 ],
             ],
             [
@@ -243,9 +245,9 @@ class ProductSeeder extends Seeder
                 'name' => 'Rounded Box Makanan',
                 'slug' => 'rounded-box-makanan',
                 'images' => [
-                    'asset/products/Rounded-Bento1.png',
-                    'asset/products/Rounded-Bento2.png',
-                    'asset/products/Rounded-Bento3.png',
+                    'asset/products/rounded-bento-packages-1.png',
+                    'asset/products/rounded-bento-packages-2.png',
+                    'asset/products/rounded-bento-packages-3.png',
                 ],
             ],
             [
@@ -253,10 +255,21 @@ class ProductSeeder extends Seeder
                 'name' => 'Box Cartoon Makanan',
                 'slug' => 'box-cartoon-makanan',
                 'images' => [
-                    'asset/products/Cartoon-Box1.png',
-                    'asset/products/Cartoon-Box2.png',
-                    'asset/products/Cartoon-Box3.png',
-                    'asset/products/Cartoon-Box4.png',
+                    'asset/products/cartoon-box-packages-1.png',
+                    'asset/products/cartoon-box-packages-2.png',
+                    'asset/products/cartoon-box-packages-3.png',
+                    'asset/products/cartoon-box-packages-4.png',
+                ],
+            ],
+            [
+                'category_id' => $packages->id,
+                'name' => 'Honeycomb Box Makanan',
+                'slug' => 'honeycomb-box-makanan',
+                'images' => [
+                    'asset/products/honey-comb-packages-1.png',
+                    'asset/products/honey-comb-packages-2.png',
+                    'asset/products/honey-comb-packages-3.png',
+                    'asset/products/honey-comb-packages-4.png',
                 ],
             ],
         )->create();
@@ -324,7 +337,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster',
                 'slug' => 'poster',
                 'images' => [
-                    'asset/products/poster.jpg',
+                    'asset/products/poster.png',
                 ],
             ],
             [
@@ -332,7 +345,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster v2',
                 'slug' => 'poster-v2',
                 'images' => [
-                    'asset/products/poster.jpg',
+                    'asset/products/poster.png',
                 ],
             ],
             [
@@ -340,7 +353,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster v3',
                 'slug' => 'poster-v3',
                 'images' => [
-                    'asset/products/poster.jpg',
+                    'asset/products/poster.png',
                 ],
             ],
             [
@@ -348,7 +361,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster v4',
                 'slug' => 'poster-v4',
                 'images' => [
-                    'asset/products/poster.jpg',
+                    'asset/products/poster.png',
                 ],
             ],
             [
@@ -356,7 +369,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Poster v5',
                 'slug' => 'poster-v5',
                 'images' => [
-                    'asset/products/poster.jpg',
+                    'asset/products/poster.png',
                 ],
             ],
         )->create();
@@ -369,7 +382,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure',
                 'slug' => 'brochure',
                 'images' => [
-                    'asset/products/brochure.jpg',
+                    'asset/products/brochure.png',
                 ],
             ],
             [
@@ -377,7 +390,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure v2',
                 'slug' => 'brochure-v2',
                 'images' => [
-                    'asset/products/brochure.jpg',
+                    'asset/products/brochure.png',
                 ],
             ],
             [
@@ -385,7 +398,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure v3',
                 'slug' => 'brochure-v3',
                 'images' => [
-                    'asset/products/brochure.jpg',
+                    'asset/products/brochure.png',
                 ],
             ],
             [
@@ -393,7 +406,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure v4',
                 'slug' => 'brochure-v4',
                 'images' => [
-                    'asset/products/brochure.jpg',
+                    'asset/products/brochure.png',
                 ],
             ],
             [
@@ -401,7 +414,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Brochure v5',
                 'slug' => 'brochure-v5',
                 'images' => [
-                    'asset/products/brochure.jpg',
+                    'asset/products/brochure.png',
                 ],
             ],
         )->create();
@@ -414,7 +427,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker',
                 'slug' => 'sticker',
                 'images' => [
-                    'asset/products/sticker.jpg',
+                    'asset/products/sticker.png',
                 ],
             ],
             [
@@ -422,7 +435,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker v2',
                 'slug' => 'sticker-v2',
                 'images' => [
-                    'asset/products/sticker.jpg',
+                    'asset/products/sticker.png',
                 ],
             ],
             [
@@ -430,7 +443,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker v3',
                 'slug' => 'sticker-v3',
                 'images' => [
-                    'asset/products/sticker.jpg',
+                    'asset/products/sticker.png',
                 ],
             ],
             [
@@ -438,7 +451,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker v4',
                 'slug' => 'sticker-v4',
                 'images' => [
-                    'asset/products/sticker.jpg',
+                    'asset/products/sticker.png',
                 ],
             ],
             [
@@ -446,7 +459,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Sticker v5',
                 'slug' => 'sticker-v5',
                 'images' => [
-                    'asset/products/sticker.jpg',
+                    'asset/products/sticker.png',
                 ],
             ],
         )->create();

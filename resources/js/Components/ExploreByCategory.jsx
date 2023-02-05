@@ -1,3 +1,4 @@
+import CurrencyFormater from "@/lib/CurrencyFormater";
 import {
   ArrowRightIcon,
   ExclamationTriangleIcon,
@@ -75,26 +76,29 @@ export default function ExploreByCategory({ categories }) {
             </h2>
           </div>
         )}
-        <div className="grid snap-start justify-center gap-x-10 gap-y-12 px-4 md:grid-cols-2 md:px-8 xl:grid-cols-3">
+        <div className="grid snap-start justify-center gap-x-10 gap-y-10 px-4 pb-4 md:grid-cols-2 md:px-8 xl:grid-cols-3">
           {products.map((product) => (
-            <Link
-              href={route("product.show", product.id)}
-              key={product.id}
-              className="md:h-72 md:w-96"
-            >
-              <Card className={"image-full h-80"}>
+            <Link href={route("product.show", product.id)} key={product.id}>
+              <Card className="border shadow-lg">
                 <Card.Image
                   src={
                     product.images[0]
                       ? product.images[0]
-                      : "https://picsum.photos/200"
+                      : "https://picsum.photos/200/200"
                   }
-                  className={"object-cover"}
+                  className={"aspect-square  object-center"}
                   alt={product.name}
                 />
-                <Card.Body className={"items-center justify-end"}>
-                  <Card.Title className={"text-2xl hover:font-bold"}>
-                    {product.name}
+                <Card.Body>
+                  <Card.Title
+                    className={
+                      "flex items-center justify-between text-xl hover:font-bold"
+                    }
+                  >
+                    <span>{product.name}</span>
+                    <span className="text-secondary">
+                      {CurrencyFormater(product.prices[0].price)}
+                    </span>
                   </Card.Title>
                 </Card.Body>
               </Card>

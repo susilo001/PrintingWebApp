@@ -5,44 +5,53 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import { RadioGroup } from "@headlessui/react";
 import { ShoppingBagIcon, StarIcon } from "@heroicons/react/20/solid";
-import { Head, useForm } from "@inertiajs/react";
-import { useRef } from "react";
+import { Head, router } from "@inertiajs/react";
+import FilePondPluginFileEncode from "filepond-plugin-file-encode";
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginImageTransform from "filepond-plugin-image-transform";
+import { useRef, useState } from "react";
+import { FilePond, registerPlugin } from "react-filepond";
+
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginImageTransform,
+  FilePondPluginFileEncode
+);
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Product({ auth, error, product }) {
+  const [projectName, setProjectName] = useState("");
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [design, setDesign] = useState("");
+  const [variants, setVariants] = useState([]);
+
   const projectNameInput = useRef();
   const descriptionInput = useRef();
   const quantityInput = useRef();
   const designInput = useRef();
 
-  const { data, setData, post, processing, errors, reset } = useForm({
-    product_id: product.id,
-    project_name: "",
-    description: "",
-    quantity: 0,
-    variants: [],
-    design: "",
-  });
-
   const reviews = { href: "#", average: 4, totalCount: 117 };
 
   const handleVariantChange = (name, value) => {
-    const variantExist = data.variants.find((variant) => variant.name === name);
+    const variantExist = variants.find((variant) => variant.name === name);
 
     if (variantExist) {
-      const variants = data.variants.map((variant) => {
+      const variants = variants.map((variant) => {
         if (variant.name === name) {
           variant.value = value;
         }
         return variant;
       });
 
-      setData("variants", variants);
+      setVariants(variants);
     } else {
-      data.variants.push({
+      variants.push({
         name: name,
         value: value,
       });
@@ -52,7 +61,18 @@ export default function Product({ auth, error, product }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    post("/cart", {
+    const formData = new FormData();
+    formData.append("product_id", product.id);
+    formData.append("project_name", projectName);
+    formData.append("description", description);
+    formData.append("quantity", quantity);
+    formData.append("design", design);
+    formData.append("variants", JSON.stringify(variants));
+
+    const test = Object.fromEntries(Array.from(formData));
+    console.log(test);
+
+    router.post("/cart", formData, {
       onError: () => {
         if (errors.quantity) {
           reset("quantity");
@@ -140,7 +160,7 @@ export default function Product({ auth, error, product }) {
                 <h2 className="sr-only">Product information</h2>
                 <p className="text-3xl tracking-tight">
                   {CurrencyFormater(product.prices[0].price)}{" "}
-                  <span className="badge badge-secondary">
+                  <span className="badge-secondary badge">
                     / Starting Price
                   </span>
                 </p>
@@ -178,12 +198,9 @@ export default function Product({ auth, error, product }) {
                     name="project_name"
                     label={"Project Name"}
                     type="text"
-                    errors={errors.project_name}
                     required
-                    value={data.project_name}
-                    handleChange={(e) =>
-                      setData("project_name", e.target.value)
-                    }
+                    value={projectName}
+                    handleChange={(e) => setProjectName(e.target.value)}
                     className={"input-bordered w-full"}
                   />
 
@@ -191,16 +208,17 @@ export default function Product({ auth, error, product }) {
                     name="description"
                     label={"Description"}
                     className={"textarea-bordered"}
-                    value={data.description}
-                    handleChange={(e) => setData("description", e.target.value)}
+                    required
+                    value={description}
+                    handleChange={(e) => setDescription(e.target.value)}
                   />
 
                   <Input
                     name="qty"
                     label={"Quantity"}
-                    value={data.quantity}
-                    errors={errors.quantity}
-                    handleChange={(e) => setData("quantity", e.target.value)}
+                    required
+                    value={quantity}
+                    handleChange={(e) => setQuantity(e.target.value)}
                     type="number"
                     className={"input-bordered w-full"}
                   />
@@ -220,7 +238,7 @@ export default function Product({ auth, error, product }) {
 
                       <RadioGroup
                         name={variant.name}
-                        value={data.variants[variant.id]}
+                        value={variants[variant.id]}
                         onChange={(value) =>
                           handleVariantChange(variant.name, value)
                         }
@@ -268,18 +286,17 @@ export default function Product({ auth, error, product }) {
 
                   {/* FileUpload */}
                   <div className="mt-10">
-                    <Input
-                      name={"design"}
-                      type={"file"}
-                      label="File Upload"
-                      errors={errors.design}
-                      handleChange={(e) => setData("design", e.target.files[0])}
-                      className={"file-input-bordered file-input"}
+                    <FilePond
+                      name="filepond"
+                      files={design}
+                      storeAsFile={true}
+                      onupdatefiles={(fileItems) => {
+                        setDesign(fileItems[0].file);
+                      }}
                     />
                   </div>
 
                   <button
-                    disabled={processing}
                     name="addToCart"
                     type="submit"
                     className="btn-primary btn mt-8 w-full gap-2"
@@ -290,7 +307,7 @@ export default function Product({ auth, error, product }) {
                 </form>
               </div>
 
-              <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8">
+              <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r  lg:pt-6 lg:pb-16 lg:pr-8">
                 {/* Description and details */}
                 <div>
                   <h3 className="sr-only">Description</h3>
