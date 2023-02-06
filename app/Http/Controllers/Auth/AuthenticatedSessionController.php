@@ -36,10 +36,12 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
-        $response = $user->hasAnyRole('administrator', 'super-admin') ? RouteServiceProvider::ADMIN : RouteServiceProvider::HOME;
+        if ($user->hasAnyRole('administrator', 'super-admin')) {
+            return to_route('filament.pages.dashboard', '', 302);
+        }
 
         return redirect()
-            ->intended($response)
+            ->intended(RouteServiceProvider::HOME)
             ->with('message', 'Welcome back, '.$user->name.'!');
     }
 

@@ -44,7 +44,7 @@ class CartController extends Controller
     {
         $this->cartService->add($request);
 
-        return redirect()->route('cart.index')->with('message', 'Product added to cart successfully');
+        to_route('cart.index', '', 302)->with('message', 'Item added to cart successfully');
     }
 
     /**

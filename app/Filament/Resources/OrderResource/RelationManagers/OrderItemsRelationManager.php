@@ -30,9 +30,6 @@ class OrderItemsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('product.name'),
-                Tables\Columns\TextColumn::make('description')
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('image'),
                 Tables\Columns\TextColumn::make('qty'),
                 Tables\Columns\TextColumn::make('price')
                     ->money('IDR', true),

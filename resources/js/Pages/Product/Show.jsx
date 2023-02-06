@@ -12,6 +12,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 import { useRef, useState } from "react";
 import { FilePond, registerPlugin } from "react-filepond";
+import Swal from "sweetalert2";
 
 registerPlugin(
   FilePondPluginImageExifOrientation,
@@ -69,31 +70,41 @@ export default function Product({ auth, error, product }) {
     formData.append("design", design);
     formData.append("variants", JSON.stringify(variants));
 
-    const test = Object.fromEntries(Array.from(formData));
-    console.log(test);
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.post("/cart", formData, {
+          onError: () => {
+            if (errors.quantity) {
+              reset("quantity");
+              quantityInput.current.focus();
+            }
 
-    router.post("/cart", formData, {
-      onError: () => {
-        if (errors.quantity) {
-          reset("quantity");
-          quantityInput.current.focus();
-        }
+            if (errors.project_name) {
+              reset("project_name");
+              projectNameInput.current.focus();
+            }
 
-        if (errors.project_name) {
-          reset("project_name");
-          projectNameInput.current.focus();
-        }
+            if (errors.description) {
+              reset("description");
+              descriptionInput.current.focus();
+            }
 
-        if (errors.description) {
-          reset("description");
-          descriptionInput.current.focus();
-        }
-
-        if (errors.design) {
-          reset("design");
-          designInput.current.focus();
-        }
-      },
+            if (errors.design) {
+              reset("design");
+              designInput.current.focus();
+            }
+          },
+          onSuccess: () => {
+            Swal.fire("Added!", "Your product has been added.", "success");
+          },
+        });
+      }
     });
   };
 

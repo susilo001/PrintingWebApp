@@ -51,11 +51,6 @@ class ProductResource extends Resource
                     ]),
                     Forms\Components\Textarea::make('description')
                         ->required(),
-                    Forms\Components\TextInput::make('highlights')
-                        ->required(),
-                    Forms\Components\TextInput::make('details')
-                        ->required()
-                        ->maxLength(255),
                 ]),
                 Card::make()->columns(1)->schema([
                     Grid::make()->schema([
@@ -79,6 +74,17 @@ class ProductResource extends Resource
                             ->required(),
                     ]),
                     Forms\Components\Toggle::make('featured')
+                        ->required(),
+                ]),
+                Card::make()->columns(1)->schema([
+                    FileUpload::make('images')
+                        ->image()
+                        ->imageResizeMode('cover')
+                        ->imageCropAspectRatio('16:9')
+                        ->imageResizeTargetWidth('1920')
+                        ->imageResizeTargetHeight('1080')
+                        ->multiple()
+                        ->maxFiles(4)
                         ->required(),
                 ]),
 
@@ -120,18 +126,6 @@ class ProductResource extends Resource
                         ])->createItemButtonLabel('Add New Variant'),
                 ]),
 
-                Card::make()->columns(1)->schema([
-                    FileUpload::make('images')
-                        ->image()
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080')
-                        ->multiple()
-                        ->directory('images/asset/products')
-                        ->maxFiles(4)
-                        ->required(),
-                ]),
             ]);
     }
 
@@ -143,6 +137,7 @@ class ProductResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('images.0')
+                    ->disk('public')
                     ->square()
                     ->label('Image'),
                 Tables\Columns\TextColumn::make('name')

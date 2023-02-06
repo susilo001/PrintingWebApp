@@ -7,8 +7,12 @@ use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -24,32 +28,64 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->disabled()
-                    ->required(),
-                Select::make('status')
-                    ->required()
-                    ->options([
-                        'pending' => 'Pending',
-                        'processing' => 'Processing',
-                        'completed' => 'Completed',
-                        'cancelled' => 'Cancelled',
+                Section::make('Order Information')->schema([
+                    Forms\Components\TextInput::make('user_id')
+                        ->disabled()
+                        ->required(),
+                    Select::make('status')
+                        ->options([
+                            'pending' => 'Pending',
+                            'processing' => 'Processing',
+                            'completed' => 'Completed',
+                            'cancelled' => 'Cancelled',
+                        ])
+                        ->required(),
+                    Card::make()->columns(1)->schema([
+                        Grid::make()->schema([
+                            Forms\Components\TextInput::make('subtotal')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\TextInput::make('discount')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\TextInput::make('tax')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\TextInput::make('total_amount')
+                                ->numeric()
+                                ->required(),
+                        ]),
                     ]),
-                Card::make()->columns(1)->schema([
-                    Grid::make()->schema([
-                        Forms\Components\TextInput::make('subtotal')
-                            ->numeric()
-                            ->required(),
-                        Forms\Components\TextInput::make('discount')
-                            ->numeric()
-                            ->required(),
-                        Forms\Components\TextInput::make('tax')
-                            ->numeric()
-                            ->required(),
-                        Forms\Components\TextInput::make('total_amount')
-                            ->numeric()
-                            ->required(),
-                    ]),
+                ]),
+                Section::make('Order Items')->schema([
+                    Repeater::make('orderItems')
+                        ->relationship()
+                        ->schema([
+                            Grid::make()->schema([
+                                Forms\Components\TextInput::make('product_id')
+                                    ->disabled()
+                                    ->required(),
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Textarea::make('description')
+                                    ->required(),
+                                FileUpload::make('image')
+                                    ->enableDownload(true)
+                                    ->required(),
+                                Forms\Components\TextInput::make('qty')
+                                    ->numeric()
+                                    ->required(),
+                                Forms\Components\TextInput::make('discount')
+                                    ->numeric()
+                                    ->required(),
+                                Forms\Components\TextInput::make('tax')
+                                    ->numeric()
+                                    ->required(),
+                                Forms\Components\TextInput::make('price')
+                                    ->numeric()
+                                    ->required(),
+                            ]),
+                        ]),
                 ]),
             ]);
     }

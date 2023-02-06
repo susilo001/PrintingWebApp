@@ -53,12 +53,12 @@ export default function Order({ orders, auth, cartCount }) {
               </div>
               <div className="flex flex-col text-xs lg:text-lg">
                 <span>Date</span>
-                <span className="font-bold">{order.created_at}</span>
+                <span className="font-bold">{order.createdAt}</span>
               </div>
               <div className="flex flex-col text-xs lg:text-lg">
                 <span>Total</span>
                 <span className="font-bold">
-                  {CurrencyFormater(order.total_amount)}
+                  {CurrencyFormater(order.total)}
                 </span>
               </div>
               <button
@@ -69,17 +69,19 @@ export default function Order({ orders, auth, cartCount }) {
                 <ReceiptPercentIcon className="h-5 w-5" />
               </button>
             </div>
-            {order.order_items.map((item) => (
+            {order.items.map((item) => (
               <div key={item.id}>
                 <div className="flex flex-col border-t p-8 lg:flex-row lg:space-x-4">
-                  <img
-                    src="http://picsum.photos/200"
-                    className="aspect-square rounded-lg object-cover"
-                    alt={item.name}
-                  />
+                  <div className="basis-1/6 lg:rounded-lg lg:border lg:shadow-md">
+                    <img
+                      src={item.image}
+                      className="aspect-square object-contain"
+                      alt={item.name}
+                    />
+                  </div>
                   <div className="my-4 flex-grow space-y-4 lg:my-0 lg:pl-8">
                     <h2 className="text-lg font-bold">{item.name}</h2>
-                    <p>{item.description}</p>
+                    <p>{item.desc}</p>
                     <div className="grid grid-cols-3 place-items-center gap-4">
                       {item.variants.map((variant, index) => (
                         <span className="p-4" key={index}>
@@ -88,20 +90,22 @@ export default function Order({ orders, auth, cartCount }) {
                       ))}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between lg:flex-col lg:justify-start">
-                    <p className="font-bold">{CurrencyFormater(item.price)}</p>
+                  <div className="flex basis-1/6 items-center justify-between lg:flex-col lg:items-start lg:justify-start lg:space-y-4">
+                    <span className="text-lg font-bold text-primary">
+                      {CurrencyFormater(item.price)}
+                    </span>
                     <div className="space-x-2">
                       <span>Quantity :</span>
                       <span>{item.qty}</span>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-8">
-                  <p className={"font-lg badge"}>{order.status}</p>
+                <div className="flex items-center justify-between border-t p-8">
+                  <p className={"font-lg badge p-2"}>{order.status}</p>
                   <div>
                     <Link
-                      href={route("product.show", { product: item.product_id })}
-                      className="btn-ghost btn"
+                      href={route("product.show", { product: item.product })}
+                      className="btn-secondary btn"
                       as="button"
                     >
                       View Product

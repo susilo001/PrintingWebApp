@@ -38,6 +38,7 @@
     "filepond-plugin-image-transform": "^3.8.7",
     "polotno": "^1.6.0",
     "react-filepond": "^7.1.2",
+    "sweetalert2": "^11.7.1",
     "swiper": "^8.4.5"
   }
 }

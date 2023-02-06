@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 export default function Cart({
   auth,
@@ -46,47 +47,92 @@ export default function Cart({
               payment_type: "cash",
             })
           );
+          Swal.fire({
+            title: "Success!",
+            text: "Your order has been placed.",
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              router.push(route("order.index"));
+            }
+          });
         },
       }
     );
   };
 
   const handleSnapPayment = () => {
-    router.post(
-      route("cart.checkout"),
-      {
-        payment_method: "snap",
-      },
-      {
-        preserveScroll: true,
-        preserveState: true,
-        onSuccess: (page) => {
-          window.snap.pay(page.props.token, {
-            onSuccess: function (result) {
-              router.put(
-                route("order.update", {
-                  order: result.order_id,
-                  status: result.transaction_status,
-                  payment_type: result.payment_type,
-                })
-              );
+    Swal.fire({
+      title: "Testing stage",
+      text: "Please use this link https://simulator.sandbox.midtrans.com/bri/va/index",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.post(
+          route("cart.checkout"),
+          {
+            payment_method: "snap",
+          },
+          {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: (page) => {
+              window.snap.pay(page.props.token, {
+                onSuccess: function (result) {
+                  router.put(
+                    route("order.update", {
+                      order: result.order_id,
+                      status: result.transaction_status,
+                      payment_type: result.payment_type,
+                    }),
+                    {
+                      preserveScroll: true,
+                      preserveState: true,
+                      onSuccess: () => {
+                        router.push(route("order.index"));
+                      },
+                    }
+                  );
+                },
+                onPending: function (result) {
+                  console.log(result);
+                },
+                onError: function (result) {
+                  alert("Payment failed");
+                  console.log(result);
+                },
+                onClose: function () {
+                  console.log(
+                    "customer closed the popup without finishing the payment"
+                  );
+                },
+              });
             },
-            onPending: function (result) {
-              console.log(result);
-            },
-            onError: function (result) {
-              alert("Payment failed");
-              console.log(result);
-            },
-            onClose: function () {
-              console.log(
-                "customer closed the popup without finishing the payment"
-              );
-            },
-          });
-        },
+          }
+        );
       }
-    );
+    });
+  };
+
+  const handleDelete = (rowId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.delete(route("cart.destroy", { cart: rowId }), {
+          onSuccess: () => {
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          },
+        });
+      }
+    });
   };
 
   return (
@@ -128,7 +174,7 @@ export default function Cart({
                   <div className="flex flex-col items-center justify-between lg:flex-row lg:items-stretch lg:space-x-8">
                     <div className="rounded-xl">
                       <img
-                        src={item.options.design}
+                        src={"storage/" + item.options.design}
                         className="aspect-square object-contain"
                         alt={item.name}
                       />
@@ -157,14 +203,12 @@ export default function Cart({
                           value={item.qty}
                           className={"input-bordered input-sm w-24"}
                         />
-                        <Link
-                          href={route("cart.destroy", { cart: item.rowId })}
-                          method="delete"
+                        <button
+                          onClick={() => handleDelete(item.rowId)}
                           className="btn-ghost btn-circle btn"
-                          as="button"
                         >
                           <TrashIcon className="h-6 w-6 text-error" />
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -207,7 +251,7 @@ export default function Cart({
                     className="btn-secondary btn-block btn gap-2"
                     onClick={() => handleSnapPayment()}
                   >
-                    Pay with Midtrans
+                    Pay now
                     <CreditCardIcon className="h-6 w-6" />
                     <WalletIcon className="h-6 w-6" />
                   </button>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderCollection;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class OrderController extends Controller
     public function index()
     {
         return Inertia::render('Order/index', [
-            'orders' => Order::where('user_id', auth()->user()->id)->with('orderItems')->get(),
+            'orders' => new OrderCollection(Order::where('user_id', auth()->user()->id)->get()),
         ]);
     }
 

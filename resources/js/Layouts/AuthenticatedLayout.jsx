@@ -1,12 +1,11 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import Button from "@/Components/Button";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import {
   InformationCircleIcon,
+  PencilSquareIcon,
   ShoppingBagIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
@@ -47,6 +46,14 @@ export default function Authenticated({ auth, header, children }) {
                 >
                   Design Tools
                 </NavLink>
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300 dark:focus:border-gray-700 dark:focus:text-gray-300"
+                >
+                  Survey
+                </a>
               </div>
             </div>
 
@@ -60,7 +67,7 @@ export default function Authenticated({ auth, header, children }) {
                   >
                     <div className="indicator">
                       {cartCount > 0 && (
-                        <span className="badge-secondary badge badge-sm indicator-item">
+                        <span className="badge badge-secondary badge-sm indicator-item">
                           {cartCount}
                         </span>
                       )}
@@ -250,24 +257,34 @@ export default function Authenticated({ auth, header, children }) {
       )}
 
       {/* Flash Message */}
-      {flash.message && (
+      <div className="alert mx-auto mt-4 max-w-7xl">
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className="flex items-center gap-2">
+            <InformationCircleIcon className="h-6 w-6 text-info" />
+            <p>Berikkan pendapat anda melalui link survey ini</p>
+            <button className="btn-ghost btn-sm btn-circle btn">
+              <PencilSquareIcon className="h-6 w-6" />
+            </button>
+          </div>
+        </a>
+      </div>
+      {/* {flash.message && (
         <div className="alert mx-auto mt-20 max-w-7xl shadow-lg">
           <div>
             <InformationCircleIcon className="h-6 w-6 text-info" />
             <p>{flash.message}</p>
           </div>
           <div>
-            <Button
-              className={"btn-ghost btn-sm btn-circle"}
-              onClick={() => {
-                flash.clear();
-              }}
-            >
-              <XMarkIcon className="h-6 w-6 text-error" />
+            <Button className={"btn-ghost btn-sm btn-circle"}>
+              <PencilSquareIcon className="h-6 w-6" />
             </Button>
           </div>
         </div>
-      )}
+      )} */}
 
       {errors.message && (
         <div className="alert alert-error mx-auto mt-20 max-w-7xl shadow-lg">

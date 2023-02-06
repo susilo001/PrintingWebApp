@@ -137,7 +137,7 @@ class ProfileTest extends TestCase
             'zip_code' => '12345',
         ]);
 
-        $this->actingAs($user)->patch('/profile/address/' . $address->id, [
+        $this->actingAs($user)->patch('/profile/address/'.$address->id, [
             'street_name' => 'Jl. Test 2',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
@@ -168,7 +168,7 @@ class ProfileTest extends TestCase
             'zip_code' => '12345',
         ]);
 
-        $this->actingAs($user)->delete('/profile/address/' . $address->id)
+        $this->actingAs($user)->delete('/profile/address/'.$address->id)
             ->assertRedirect('/profile');
 
         $this->assertDatabaseMissing('addresses', [
