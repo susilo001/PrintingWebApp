@@ -7,31 +7,36 @@ import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Products({ products, categories, auth, cartCount }) {
-  const [search, setSearch] = useState(undefined);
+  const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
 
-    if (search === "") {
-      router.reload();
-    } else {
-      setTimeout(() => {
-        router.get(
-          route("product.index"),
-          { name: search },
-          { only: ["products"], preserveState: true }
-        );
-      }, 500);
+    if (search) {
+      setTimeout(
+        () =>
+          router.get(
+            route("product.index"),
+            { name: search },
+            { only: ["products"], preserveState: true, replace: true }
+          ),
+        1000
+      );
     }
+    router.get(route("product.index"));
   };
 
   const handleCategoryChange = (e) => {
-    router.get(
-      route("product.index"),
-      { category: e.target.value },
-      { only: ["products"] }
-    );
+    if (e.target.value) {
+      router.get(
+        route("product.index"),
+        { category: e.target.value },
+        { only: ["products"], preserveState: true, replace: true }
+      );
+    } else {
+      router.get(route("product.index"));
+    }
   };
 
   return (
@@ -108,23 +113,23 @@ export default function Products({ products, categories, auth, cartCount }) {
         <div className="grid justify-center gap-8 md:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
             <Link
-              className="w-fit "
+              className="link-hover link w-fit"
               key={product.id}
               href={route("product.show", product.id)}
             >
               <Card className={"w-80 border shadow-xl hover:bg-base-200"}>
                 <Card.Image
-                  className={"aspect-square h-72 w-full object-cover"}
+                  className={"aspect-square h-72 w-full object-contain"}
                   src={product.images[0]}
                   alt={product.name}
                 />
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>
                   <div className="flex justify-between">
-                    <span className="font-bold text-secondary">
+                    <span className="text-lg font-bold text-primary">
                       {CurrencyFormater(product.prices[0].price)}
                     </span>
-                    <span className="badge-accent badge badge-sm p-2">
+                    <span className="badge-accent badge badge-sm p-2 font-bold">
                       {product.category.name}
                     </span>
                   </div>

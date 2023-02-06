@@ -65,7 +65,7 @@ export default function Welcome({
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>
                       <div className="mt-4 flex items-center justify-between">
-                        <span className="text-lg font-bold text-secondary">
+                        <span className="text-lg font-bold text-primary">
                           {CurrencyFormater(product.prices[0].price)}
                         </span>
                         <span className="badge-accent badge p-2 font-semibold">

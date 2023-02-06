@@ -61,7 +61,7 @@ export default function HeroSection() {
 
       <div className="flex h-96 w-full items-center justify-center lg:w-1/2">
         <img
-          className="aspect-square h-full w-full max-w-2xl rounded-md object-cover"
+          className="aspect-square h-full w-full max-w-2xl rounded-md object-contain"
           src="../asset/hero-section.png"
           alt="Printing Services"
         />

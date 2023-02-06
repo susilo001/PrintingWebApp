@@ -86,7 +86,7 @@ export default function ExploreByCategory({ categories }) {
                       ? product.images[0]
                       : "https://picsum.photos/200/200"
                   }
-                  className={"aspect-square  object-center"}
+                  className={"aspect-square  object-contain"}
                   alt={product.name}
                 />
                 <Card.Body>
@@ -96,7 +96,7 @@ export default function ExploreByCategory({ categories }) {
                     }
                   >
                     <span>{product.name}</span>
-                    <span className="text-secondary">
+                    <span className="text-primary">
                       {CurrencyFormater(product.prices[0].price)}
                     </span>
                   </Card.Title>

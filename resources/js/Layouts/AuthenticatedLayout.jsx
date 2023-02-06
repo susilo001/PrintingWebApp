@@ -59,9 +59,11 @@ export default function Authenticated({ auth, header, children }) {
                     className="btn-ghost btn-circle btn"
                   >
                     <div className="indicator">
-                      <span className="badge-secondary badge badge-sm indicator-item">
-                        {cartCount}
-                      </span>
+                      {cartCount > 0 && (
+                        <span className="badge-secondary badge badge-sm indicator-item">
+                          {cartCount}
+                        </span>
+                      )}
                       <ShoppingBagIcon className="h-6 w-6" />
                     </div>
                   </Link>
@@ -193,8 +195,14 @@ export default function Authenticated({ auth, header, children }) {
                     href={route("cart.index")}
                     active={route().current("cart.index")}
                     as="button"
+                    className="flex items-center justify-between"
                   >
-                    Cart ({cartCount})
+                    <div className="indicator">
+                      <span>Cart</span>
+                      {cartCount > 0 && (
+                        <span className="text-secondary">({cartCount})</span>
+                      )}
+                    </div>
                   </ResponsiveNavLink>
                   <ResponsiveNavLink
                     href={route("order.index")}

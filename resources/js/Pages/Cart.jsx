@@ -1,6 +1,7 @@
 import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
+import Midtrans from "@/lib/midtrans";
 import {
   BanknotesIcon,
   CreditCardIcon,
@@ -25,19 +26,7 @@ export default function Cart({
   const data = Object.entries(cart).map(([key, value]) => value);
 
   useEffect(() => {
-    const midtransScriptUrl = import.meta.env.VITE_MIDTRANS_SCRIPT_URL;
-
-    const MidtransClientKey = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
-
-    let scriptTag = document.createElement("script");
-    scriptTag.src = midtransScriptUrl;
-
-    scriptTag.setAttribute("data-client-key", MidtransClientKey);
-
-    document.body.appendChild(scriptTag);
-    return () => {
-      document.body.removeChild(scriptTag);
-    };
+    Midtrans();
   }, []);
 
   const handleCashPayment = () => {
@@ -135,12 +124,12 @@ export default function Cart({
           <div className="grid grid-flow-row-dense gap-y-4 lg:grid-cols-3 lg:gap-x-8">
             <div className="lg:col-span-2">
               {data.map((item) => (
-                <div key={item.id} className="border-y py-10">
+                <div key={item.id} className="rounded-lg border py-10">
                   <div className="flex flex-col items-center justify-between lg:flex-row lg:items-stretch lg:space-x-8">
                     <div className="rounded-xl">
                       <img
                         src={item.options.design}
-                        className="aspect-square rounded-lg object-contain"
+                        className="aspect-square object-contain"
                         alt={item.name}
                       />
                     </div>
@@ -152,11 +141,13 @@ export default function Cart({
                             <div key={index}>{variant.value}</div>
                           ))}
                         </div>
-                        <div>{item.weight + "/kg"}</div>
+                        <div className="text-secondary">
+                          {item.weight + "/kg"}
+                        </div>
                       </div>
                       <div className="mt-4 flex items-center justify-between space-x-8">
                         <div>
-                          <span className="font-bold">
+                          <span className="font-bold text-primary">
                             {CurrencyFormater(item.price)}
                           </span>
                         </div>
@@ -164,7 +155,6 @@ export default function Cart({
                           type="number"
                           label={""}
                           value={item.qty}
-                          onChange={(e) => console.log(e.target.value)}
                           className={"input-bordered input-sm w-24"}
                         />
                         <Link
@@ -181,7 +171,7 @@ export default function Cart({
                 </div>
               ))}
             </div>
-            <div className="h-fit  rounded-lg bg-base-300">
+            <div className="h-fit rounded-lg border">
               <div className="space-y-4 p-8">
                 <h2 className="text-xl font-bold">Order Summary</h2>
                 <div className="space-y-4">
