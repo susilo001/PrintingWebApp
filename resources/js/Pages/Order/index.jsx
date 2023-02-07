@@ -49,17 +49,36 @@ export default function Order({ orders, auth, cartCount }) {
             <div className="flex items-center justify-between p-8">
               <div className="flex flex-col text-xs lg:text-lg">
                 <span>ID</span>
-                <span className="font-bold">#{order.id}</span>
+                <span className="font-bold text-primary">#{order.id}</span>
               </div>
               <div className="flex flex-col text-xs lg:text-lg">
                 <span>Date</span>
-                <span className="font-bold">{order.createdAt}</span>
+                <span className="font-bold text-primary">
+                  {order.createdAt}
+                </span>
               </div>
               <div className="flex flex-col text-xs lg:text-lg">
                 <span>Total</span>
-                <span className="font-bold">
+                <span className="font-bold text-primary">
                   {CurrencyFormater(order.total)}
                 </span>
+              </div>
+              <div className="flex flex-col text-xs lg:text-lg">
+                <span>Status</span>
+                {order.status === "completed" && (
+                  <span className="font-bold text-primary">{order.status}</span>
+                )}
+                {order.status === "pending" && (
+                  <span className="font-bold text-warning">{order.status}</span>
+                )}
+                {order.status === "processing" && (
+                  <span className="font-bold text-secondary">
+                    {order.status}
+                  </span>
+                )}
+                {order.status === "canceled" && (
+                  <span className="font-bold text-error">{order.status}</span>
+                )}
               </div>
               <button
                 className="btn-outline btn-ghost btn-sm btn gap-2 font-bold"
@@ -94,13 +113,31 @@ export default function Order({ orders, auth, cartCount }) {
                     <span className="text-lg font-bold text-primary">
                       {CurrencyFormater(item.price)}
                     </span>
-                    <div className="space-x-2">
-                      <span>Quantity :</span>
+                    <div className="text-md space-x-2 rounded-md border-2 p-2 ">
+                      <span>Qty :</span>
                       <span>{item.qty}</span>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between border-t p-8">
+                {/* <div className="flex items-center justify-between border-t p-8">
+                  {order.status === "pending" && (
+                    <div className="flex space-x-4">
+                      <button className="btn-secondary btn">Cancel</button>
+                      <button className="btn-primary btn">Pay</button>
+                    </div>
+                  )}
+                  {order.status === "paid" && (
+                    <div className="flex space-x-4">
+                      <button className="btn-secondary btn">Cancel</button>
+                      <button className="btn-primary btn">Ship</button>
+                    </div>
+                  )}
+                  {order.status === "shipped" && (
+                    <div className="flex space-x-4">
+                      <button className="btn-secondary btn">Cancel</button>
+                      <button className="btn-primary btn">Deliver</button>
+                    </div>
+                  )}
                   <p className={"font-lg badge p-2"}>{order.status}</p>
                   <div>
                     <Link
@@ -111,7 +148,7 @@ export default function Order({ orders, auth, cartCount }) {
                       View Product
                     </Link>
                   </div>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>

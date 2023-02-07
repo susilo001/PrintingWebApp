@@ -19,7 +19,7 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'status' => fake()->randomElement(['pending', 'processing', 'completed', 'cancelled']),
+            'status' => fake()->randomElement(['pending', 'processing', 'completed', 'canceled']),
             'subtotal' => fake()->numberBetween(10000, 1000000),
             'discount' => fake()->numberBetween(10000, 1000000),
             'tax' => fake()->numberBetween(10000, 1000000),

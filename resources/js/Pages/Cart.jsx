@@ -80,6 +80,7 @@ export default function Cart({
             preserveScroll: true,
             preserveState: true,
             onSuccess: (page) => {
+              window.snap.show();
               window.snap.pay(page.props.token, {
                 onSuccess: function (result) {
                   router.put(
@@ -98,16 +99,38 @@ export default function Cart({
                   );
                 },
                 onPending: function (result) {
-                  console.log(result);
+                  router.put(
+                    route("order.update", {
+                      order: result.order_id,
+                      status: result.transaction_status,
+                      payment_type: result.payment_type,
+                    }),
+                    {
+                      preserveScroll: true,
+                      preserveState: true,
+                      onSuccess: () => {
+                        router.push(route("order.index"));
+                      },
+                    }
+                  );
                 },
                 onError: function (result) {
-                  alert("Payment failed");
-                  console.log(result);
+                  Swal.fire({
+                    title: "Error",
+                    text: result.status_message,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      router.push(route("cart.index"));
+                    }
+                  });
                 },
                 onClose: function () {
-                  console.log(
-                    "customer closed the popup without finishing the payment"
-                  );
+                  Swal.fire({
+                    title: "Close without procceeding payment",
+                    icon: "error",
+                  });
                 },
               });
             },

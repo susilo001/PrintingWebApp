@@ -67,7 +67,7 @@ export default function Authenticated({ auth, header, children }) {
                   >
                     <div className="indicator">
                       {cartCount > 0 && (
-                        <span className="badge badge-secondary badge-sm indicator-item">
+                        <span className="badge-secondary badge badge-sm indicator-item">
                           {cartCount}
                         </span>
                       )}
@@ -258,20 +258,34 @@ export default function Authenticated({ auth, header, children }) {
 
       {/* Flash Message */}
       <div className="alert mx-auto mt-4 max-w-7xl">
-        <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <div className="flex items-center gap-2">
-            <InformationCircleIcon className="h-6 w-6 text-info" />
-            <p>Berikkan pendapat anda melalui link survey ini</p>
-            <button className="btn-ghost btn-sm btn-circle btn">
-              <PencilSquareIcon className="h-6 w-6" />
-            </button>
+        <div>
+          <InformationCircleIcon className="h-6 w-6 text-info" />
+          <div>
+            <h3 className="font-bold">Click untuk mengisi survey!</h3>
+            <div className="text-xs">
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Berikan masukan anda untuk website ini dengan mengisi survey
+                ini. Terima kasih!
+              </a>
+            </div>
           </div>
-        </a>
+        </div>
+        <div className="flex-none">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
+            target="_blank"
+            rel="noreferrer"
+            className="btn-ghost btn-sm btn-circle btn"
+          >
+            <PencilSquareIcon className="h-6 w-6" />
+          </a>
+        </div>
       </div>
+
       {/* {flash.message && (
         <div className="alert mx-auto mt-20 max-w-7xl shadow-lg">
           <div>
