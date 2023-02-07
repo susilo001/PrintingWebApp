@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import GuestLayout from "@/Layouts/GuestLayout";
-import { Head, useForm } from "@inertiajs/inertia-react";
 import Input from "@/Components/Input";
+import GuestLayout from "@/Layouts/GuestLayout";
+import { Head, useForm } from "@inertiajs/react";
+import { useEffect } from "react";
 
 export default function ConfirmPassword() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -28,10 +28,10 @@ export default function ConfirmPassword() {
     <GuestLayout>
       <Head title="Confirm Password" />
 
-      <div className="mb-4 text-sm">
+      <p className="mb-4 text-sm">
         This is a secure area of the application. Please confirm your password
         before continuing.
-      </div>
+      </p>
 
       <form onSubmit={submit}>
         <div className="mt-4">
@@ -41,16 +41,15 @@ export default function ConfirmPassword() {
             type="password"
             value={data.password}
             name="password"
-            isFocused={true}
             handleChange={onHandleChange}
             className="input-bordered"
             errors={errors.password}
           />
         </div>
 
-        <div className="flex items-center justify-end mt-4">
+        <div className="mt-4 flex items-center justify-end">
           <button
-            className="btn btn-ghost btn-outline ml-4"
+            className="btn-outline btn-ghost btn ml-4"
             disabled={processing}
           >
             Confirm

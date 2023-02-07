@@ -61,8 +61,6 @@ class CartService
     {
         $image = Storage::disk('public')->put('designs', $request->file('design'));
 
-        $path = Storage::url($image);
-
         $price = $this->getPrice($request->product_id, $request->quantity);
 
         $product = $this->product->find($request->product_id);
@@ -77,8 +75,8 @@ class CartService
                 'product_id' => $request->product_id,
                 'project_name' => $request->project_name,
                 'description' => $request->description,
-                'design' => $path,
-                'variants' => $request->variants,
+                'design' => $image,
+                'variants' => json_decode($request->variants),
             ],
         ])->associate(Product::class);
 

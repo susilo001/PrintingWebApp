@@ -25,7 +25,7 @@ class AddressController extends Controller
         ]);
 
         return redirect('/profile')
-            ->with('success', 'Address added successfully');
+            ->with('message', 'Address added successfully');
     }
 
     /**
@@ -46,7 +46,7 @@ class AddressController extends Controller
         ]);
 
         return redirect('/profile')
-            ->with('success', 'Address updated successfully');
+            ->with('message', 'Address updated successfully');
     }
 
     /**
@@ -59,6 +59,6 @@ class AddressController extends Controller
     {
         $address->delete();
 
-        return redirect('/profile')->with('success', 'Address deleted successfully');
+        return redirect('/profile')->with('message', 'Address deleted successfully');
     }
 }

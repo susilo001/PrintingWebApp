@@ -1,11 +1,14 @@
-import { useState } from "react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import ToggleDarkMode from "@/Components/ToggleDarkMode";
-import { Link, usePage } from "@inertiajs/inertia-react";
-import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import {
+  InformationCircleIcon,
+  PencilSquareIcon,
+  ShoppingBagIcon,
+} from "@heroicons/react/24/outline";
+import { Link, usePage } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Authenticated({ auth, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -16,75 +19,76 @@ export default function Authenticated({ auth, header, children }) {
   const { errors } = usePage().props;
 
   return (
-    <div className="min-h-screen relative">
-      <nav className="shadow-md fixed top-0 left-0 right-0 z-50 bg-base-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+    <div className="relative flex min-h-screen flex-col">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-base-100 shadow-md">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 justify-between">
             <div className="flex">
-              <div className="shrink-0 flex items-center">
-                <Link href="/">
+              <div className="flex shrink-0 items-center">
+                <Link href={route("home")} as="a">
                   <ApplicationLogo className="block h-9 w-auto fill-current" />
                 </Link>
               </div>
 
               <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                <NavLink
-                  href={route("home")}
-                  active={route().current("dashboard")}
-                >
+                <NavLink href={route("home")} active={route().current("home")}>
                   Home
                 </NavLink>
                 <NavLink
                   href={route("product.index")}
-                  active={route().current("dashboard")}
+                  active={route().current("product.index")}
                 >
                   Products
                 </NavLink>
                 <NavLink
                   href={route("design.index")}
-                  active={route().current("dashboard")}
+                  active={route().current("design.index")}
                 >
                   Design Tools
                 </NavLink>
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300 dark:focus:border-gray-700 dark:focus:text-gray-300"
+                >
+                  Survey
+                </a>
               </div>
             </div>
 
-            <div className="hidden sm:flex sm:items-center sm:ml-6">
-              <ToggleDarkMode />
+            <div className="hidden sm:ml-6 sm:flex sm:items-center">
               {auth?.user ? (
                 <>
-                  <Link href={route("cart.index")}>
-                    <button className="btn btn-ghost btn-circle">
-                      <div className="indicator">
-                        <span className="indicator-item badge badge-secondary badge-sm">
+                  <Link
+                    href={route("cart.index")}
+                    as="button"
+                    className="btn-ghost btn-circle btn"
+                  >
+                    <div className="indicator">
+                      {cartCount > 0 && (
+                        <span className="badge-secondary badge badge-sm indicator-item">
                           {cartCount}
                         </span>
-                        <ShoppingBagIcon className="h-6 w-6" />
-                      </div>
-                    </button>
+                      )}
+                      <ShoppingBagIcon className="h-6 w-6" />
+                    </div>
                   </Link>
                   <div className="relative">
                     <Dropdown>
                       <Dropdown.Trigger>
-                        <span className="inline-flex rounded-md">
-                          <button
-                            type="button"
-                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md focus:outline-none transition ease-in-out duration-150"
-                          >
-                            <div className="avatar">
-                              <div className="w-10 rounded-full">
-                                <img src={auth.user.avatar} />
-                              </div>
-                            </div>
-                          </button>
-                        </span>
+                        <div className="avatar">
+                          <div className="w-10 rounded-full">
+                            <img src={auth.user.avatar} alt={auth.user.name} />
+                          </div>
+                        </div>
                       </Dropdown.Trigger>
 
                       <Dropdown.Content>
-                        <Dropdown.Link href={route("profile.edit")}>
+                        <Dropdown.Link href={route("profile.edit")} as="button">
                           Profile
                         </Dropdown.Link>
-                        <Dropdown.Link href={route("order.index")}>
+                        <Dropdown.Link href={route("order.index")} as="button">
                           Order History
                         </Dropdown.Link>
                         <Dropdown.Link
@@ -100,13 +104,17 @@ export default function Authenticated({ auth, header, children }) {
                 </>
               ) : (
                 <div className="ml-3 space-x-4">
-                  <Link href={route("login")} className="btn btn-sm btn-ghost">
+                  <Link
+                    href={route("login")}
+                    className="btn-ghost btn-sm btn"
+                    as="button"
+                  >
                     Login
                   </Link>
-
                   <Link
                     href={route("register")}
-                    className="btn btn-sm btn-ghost"
+                    className="btn-ghost btn-sm btn"
+                    as="button"
                   >
                     Register
                   </Link>
@@ -116,12 +124,13 @@ export default function Authenticated({ auth, header, children }) {
 
             <div className="-mr-2 flex items-center sm:hidden">
               <button
+                name="Dropdown Menu"
                 onClick={() =>
                   setShowingNavigationDropdown(
                     (previousState) => !previousState
                   )
                 }
-                className="inline-flex items-center justify-center p-2 rounded-md  hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+                className="inline-flex items-center justify-center rounded-md p-2  transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
               >
                 <svg
                   className="h-6 w-6"
@@ -158,68 +167,142 @@ export default function Authenticated({ auth, header, children }) {
             (showingNavigationDropdown ? "block" : "hidden") + " sm:hidden"
           }
         >
-          <div className="pt-2 pb-3 space-y-1">
+          <div className="space-y-1 pt-2 pb-3">
             <ResponsiveNavLink
               href={route("home")}
-              active={route().current("dashboard")}
+              active={route().current("home")}
             >
               Home
             </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("product.index")}
+              active={route().current("product.index")}
+            >
+              Products
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("design.index")}
+              active={route().current("design.index")}
+            >
+              Design Tools
+            </ResponsiveNavLink>
           </div>
 
-          <div className="pt-4 pb-1 border-t">
+          <div className="border-t pt-4 pb-1">
             {auth?.user ? (
-              <div className="px-4">
-                <div className="font-medium text-base">{auth?.user.name}</div>
-                <div className="font-medium text-sm text-gray-500">
-                  {auth?.user.email}
+              <>
+                <div className="px-4">
+                  <div className="text-base font-medium">{auth?.user.name}</div>
+                  <div className="text-sm font-medium text-gray-500">
+                    {auth?.user.email}
+                  </div>
                 </div>
-              </div>
+                <div className="mt-3 space-y-1">
+                  <ResponsiveNavLink
+                    href={route("cart.index")}
+                    active={route().current("cart.index")}
+                    as="button"
+                    className="flex items-center justify-between"
+                  >
+                    <div className="indicator">
+                      <span>Cart</span>
+                      {cartCount > 0 && (
+                        <span className="text-secondary">({cartCount})</span>
+                      )}
+                    </div>
+                  </ResponsiveNavLink>
+                  <ResponsiveNavLink
+                    href={route("order.index")}
+                    active={route().current("order.index")}
+                    as="button"
+                  >
+                    Orders History
+                  </ResponsiveNavLink>
+                  <ResponsiveNavLink
+                    href={route("profile.edit")}
+                    active={route().current("profile.edit")}
+                    as="button"
+                  >
+                    Profile
+                  </ResponsiveNavLink>
+                  <ResponsiveNavLink
+                    method="post"
+                    href={route("logout")}
+                    as="button"
+                  >
+                    Log Out
+                  </ResponsiveNavLink>
+                </div>
+              </>
             ) : (
               <>
-                <ResponsiveNavLink href={route("login")}>
+                <ResponsiveNavLink href={route("login")} as="button">
                   Login
                 </ResponsiveNavLink>
-                <ResponsiveNavLink href={route("register")}>
+                <ResponsiveNavLink href={route("register")} as="button">
                   Register
                 </ResponsiveNavLink>
               </>
             )}
-
-            <div className="mt-3 space-y-1">
-              <ResponsiveNavLink href={route("profile.edit")}>
-                Profile
-              </ResponsiveNavLink>
-              <ResponsiveNavLink
-                method="post"
-                href={route("logout")}
-                as="button"
-              >
-                Log Out
-              </ResponsiveNavLink>
-            </div>
           </div>
         </div>
       </nav>
 
       {header && (
-        <header className="shadow mt-16">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <header className="mt-16 shadow">
+          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
             {header}
           </div>
         </header>
       )}
 
       {/* Flash Message */}
-      {flash.message && (
-        <div className="mt-20 max-w-7xl mx-auto alert shadow-lg">
-          {flash.message}
+      <div className="alert mx-auto mt-4 max-w-7xl">
+        <div>
+          <InformationCircleIcon className="h-6 w-6 text-info" />
+          <div>
+            <h3 className="font-bold">Click untuk mengisi survey!</h3>
+            <div className="text-xs">
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Berikan masukan anda untuk website ini dengan mengisi survey
+                ini. Terima kasih!
+              </a>
+            </div>
+          </div>
         </div>
-      )}
+        <div className="flex-none">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
+            target="_blank"
+            rel="noreferrer"
+            className="btn-ghost btn-sm btn-circle btn"
+          >
+            <PencilSquareIcon className="h-6 w-6" />
+          </a>
+        </div>
+      </div>
+
+      {/* {flash.message && (
+        <div className="alert mx-auto mt-20 max-w-7xl shadow-lg">
+          <div>
+            <InformationCircleIcon className="h-6 w-6 text-info" />
+            <p>{flash.message}</p>
+          </div>
+          <div>
+            <Button className={"btn-ghost btn-sm btn-circle"}>
+              <PencilSquareIcon className="h-6 w-6" />
+            </Button>
+          </div>
+        </div>
+      )} */}
 
       {errors.message && (
-        <div className="mt-20 max-w-7xl mx-auto alert alert-error shadow-lg">
-          <ul className="list-disc list-inside">
+        <div className="alert alert-error mx-auto mt-20 max-w-7xl shadow-lg">
+          <ul className="list-inside list-disc">
             {Object.values(errors).map((error, index) => (
               <li key={index}>{error}</li>
             ))}
@@ -227,9 +310,9 @@ export default function Authenticated({ auth, header, children }) {
         </div>
       )}
 
-      <main className="py-4">{children}</main>
-      <footer className="p-10 bg-base-200 text-base-content">
-        <div className="max-w-7xl mx-auto footer py-6 px-4 sm:px-6 lg:px-8">
+      <main className="mb-auto py-4">{children}</main>
+      <footer className="bg-base-200 p-10 text-base-content">
+        <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
             <ApplicationLogo className="block h-10 w-auto fill-current" />
             <p>
@@ -240,23 +323,25 @@ export default function Authenticated({ auth, header, children }) {
           </div>
           <div>
             <span className="footer-title">Services</span>
-            <a className="link link-hover">Branding</a>
-            <a className="link link-hover">Design</a>
-            <a className="link link-hover">Marketing</a>
-            <a className="link link-hover">Advertisement</a>
+            <Link href={route("product.index")} className="link-hover link">
+              Products
+            </Link>
+            <Link href={route("design.index")} className="link-hover link">
+              Design
+            </Link>
           </div>
           <div>
             <span className="footer-title">Company</span>
-            <a className="link link-hover">About us</a>
-            <a className="link link-hover">Contact</a>
-            <a className="link link-hover">Jobs</a>
-            <a className="link link-hover">Press kit</a>
+            {/* <a className="link-hover link">About us</a>
+            <a className="link-hover link">Contact</a>
+            <a className="link-hover link">Jobs</a>
+            <a className="link-hover link">Press kit</a> */}
           </div>
           <div>
             <span className="footer-title">Legal</span>
-            <a className="link link-hover">Terms of use</a>
-            <a className="link link-hover">Privacy policy</a>
-            <a className="link link-hover">Cookie policy</a>
+            {/* <a className="link-hover link">Terms of use</a>
+            <a className="link-hover link">Privacy policy</a>
+            <a className="link-hover link">Cookie policy</a> */}
           </div>
         </div>
       </footer>

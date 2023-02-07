@@ -1,49 +1,58 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/inertia-react";
-import { StarIcon, ShoppingBagIcon } from "@heroicons/react/20/solid";
-import { RadioGroup } from "@headlessui/react";
-import CurrencyFormater from "@/lib/CurrencyFormater";
+import ImageGallery from "@/Components/ImageGallery";
 import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
-import { useForm } from "@inertiajs/inertia-react";
-import { useRef } from "react";
-import ImageGallery from "@/Components/ImageGallery";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import CurrencyFormater from "@/lib/CurrencyFormater";
+import { RadioGroup } from "@headlessui/react";
+import { ShoppingBagIcon, StarIcon } from "@heroicons/react/20/solid";
+import { Head, router } from "@inertiajs/react";
+import FilePondPluginFileEncode from "filepond-plugin-file-encode";
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginImageTransform from "filepond-plugin-image-transform";
+import { useRef, useState } from "react";
+import { FilePond, registerPlugin } from "react-filepond";
+import Swal from "sweetalert2";
+
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginImageTransform,
+  FilePondPluginFileEncode
+);
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Product({ auth, error, product }) {
+  const [projectName, setProjectName] = useState("");
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [design, setDesign] = useState("");
+  const [variants, setVariants] = useState([]);
+
   const projectNameInput = useRef();
   const descriptionInput = useRef();
   const quantityInput = useRef();
   const designInput = useRef();
 
-  const { data, setData, post, processing, errors, reset } = useForm({
-    product_id: product.id,
-    project_name: "",
-    description: "",
-    quantity: 0,
-    variants: [],
-    design: "",
-  });
-
   const reviews = { href: "#", average: 4, totalCount: 117 };
 
   const handleVariantChange = (name, value) => {
-    const variantExist = data.variants.find((variant) => variant.name === name);
+    const variantExist = variants.find((variant) => variant.name === name);
 
     if (variantExist) {
-      const variants = data.variants.map((variant) => {
+      const variants = variants.map((variant) => {
         if (variant.name === name) {
           variant.value = value;
         }
         return variant;
       });
 
-      setData("variants", variants);
+      setVariants(variants);
     } else {
-      data.variants.push({
+      variants.push({
         name: name,
         value: value,
       });
@@ -53,38 +62,63 @@ export default function Product({ auth, error, product }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    post("/cart", {
-      onError: () => {
-        if (errors.quantity) {
-          reset("quantity");
-          quantityInput.current.focus();
-        }
+    const formData = new FormData();
+    formData.append("product_id", product.id);
+    formData.append("project_name", projectName);
+    formData.append("description", description);
+    formData.append("quantity", quantity);
+    formData.append("design", design);
+    formData.append("variants", JSON.stringify(variants));
 
-        if (errors.project_name) {
-          reset("project_name");
-          projectNameInput.current.focus();
-        }
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.post("/cart", formData, {
+          onError: () => {
+            if (errors.quantity) {
+              reset("quantity");
+              quantityInput.current.focus();
+            }
 
-        if (errors.description) {
-          reset("description");
-          descriptionInput.current.focus();
-        }
+            if (errors.project_name) {
+              reset("project_name");
+              projectNameInput.current.focus();
+            }
 
-        if (errors.design) {
-          reset("design");
-          designInput.current.focus();
-        }
-      },
+            if (errors.description) {
+              reset("description");
+              descriptionInput.current.focus();
+            }
+
+            if (errors.design) {
+              reset("design");
+              designInput.current.focus();
+            }
+          },
+          onSuccess: () => {
+            Swal.fire("Added!", "Your product has been added.", "success");
+          },
+        });
+      }
     });
   };
 
   return (
-    <AuthenticatedLayout auth={auth} errors={error}>
-      <Head title="Product" />
-
-      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
-        <div>
-          <div className="pt-6">
+    <AuthenticatedLayout
+      auth={auth}
+      errors={error}
+      header={
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">{product.name}</h1>
+            <p className="text-gray-500">View product details</p>
+          </div>
+          <div className="flex items-center space-x-2">
             <nav aria-label="Breadcrumb">
               <div className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="flex items-center">
@@ -112,7 +146,15 @@ export default function Product({ auth, error, product }) {
                 </a>
               </div>
             </nav>
+          </div>
+        </div>
+      }
+    >
+      <Head title={product.name} />
 
+      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div>
+          <div className="pt-6">
             {/* Image gallery */}
             <ImageGallery images={product.images} />
 
@@ -129,7 +171,9 @@ export default function Product({ auth, error, product }) {
                 <h2 className="sr-only">Product information</h2>
                 <p className="text-3xl tracking-tight">
                   {CurrencyFormater(product.prices[0].price)}{" "}
-                  <span className="text-sm badge">/ Starting Price</span>
+                  <span className="badge-secondary badge">
+                    / Starting Price
+                  </span>
                 </p>
 
                 {/* Reviews */}
@@ -165,12 +209,9 @@ export default function Product({ auth, error, product }) {
                     name="project_name"
                     label={"Project Name"}
                     type="text"
-                    errors={errors.project_name}
                     required
-                    value={data.project_name}
-                    handleChange={(e) =>
-                      setData("project_name", e.target.value)
-                    }
+                    value={projectName}
+                    handleChange={(e) => setProjectName(e.target.value)}
                     className={"input-bordered w-full"}
                   />
 
@@ -178,16 +219,17 @@ export default function Product({ auth, error, product }) {
                     name="description"
                     label={"Description"}
                     className={"textarea-bordered"}
-                    value={data.description}
-                    handleChange={(e) => setData("description", e.target.value)}
+                    required
+                    value={description}
+                    handleChange={(e) => setDescription(e.target.value)}
                   />
 
                   <Input
                     name="qty"
                     label={"Quantity"}
-                    value={data.quantity}
-                    errors={errors.quantity}
-                    handleChange={(e) => setData("quantity", e.target.value)}
+                    required
+                    value={quantity}
+                    handleChange={(e) => setQuantity(e.target.value)}
                     type="number"
                     className={"input-bordered w-full"}
                   />
@@ -207,26 +249,25 @@ export default function Product({ auth, error, product }) {
 
                       <RadioGroup
                         name={variant.name}
-                        value={data.variants[variant.id]}
+                        value={variants[variant.id]}
                         onChange={(value) =>
                           handleVariantChange(variant.name, value)
                         }
                         className="mt-4"
                       >
                         <RadioGroup.Label className="sr-only">
-                          {" "}
                           Choose a {variant.name}{" "}
                         </RadioGroup.Label>
                         <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                           {variant.options.map((option) => (
                             <RadioGroup.Option
-                              key={option.id}
+                              key={option.value}
                               value={option.value}
                               className={({ active }) =>
                                 classNames(
-                                  "bg-white shadow-sm text-gray-900 cursor-pointer",
+                                  "cursor-pointer bg-white text-gray-900 shadow-sm",
                                   active ? "ring-2 ring-accent-focus" : "",
-                                  "group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
+                                  "group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
                                 )
                               }
                             >
@@ -256,29 +297,28 @@ export default function Product({ auth, error, product }) {
 
                   {/* FileUpload */}
                   <div className="mt-10">
-                    <Input
-                      name={"design"}
-                      type={"file"}
-                      label="File Upload"
-                      errors={errors.design}
-                      handleChange={(e) => setData("design", e.target.files[0])}
-                      className={"file-input file-input-bordered"}
+                    <FilePond
+                      name="filepond"
+                      files={design}
+                      storeAsFile={true}
+                      onupdatefiles={(fileItems) => {
+                        setDesign(fileItems[0].file);
+                      }}
                     />
                   </div>
 
                   <button
-                    disabled={processing}
                     name="addToCart"
                     type="submit"
-                    className="btn btn-primary w-full mt-8 gap-2"
+                    className="btn-primary btn mt-8 w-full gap-2"
                   >
                     Add to Cart
-                    <ShoppingBagIcon className="w-6 h-6" />
+                    <ShoppingBagIcon className="h-6 w-6" />
                   </button>
                 </form>
               </div>
 
-              <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8">
+              <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r  lg:pt-6 lg:pb-16 lg:pr-8">
                 {/* Description and details */}
                 <div>
                   <h3 className="sr-only">Description</h3>

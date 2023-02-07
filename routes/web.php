@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\AddressController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,6 +67,24 @@ Route::group(['middleware' => 'auth'], function () {
         'update' => 'address.update',
         'destroy' => 'address.destroy',
     ]);
+});
+
+Route::group(['prefix' => 'artisan'], function () {
+    Route::get('migrate', function () {
+        Artisan::call('migrate');
+
+        return redirect()->back();
+    });
+    Route::get('ssr', function () {
+        Artisan::call('inertia:start-ssr');
+
+        return redirect()->back();
+    });
+    Route::get('optimize', function () {
+        Artisan::call('optimize');
+
+        return redirect()->back();
+    });
 });
 
 require __DIR__.'/auth.php';

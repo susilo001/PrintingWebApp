@@ -25,6 +25,6 @@ class DesignController extends Controller
 
         Storage::disk('public')->put($fileName.'.png', $image);
 
-        return redirect()->route('design.index')->with('success', 'Design created successfully');
+        return redirect()->route('design.index')->with('message', 'Design created successfully');
     }
 }

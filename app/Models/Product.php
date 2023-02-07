@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filters\Filterable;
 use Gloudemans\Shoppingcart\CanBeBought;
 use Gloudemans\Shoppingcart\Contracts\Buyable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model implements Buyable
 {
-    use HasFactory, CanBeBought;
+    use HasFactory, CanBeBought, Filterable;
 
     /**
      * The attributes that are mass assignable.

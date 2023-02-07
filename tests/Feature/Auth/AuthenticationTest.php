@@ -11,14 +11,14 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_login_screen_can_be_rendered(): void
+    public function testLoginScreenCanBeRendered(): void
     {
         $response = $this->get('/login');
 
         $response->assertStatus(200);
     }
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
+    public function testUsersCanAuthenticateWithLoginScreen(): void
     {
         $user = User::factory()->create();
 
@@ -36,7 +36,7 @@ class AuthenticationTest extends TestCase
      *
      * @return void
      */
-    public function test_admin_can_login_and_redirect_to_admin_dashboard(): void
+    public function testAdminCanLoginAndRedirectToAdminDashboard(): void
     {
         $response = $this->post('/login', [
             'email' => 'admin@admin.com',
@@ -53,7 +53,7 @@ class AuthenticationTest extends TestCase
      *
      * @return void
      */
-    public function test_super_admin_can_login_and_redirect_to_admin_dashboard(): void
+    public function testSuperAdminCanLoginAndRedirectToAdminDashboard(): void
     {
         $response = $this->post('/login', [
             'email' => 'owner@owner.com',
@@ -70,7 +70,7 @@ class AuthenticationTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_login_and_redirect_to_home(): void
+    public function testUserCanLoginAndRedirectToHome(): void
     {
         $response = $this->post('/login', [
             'email' => 'test@test.com',
@@ -81,7 +81,7 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(RouteServiceProvider::HOME);
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password(): void
+    public function testUsersCanNotAuthenticateWithInvalidPassword(): void
     {
         $user = User::factory()->create();
 
@@ -98,7 +98,7 @@ class AuthenticationTest extends TestCase
      *
      * @return void
      */
-    public function test_login_request_with_many_attempts_will_be_locked(): void
+    public function testLoginRequestWithManyAttemptsWillBeLocked(): void
     {
         $user = User::factory()->create();
 
@@ -117,7 +117,7 @@ class AuthenticationTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_logout(): void
+    public function testUserCanLogout(): void
     {
         $user = User::factory()->create();
 

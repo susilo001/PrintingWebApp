@@ -30,7 +30,7 @@ class OrderItemFactory extends Factory
             'product_id' => Product::factory(),
             'name' => $this->faker->name,
             'description' => fake()->realText(200),
-            'image' => 'images/asset/products/Food-Box1.png',
+            'image' => 'asset/products/box-1.png',
             'qty' => $this->faker->numberBetween(1, 10000),
             'price' => $this->faker->numberBetween(1, 10000),
             'variants' => $variants,

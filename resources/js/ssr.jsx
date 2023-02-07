@@ -1,7 +1,7 @@
-import ReactDOMServer from "react-dom/server";
-import { createInertiaApp } from "@inertiajs/inertia-react";
-import createServer from "@inertiajs/server";
+import { createInertiaApp } from "@inertiajs/react";
+import createServer from "@inertiajs/react/server";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import ReactDOMServer from "react-dom/server";
 import route from "../../vendor/tightenco/ziggy/dist/index.m";
 
 const appName = "Laravel";
@@ -10,6 +10,10 @@ createServer((page) =>
   createInertiaApp({
     page,
     render: ReactDOMServer.renderToString,
+    progress: {
+      color: "#29d",
+      showSpinner: true,
+    },
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
       resolvePageComponent(

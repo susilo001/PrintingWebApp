@@ -7,25 +7,16 @@ module.exports = {
     "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
     "./storage/framework/views/*.php",
     "./resources/views/**/*.blade.php",
-    "./resources/js/**/*.jsx",
+    "./resources/js/**/**/*.{jsx,js}",
+    "./resources/js/**/*.{jsx,js}",
   ],
-
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ["Nunito", ...defaultTheme.fontFamily.sans],
-      },
-    },
-  },
 
   plugins: [require("@tailwindcss/forms"), require("daisyui")],
   daisyui: {
     styled: true,
-    themes: true,
     base: true,
     utils: true,
     logs: true,
-    themes: ["cmyk", "night"],
-    darkTheme: "night",
+    themes: ["cmyk"],
   },
 };

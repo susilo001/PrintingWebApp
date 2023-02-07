@@ -1,12 +1,13 @@
-import { Link, Head } from "@inertiajs/inertia-react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import ExploreByCategory from "@/Components/ExploreByCategory";
 import Card from "@/Components/Card";
-import Testimonial from "@/Components/Testimonial";
+import ExploreByCategory from "@/Components/ExploreByCategory";
 import FeatureSection from "@/Components/FeatureSection";
-import CurrencyFormater from "@/lib/CurrencyFormater";
-import { Swiper, SwiperSlide } from "swiper/react";
 import HeroSection from "@/Components/HeroSection";
+import Testimonial from "@/Components/Testimonial";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import CurrencyFormater from "@/lib/CurrencyFormater";
+import { Head, Link } from "@inertiajs/react";
+import { Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function Welcome({
   auth,
@@ -16,38 +17,72 @@ export default function Welcome({
   featuredProducts,
 }) {
   return (
-    <AuthenticatedLayout auth={auth} errors={errors} cartCount={cartCount}>
-      <Head title="Welcome" />
-      <div className="container mx-auto max-w-7xl px-4 my-12 sm:px-6 lg:px-8">
-        <div className="container m-auto px-6 py-20 md:pb-0 md:pt-40 md:px-12 lg:py-0 lg:px-10">
+    <AuthenticatedLayout
+      auth={auth}
+      header={
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <h1 className="text-2xl font-bold">Home</h1>
+          </div>
+        </div>
+      }
+      errors={errors}
+      cartCount={cartCount}
+    >
+      <Head title="HomePage" />
+      <div className="container mx-auto my-12 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="px-6 py-20 md:px-12 md:pb-0 md:pt-40 lg:py-0 lg:px-10">
           <HeroSection />
         </div>
-        <div className="py-20 sm:py-32 lg:py-40">
+        <div className="lg:py-30 py-20 sm:py-32">
           <ExploreByCategory categories={categories} />
         </div>
-        <div className="lg:max-w-7xl py-20 sm:py-32 lg:py-40">
-          <div className="flex justify-center mb-8">
+        <div className="lg:py-30 py-20 sm:py-32 lg:max-w-7xl">
+          <div className="mb-8 flex justify-center">
             <h2 className="text-2xl font-bold">Popular Products</h2>
           </div>
 
-          <Swiper spaceBetween={20} slidesPerView={4} className={"swiper"}>
+          <Swiper
+            spaceBetween={20}
+            className={"swiper py-4"}
+            pagination={{
+              type: "progressbar",
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+              1280: {
+                slidesPerView: 4,
+              },
+            }}
+            modules={[Pagination]}
+          >
             {featuredProducts.map((product, index) => (
               <SwiperSlide key={index}>
                 <Link href={route("product.show", product.id)}>
-                  <Card className={"bg-base-200 h-96 card-compact shadow-md"}>
+                  <Card className={"card-compact h-96 border shadow-lg"}>
                     <Card.Image
                       src={product.images[0]}
                       alt={product.name}
-                      className="object-cover h-52"
+                      className="aspect-square object-contain"
                     />
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>
-                      <span className="badge badge-sm badge-secondary">
-                        {product.category.name}
-                      </span>
-                      <span className="font-bold text-lg">
-                        {CurrencyFormater(product.prices[0].price)}
-                      </span>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-lg font-bold text-primary">
+                          {CurrencyFormater(product.prices[0].price)}
+                        </span>
+                        <span className="badge badge-accent p-2 font-semibold">
+                          {product.category.name}
+                        </span>
+                      </div>
                     </Card.Body>
                   </Card>
                 </Link>
@@ -55,11 +90,11 @@ export default function Welcome({
             ))}
           </Swiper>
         </div>
-        <div className="max-w-7xl py-20 sm:py-32 lg:py-40">
+        <div className="lg:py-30 max-w-7xl py-20 sm:py-32">
           <FeatureSection />
         </div>
-        <div className="max-w-7xl py-20 sm:py-32 lg:py-40">
-          <div className="flex justify-center mb-8">
+        <div className="lg:py-30 max-w-7xl py-20 sm:py-32">
+          <div className="mb-8 flex justify-center">
             <h2 className="text-2xl font-bold">Testimonial</h2>
           </div>
           <Testimonial />
