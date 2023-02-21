@@ -3,7 +3,6 @@
 namespace App\Services\Payment;
 
 use App\Models\OrderItem;
-use Illuminate\Support\Facades\Date;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class HandlePaymentService extends Midtrans
@@ -15,7 +14,6 @@ class HandlePaymentService extends Midtrans
      */
     public function transform($data)
     {
-
         $orderItems = OrderItem::where('order_id', $data['id'])->get();
         $transaction = [
             'transaction_details' => [

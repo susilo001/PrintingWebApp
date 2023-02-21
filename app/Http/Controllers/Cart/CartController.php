@@ -8,8 +8,6 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-use function GuzzleHttp\Promise\all;
-
 class CartController extends Controller
 {
     protected $cartService;
@@ -56,7 +54,7 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$rowId)
+    public function update(Request $request, $rowId)
     {
         Cart::update($rowId, (int) $request['data']['qty']);
 
