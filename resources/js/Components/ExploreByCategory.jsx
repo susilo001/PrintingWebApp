@@ -78,15 +78,15 @@ export default function ExploreByCategory({ categories }) {
         )}
         <div className="grid snap-start justify-center gap-x-10 gap-y-10 px-4 pb-4 md:grid-cols-2 md:px-8 xl:grid-cols-3">
           {products.map((product) => (
-            <Link href={route("product.show", product.id)} key={product.id}>
-              <Card className="border shadow-lg">
+            <Link href={route("product.show", product.id)} key={product.id} className="link link-hover">
+              <Card className="border shadow-xl hover:bg-base-200">
                 <Card.Image
                   src={
                     product.images[0]
                       ? product.images[0]
                       : "https://picsum.photos/200/200"
                   }
-                  className={"aspect-square  object-contain"}
+                  className={"aspect-square object-contain"}
                   alt={product.name}
                 />
                 <Card.Body>

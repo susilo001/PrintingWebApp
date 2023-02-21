@@ -46,14 +46,6 @@ export default function Authenticated({ auth, header, children }) {
                 >
                   Design Tools
                 </NavLink>
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300 dark:focus:border-gray-700 dark:focus:text-gray-300"
-                >
-                  Survey
-                </a>
               </div>
             </div>
 
@@ -257,35 +249,6 @@ export default function Authenticated({ auth, header, children }) {
       )}
 
       {/* Flash Message */}
-      <div className="alert mx-auto mt-4 max-w-7xl">
-        <div>
-          <InformationCircleIcon className="h-6 w-6 text-info" />
-          <div>
-            <h3 className="font-bold">Click untuk mengisi survey!</h3>
-            <div className="text-xs">
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Berikan masukan anda untuk website ini dengan mengisi survey
-                ini. Terima kasih!
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="flex-none">
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link"
-            target="_blank"
-            rel="noreferrer"
-            className="btn-ghost btn-sm btn-circle btn"
-          >
-            <PencilSquareIcon className="h-6 w-6" />
-          </a>
-        </div>
-      </div>
-
       {/* {flash.message && (
         <div className="alert mx-auto mt-20 max-w-7xl shadow-lg">
           <div>

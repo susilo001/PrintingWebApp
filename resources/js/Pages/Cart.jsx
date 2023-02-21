@@ -3,7 +3,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import Midtrans from "@/lib/midtrans";
 import {
-  BanknotesIcon,
   CreditCardIcon,
   ExclamationTriangleIcon,
   ShoppingCartIcon,
@@ -30,109 +29,77 @@ export default function Cart({
     Midtrans();
   }, []);
 
-  const handleCashPayment = () => {
-    router.post(
-      route("cart.checkout"),
-      {
-        payment_method: "cash",
+  const showSnapPayment = (page) => {
+    window.snap.show();
+    window.snap.pay(page.props.token, {
+      onSuccess: function (result) {
+        router.put(
+          route("order.update", {
+            order: result.order_id,
+            status: result.transaction_status,
+            payment_type: result.payment_type,
+          }),
+          {
+            preserveScroll: true,
+            preserveState: true,
+          }
+        );
       },
-      {
-        preserveScroll: true,
-        preserveState: true,
-        onSuccess: (page) => {
-          router.put(
-            route("order.update", {
-              order: page.props.token.id,
-              status: "Cash On Delivery",
-              payment_type: "cash",
-            })
-          );
-          Swal.fire({
-            title: "Success!",
-            text: "Your order has been placed.",
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then((result) => {
-            if (result.isConfirmed) {
+      onPending: function (result) {
+        router.put(
+          route("order.update", {
+            order: result.order_id,
+            status: result.transaction_status,
+            payment_type: result.payment_type,
+          }),
+          {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
               router.push(route("order.index"));
-            }
-          });
-        },
-      }
-    );
+            },
+          }
+        );
+      },
+      onError: function (result) {
+        Swal.fire({
+          title: "Error",
+          text: result.status_message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push(route("cart.index"));
+          }
+        });
+      },
+      onClose: function () {
+        Swal.fire({
+          title: "Close without procceeding payment",
+          icon: "error",
+        });
+      },
+    });
   };
 
   const handleSnapPayment = () => {
     Swal.fire({
-      title: "Testing stage",
-      text: "Please use this link https://simulator.sandbox.midtrans.com/bri/va/index",
-      icon: "warning",
+      title: "Testing payment",
+      text: "Please use this card information Card Number: 4811 1111 1111 1114 Exp Month: 01 Exp Year: 2025 CVV: 123",
+      icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
+      confirmButtonText: "Proceed",
     }).then((result) => {
       if (result.isConfirmed) {
         router.post(
           route("cart.checkout"),
-          {
-            payment_method: "snap",
-          },
+          {},
           {
             preserveScroll: true,
             preserveState: true,
             onSuccess: (page) => {
-              window.snap.show();
-              window.snap.pay(page.props.token, {
-                onSuccess: function (result) {
-                  router.put(
-                    route("order.update", {
-                      order: result.order_id,
-                      status: result.transaction_status,
-                      payment_type: result.payment_type,
-                    }),
-                    {
-                      preserveScroll: true,
-                      preserveState: true,
-                      onSuccess: () => {
-                        router.push(route("order.index"));
-                      },
-                    }
-                  );
-                },
-                onPending: function (result) {
-                  router.put(
-                    route("order.update", {
-                      order: result.order_id,
-                      status: result.transaction_status,
-                      payment_type: result.payment_type,
-                    }),
-                    {
-                      preserveScroll: true,
-                      preserveState: true,
-                      onSuccess: () => {
-                        router.push(route("order.index"));
-                      },
-                    }
-                  );
-                },
-                onError: function (result) {
-                  Swal.fire({
-                    title: "Error",
-                    text: result.status_message,
-                    icon: "error",
-                    confirmButtonText: "Ok",
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      router.push(route("cart.index"));
-                    }
-                  });
-                },
-                onClose: function () {
-                  Swal.fire({
-                    title: "Close without procceeding payment",
-                    icon: "error",
-                  });
-                },
-              });
+              showSnapPayment(page);
             },
           }
         );
@@ -222,7 +189,7 @@ export default function Cart({
                         </div>
                         <Input
                           type="number"
-                          label={""}
+                          label={"Quantity"}
                           value={item.qty}
                           className={"input-bordered input-sm w-24"}
                         />
@@ -271,19 +238,12 @@ export default function Cart({
                 </div>
                 <div className="space-y-4">
                   <button
-                    className="btn-secondary btn-block btn gap-2"
+                    className="btn-primary btn-block btn gap-2"
                     onClick={() => handleSnapPayment()}
                   >
                     Pay now
                     <CreditCardIcon className="h-6 w-6" />
                     <WalletIcon className="h-6 w-6" />
-                  </button>
-                  <button
-                    className="btn-primary btn-block btn gap-2"
-                    onClick={() => handleCashPayment()}
-                  >
-                    Cash on Delivery
-                    <BanknotesIcon className="h-6 w-6" />
                   </button>
                 </div>
               </div>

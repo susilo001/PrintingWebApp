@@ -39,6 +39,6 @@ class OrderController extends Controller
             'payment_type' => $request->payment_type,
         ]);
 
-        return redirect()->route('order.index');
+        return redirect()->route('order.index')->with('message', 'survey');
     }
 }

@@ -31,7 +31,7 @@ abstract class Midtrans
      *
      * @return void
      */
-    public function configure()
+    private function configure()
     {
         Config::$serverKey = config('services.midtrans.server_key');
         Config::$isProduction = config('services.midtrans.is_production');

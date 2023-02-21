@@ -29,7 +29,7 @@ export default function Welcome({
       errors={errors}
       cartCount={cartCount}
     >
-      <Head title="HomePage" />
+      <Head title="Welcome" />
       <div className="container mx-auto my-12 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="px-6 py-20 md:px-12 md:pb-0 md:pt-40 lg:py-0 lg:px-10">
           <HeroSection />
@@ -67,7 +67,7 @@ export default function Welcome({
             {featuredProducts.map((product, index) => (
               <SwiperSlide key={index}>
                 <Link href={route("product.show", product.id)}>
-                  <Card className={"card-compact h-96 border shadow-lg"}>
+                  <Card className={"card-compact h-96 border shadow-xl hover:bg-base-200"}>
                     <Card.Image
                       src={product.images[0]}
                       alt={product.name}
