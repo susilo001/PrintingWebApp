@@ -67,7 +67,11 @@ export default function Welcome({
             {featuredProducts.map((product, index) => (
               <SwiperSlide key={index}>
                 <Link href={route("product.show", product.id)}>
-                  <Card className={"card-compact h-96 border shadow-xl hover:bg-base-200"}>
+                  <Card
+                    className={
+                      "card-compact h-96 border shadow-xl hover:bg-base-200"
+                    }
+                  >
                     <Card.Image
                       src={product.images[0]}
                       alt={product.name}
