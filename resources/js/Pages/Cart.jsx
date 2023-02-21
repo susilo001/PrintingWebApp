@@ -1,4 +1,3 @@
-import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import Midtrans from "@/lib/midtrans";
@@ -28,6 +27,17 @@ export default function Cart({
   useEffect(() => {
     Midtrans();
   }, []);
+
+  const handleChangeQty = (rowId, qty) => {
+    setTimeout(() => {
+      router.put(route("cart.update", { cart: rowId }), {
+        data: { qty: qty },
+        only: ["cart"],
+        preserveScroll: true,
+        preserveState: true,
+      });
+    }, 5000);
+  };
 
   const showSnapPayment = (page) => {
     window.snap.show();
@@ -139,7 +149,7 @@ export default function Cart({
       }
     >
       <Head title="Shopping Cart" />
-      <div className="mx-auto my-4 max-w-7xl px-8">
+      <div className="container mx-auto my-12 max-w-7xl px-4 sm:px-6 lg:px-8">
         {data.length === 0 ? (
           <div className="flex h-96 items-center justify-center">
             <div className="text-center">
@@ -160,18 +170,22 @@ export default function Cart({
           <div className="grid grid-flow-row-dense gap-y-4 lg:grid-cols-3 lg:gap-x-8">
             <div className="lg:col-span-2">
               {data.map((item) => (
-                <div key={item.id} className="rounded-lg border py-10">
-                  <div className="flex flex-col items-center justify-between lg:flex-row lg:items-stretch lg:space-x-8">
-                    <div className="rounded-xl">
+                <div
+                  key={item.id}
+                  className="mb-8 rounded-lg border py-10 shadow-lg"
+                >
+                  <div className="flex flex-col items-center lg:space-x-8">
+                    <div className="rounded-xl lg:h-96 lg:w-96">
                       <img
                         src={"storage/" + item.options.design}
-                        className="aspect-square object-contain"
+                        className="aspect-square object-cover"
                         alt={item.name}
                       />
                     </div>
-                    <div className="mt-8 grow lg:mt-0">
+                    <div className="mt-8 p-8">
                       <div className="space-y-4">
                         <h3 className="text-lg font-bold">{item.name}</h3>
+                        <p>{item.options.description}</p>
                         <div className="grid grid-cols-3 items-center justify-center gap-2">
                           {item.options.variants.map((variant, index) => (
                             <div key={index}>{variant.value}</div>
@@ -187,11 +201,14 @@ export default function Cart({
                             {CurrencyFormater(item.price)}
                           </span>
                         </div>
-                        <Input
+                        <input
+                          className={"input-bordered input input-sm w-24"}
                           type="number"
-                          label={"Quantity"}
-                          value={item.qty}
-                          className={"input-bordered input-sm w-24"}
+                          name="qty"
+                          defaultValue={item.qty}
+                          onChange={(e) =>
+                            handleChangeQty(item.rowId, e.target.value)
+                          }
                         />
                         <button
                           onClick={() => handleDelete(item.rowId)}
@@ -205,7 +222,7 @@ export default function Cart({
                 </div>
               ))}
             </div>
-            <div className="h-fit rounded-lg border">
+            <div className="h-fit rounded-lg border shadow-lg">
               <div className="space-y-4 p-8">
                 <h2 className="text-xl font-bold">Order Summary</h2>
                 <div className="space-y-4">
