@@ -1,9 +1,7 @@
-import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import Midtrans from "@/lib/midtrans";
 import {
-  BanknotesIcon,
   CreditCardIcon,
   ExclamationTriangleIcon,
   ShoppingCartIcon,
@@ -30,109 +28,88 @@ export default function Cart({
     Midtrans();
   }, []);
 
-  const handleCashPayment = () => {
-    router.post(
-      route("cart.checkout"),
-      {
-        payment_method: "cash",
-      },
-      {
+  const handleChangeQty = (rowId, qty) => {
+    setTimeout(() => {
+      router.put(route("cart.update", { cart: rowId }), {
+        data: { qty: qty },
+        only: ["cart"],
         preserveScroll: true,
         preserveState: true,
-        onSuccess: (page) => {
-          router.put(
-            route("order.update", {
-              order: page.props.token.id,
-              status: "Cash On Delivery",
-              payment_type: "cash",
-            })
-          );
-          Swal.fire({
-            title: "Success!",
-            text: "Your order has been placed.",
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then((result) => {
-            if (result.isConfirmed) {
+      });
+    }, 5000);
+  };
+
+  const showSnapPayment = (page) => {
+    window.snap.show();
+    window.snap.pay(page.props.token, {
+      onSuccess: function (result) {
+        router.put(
+          route("order.update", {
+            order: result.order_id,
+            status: result.transaction_status,
+            payment_type: result.payment_type,
+          }),
+          {
+            preserveScroll: true,
+            preserveState: true,
+          }
+        );
+      },
+      onPending: function (result) {
+        router.put(
+          route("order.update", {
+            order: result.order_id,
+            status: result.transaction_status,
+            payment_type: result.payment_type,
+          }),
+          {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
               router.push(route("order.index"));
-            }
-          });
-        },
-      }
-    );
+            },
+          }
+        );
+      },
+      onError: function (result) {
+        Swal.fire({
+          title: "Error",
+          text: result.status_message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push(route("cart.index"));
+          }
+        });
+      },
+      onClose: function () {
+        Swal.fire({
+          title: "Close without procceeding payment",
+          icon: "error",
+        });
+      },
+    });
   };
 
   const handleSnapPayment = () => {
     Swal.fire({
-      title: "Testing stage",
-      text: "Please use this link https://simulator.sandbox.midtrans.com/bri/va/index",
-      icon: "warning",
+      title: "Testing payment",
+      text: "Please use this card information Card Number: 4811 1111 1111 1114 Exp Month: 01 Exp Year: 2025 CVV: 123",
+      icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
+      confirmButtonText: "Proceed",
     }).then((result) => {
       if (result.isConfirmed) {
         router.post(
           route("cart.checkout"),
-          {
-            payment_method: "snap",
-          },
+          {},
           {
             preserveScroll: true,
             preserveState: true,
             onSuccess: (page) => {
-              window.snap.show();
-              window.snap.pay(page.props.token, {
-                onSuccess: function (result) {
-                  router.put(
-                    route("order.update", {
-                      order: result.order_id,
-                      status: result.transaction_status,
-                      payment_type: result.payment_type,
-                    }),
-                    {
-                      preserveScroll: true,
-                      preserveState: true,
-                      onSuccess: () => {
-                        router.push(route("order.index"));
-                      },
-                    }
-                  );
-                },
-                onPending: function (result) {
-                  router.put(
-                    route("order.update", {
-                      order: result.order_id,
-                      status: result.transaction_status,
-                      payment_type: result.payment_type,
-                    }),
-                    {
-                      preserveScroll: true,
-                      preserveState: true,
-                      onSuccess: () => {
-                        router.push(route("order.index"));
-                      },
-                    }
-                  );
-                },
-                onError: function (result) {
-                  Swal.fire({
-                    title: "Error",
-                    text: result.status_message,
-                    icon: "error",
-                    confirmButtonText: "Ok",
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      router.push(route("cart.index"));
-                    }
-                  });
-                },
-                onClose: function () {
-                  Swal.fire({
-                    title: "Close without procceeding payment",
-                    icon: "error",
-                  });
-                },
-              });
+              showSnapPayment(page);
             },
           }
         );
@@ -172,7 +149,7 @@ export default function Cart({
       }
     >
       <Head title="Shopping Cart" />
-      <div className="mx-auto my-4 max-w-7xl px-8">
+      <div className="container mx-auto my-12 max-w-7xl px-4 sm:px-6 lg:px-8">
         {data.length === 0 ? (
           <div className="flex h-96 items-center justify-center">
             <div className="text-center">
@@ -193,18 +170,22 @@ export default function Cart({
           <div className="grid grid-flow-row-dense gap-y-4 lg:grid-cols-3 lg:gap-x-8">
             <div className="lg:col-span-2">
               {data.map((item) => (
-                <div key={item.id} className="rounded-lg border py-10">
-                  <div className="flex flex-col items-center justify-between lg:flex-row lg:items-stretch lg:space-x-8">
-                    <div className="rounded-xl">
+                <div
+                  key={item.id}
+                  className="mb-8 rounded-lg border py-10 shadow-lg"
+                >
+                  <div className="flex flex-col items-center lg:space-x-8">
+                    <div className="rounded-xl lg:h-96 lg:w-96">
                       <img
                         src={"storage/" + item.options.design}
-                        className="aspect-square object-contain"
+                        className="aspect-square object-cover"
                         alt={item.name}
                       />
                     </div>
-                    <div className="mt-8 grow lg:mt-0">
+                    <div className="mt-8 p-8">
                       <div className="space-y-4">
                         <h3 className="text-lg font-bold">{item.name}</h3>
+                        <p>{item.options.description}</p>
                         <div className="grid grid-cols-3 items-center justify-center gap-2">
                           {item.options.variants.map((variant, index) => (
                             <div key={index}>{variant.value}</div>
@@ -220,11 +201,14 @@ export default function Cart({
                             {CurrencyFormater(item.price)}
                           </span>
                         </div>
-                        <Input
+                        <input
+                          className={"input-bordered input input-sm w-24"}
                           type="number"
-                          label={""}
-                          value={item.qty}
-                          className={"input-bordered input-sm w-24"}
+                          name="qty"
+                          defaultValue={item.qty}
+                          onChange={(e) =>
+                            handleChangeQty(item.rowId, e.target.value)
+                          }
                         />
                         <button
                           onClick={() => handleDelete(item.rowId)}
@@ -238,7 +222,7 @@ export default function Cart({
                 </div>
               ))}
             </div>
-            <div className="h-fit rounded-lg border">
+            <div className="h-fit rounded-lg border shadow-lg">
               <div className="space-y-4 p-8">
                 <h2 className="text-xl font-bold">Order Summary</h2>
                 <div className="space-y-4">
@@ -271,19 +255,12 @@ export default function Cart({
                 </div>
                 <div className="space-y-4">
                   <button
-                    className="btn-secondary btn-block btn gap-2"
+                    className="btn-primary btn-block btn gap-2"
                     onClick={() => handleSnapPayment()}
                   >
                     Pay now
                     <CreditCardIcon className="h-6 w-6" />
                     <WalletIcon className="h-6 w-6" />
-                  </button>
-                  <button
-                    className="btn-primary btn-block btn gap-2"
-                    onClick={() => handleCashPayment()}
-                  >
-                    Cash on Delivery
-                    <BanknotesIcon className="h-6 w-6" />
                   </button>
                 </div>
               </div>

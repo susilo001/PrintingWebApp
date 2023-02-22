@@ -15,7 +15,6 @@ class HandlePaymentService extends Midtrans
     public function transform($data)
     {
         $orderItems = OrderItem::where('order_id', $data['id'])->get();
-
         $transaction = [
             'transaction_details' => [
                 'order_id' => $data->id,
@@ -48,20 +47,20 @@ class HandlePaymentService extends Midtrans
             [
                 'id' => 'T01',
                 'name' => 'Tax',
-                'price' => Cart::tax(),
+                'price' => (int) Cart::tax(),
                 'quantity' => 1,
             ],
             [
                 'id' => 'D01',
                 'name' => 'Discount',
-                'price' => Cart::discount(),
+                'price' => (int) Cart::discount(),
                 'quantity' => 1,
             ],
         ];
 
         $transaction['item_details'] = array_merge($transaction['item_details'], $additionalFee);
 
-        Cart::destroy();
+        // Cart::destroy();
 
         return $transaction;
     }

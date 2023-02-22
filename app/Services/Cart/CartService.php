@@ -94,7 +94,7 @@ class CartService
      *
      * @return void
      */
-    public function checkout($request)
+    public function checkout()
     {
         $order = Order::create([
             'id' => Date::now()->timestamp,
@@ -125,16 +125,10 @@ class CartService
             'gross_amount' => Cart::priceTotal(),
         ]);
 
-        if ($request['payment_method'] == 'snap') {
-            $data = $order->load(['orderItems', 'paymentDetail', 'user']);
+        $data = $order->load(['orderItems', 'paymentDetail', 'user']);
 
-            $payment = new HandlePaymentService();
+        $payment = new HandlePaymentService();
 
-            return $payment->handle($data);
-        } else {
-            Cart::destroy();
-
-            return $order;
-        }
+        return $payment->handle($data);
     }
 }

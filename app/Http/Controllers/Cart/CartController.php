@@ -54,9 +54,9 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $rowId)
     {
-        Cart::update($request->rowId, $request->quantity);
+        Cart::update($rowId, (int) $request['data']['qty']);
 
         return redirect()->route('cart.index')->with('message', 'Cart updated successfully');
     }
@@ -79,9 +79,9 @@ class CartController extends Controller
      *
      * @return void
      */
-    public function checkout(Request $request)
+    public function checkout()
     {
-        $response = $this->cartService->checkout($request->all());
+        $response = $this->cartService->checkout();
 
         return Inertia::render('Cart', [
             'cart' => Cart::content(),
