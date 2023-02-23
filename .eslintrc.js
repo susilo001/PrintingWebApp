@@ -19,7 +19,6 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
-    "no-console": false,
     "no-undef": "off",
     "react/display-name": true,
     "react/prop-types": "off",

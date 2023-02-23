@@ -12,16 +12,7 @@ import { Head, Link, router } from "@inertiajs/react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 
-export default function Cart({
-  auth,
-  cart,
-  cartCount,
-  discount,
-  subtotal,
-  tax,
-  weight,
-  total,
-}) {
+export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
   const data = Object.entries(cart).map(([key, value]) => value);
 
   useEffect(() => {
@@ -137,8 +128,6 @@ export default function Cart({
 
   return (
     <AuthenticatedLayout
-      auth={auth}
-      cartCount={cartCount}
       header={
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">

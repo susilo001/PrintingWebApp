@@ -1,9 +1,10 @@
+import Dropdown from "@/Components/Dropdown";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import { router } from "@inertiajs/react";
 import { DownloadButton } from "polotno/toolbar/download-button";
+import { useState } from "react";
 export default function ActionControls({ store }) {
-  const handleRedirectHome = () => {
-    router.visit(route("home"));
-  };
+  const [showSettings, setShowSettings] = useState(false);
   const handleSaveButton = () => {
     store.toDataURL().then((image) => {
       router.post(route("design.store"), {
@@ -13,10 +14,26 @@ export default function ActionControls({ store }) {
     });
   };
   return (
-    <div className="mr-4 flex space-x-4">
-      <DownloadButton store={store} />
-      <button onClick={handleSaveButton}>Save</button>
-      <button onClick={handleRedirectHome}>Home</button>
-    </div>
+    <>
+      <div className="flex space-x-4">
+        <div className="hidden sm:flex sm:space-x-4">
+          <DownloadButton store={store} />
+          <button onClick={handleSaveButton}>Save</button>
+        </div>
+        <div className="sm:hidden">
+          <Dropdown>
+            <Dropdown.Trigger>
+              <AdjustmentsHorizontalIcon className="h-6 w-6" />
+            </Dropdown.Trigger>
+            <Dropdown.Content>
+              <div className="flex flex-col space-y-4">
+                <DownloadButton store={store} />
+                <button onClick={handleSaveButton}>Save</button>
+              </div>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+      </div>
+    </>
   );
 }

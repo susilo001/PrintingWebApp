@@ -5,7 +5,7 @@ import { Head, Link, usePage } from "@inertiajs/react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function Order({ orders, auth, cartCount }) {
+export default function Order({ orders }) {
   const { flash } = usePage().props;
 
   const handleRequestInvoice = (id) => {
@@ -34,8 +34,6 @@ export default function Order({ orders, auth, cartCount }) {
 
   return (
     <AuthenticatedLayout
-      auth={auth}
-      cartCount={cartCount}
       header={
         <div className="flex items-center justify-between">
           <div>

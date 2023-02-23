@@ -9,15 +9,9 @@ import { Head, Link } from "@inertiajs/react";
 import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function Welcome({
-  auth,
-  errors,
-  cartCount,
-  categories,
-  featuredProducts,
-}) {
+export default function Welcome({ categories, featuredProducts }) {
   return (
-    <AuthenticatedLayout auth={auth} errors={errors} cartCount={cartCount}>
+    <AuthenticatedLayout>
       <Head title="Welcome" />
       <div className="container mx-auto my-12 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="px-6 py-20 md:px-12 md:pb-0 md:pt-40 lg:py-0 lg:px-10">

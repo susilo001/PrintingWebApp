@@ -33,9 +33,10 @@ export default function Design() {
   return (
     <>
       <Head title="Design Tools" />
+
       <Container
-        className={"bp4-dark polotno-app-container container m-auto"}
-        style={{ width: "100vw", height: "100vh", padding: 0 }}
+        className={"bp4-dark polotno-app-container"}
+        style={{ width: "100vw", height: "92vh", padding: 0, margin: 0 }}
       >
         <SidePanelWrapper>
           <SidePanel
