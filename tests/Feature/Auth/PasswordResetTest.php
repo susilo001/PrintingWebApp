@@ -71,8 +71,6 @@ class PasswordResetTest extends TestCase
 
     /**
      * Test if user can ask for reset link with unsuccessful response.
-     *
-     * @return void
      */
     public function testUserCanAskForResetLinkWithUnsuccessfulResponse(): void
     {

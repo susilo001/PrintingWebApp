@@ -11,14 +11,8 @@ use Illuminate\Support\Facades\Storage;
 
 class CartService
 {
-    /**
-     * @var Product
-     */
     protected Product $product;
 
-    /**
-     * @var Cart
-     */
     protected Cart $cart;
 
     public function __construct(Product $product)

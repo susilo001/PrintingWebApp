@@ -51,8 +51,6 @@ class PasswordUpdateTest extends TestCase
 
     /**
      * Test if user can update password with invalid credentials.
-     *
-     * @return void
      */
     public function testUserCanUpdatePasswordWithInvalidCredentials(): void
     {

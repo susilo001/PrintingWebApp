@@ -11,7 +11,6 @@ class AddressController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -31,8 +30,6 @@ class AddressController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  Address  $address
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Address $address)
@@ -52,7 +49,6 @@ class AddressController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Address  $address
      * @return \Illuminate\Http\Response
      */
     public function destroy(Address $address)

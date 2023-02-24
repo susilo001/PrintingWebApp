@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Design;
 use App\Http\Controllers\Controller;
 use App\Models\Template;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class DesignController extends Controller

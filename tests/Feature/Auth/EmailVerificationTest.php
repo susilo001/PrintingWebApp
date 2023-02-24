@@ -65,8 +65,6 @@ class EmailVerificationTest extends TestCase
 
     /**
      * Test if user already verified email, then redirect to home page.
-     *
-     * @return void
      */
     public function testUserAlreadyVerifiedEmailThenRedirectToHomePage(): void
     {
@@ -107,8 +105,6 @@ class EmailVerificationTest extends TestCase
 
     /**
      * Test if user need to resend email verification.
-     *
-     * @return void
      */
     public function testUserNeedToResendEmailVerification(): void
     {

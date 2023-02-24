@@ -33,7 +33,7 @@ class ProductSeeder extends Seeder
                 'images' => [
                     'asset/products/name-card.png',
                 ],
-            ]
+            ] 
         )->create();
 
         $undagan = Category::where('slug', 'undangan')->first();

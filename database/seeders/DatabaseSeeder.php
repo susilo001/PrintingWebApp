@@ -21,13 +21,13 @@ class DatabaseSeeder extends Seeder
             AddressSeeder::class,
             CategorySeeder::class,
             DiscountSeeder::class,
-            ProductSeeder::class,
-            PriceSeeder::class,
-            VariantSeeder::class,
-            OrderSeeder::class,
-            OrderItemSeeder::class,
-            PaymentDetailSeeder::class,
-            TestimonialSeeder::class,
+            // ProductSeeder::class,
+            // PriceSeeder::class,
+            // VariantSeeder::class,
+            // OrderSeeder::class,
+            // OrderItemSeeder::class,
+            // PaymentDetailSeeder::class,
+            // TestimonialSeeder::class,
         ]);
     }
 }

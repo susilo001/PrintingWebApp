@@ -7,17 +7,23 @@ use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Category;
 use App\Models\Product;
 use Closure;
-use Filament\Forms;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
@@ -32,7 +38,7 @@ class ProductResource extends Resource
             ->schema([
                 Card::make()->columns(1)->schema([
                     Grid::make()->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
                                 if (! $get('is_slug_changed_manually') && filled($state)) {
                                     $set('slug', Str::slug($state));
@@ -41,7 +47,7 @@ class ProductResource extends Resource
                             ->reactive()
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('slug')
+                        TextInput::make('slug')
                             ->afterStateUpdated(function (Closure $set) {
                                 $set('is_slug_changed_manually', true);
                             })
@@ -49,7 +55,7 @@ class ProductResource extends Resource
                             ->disabled()
                             ->maxLength(255),
                     ]),
-                    Forms\Components\Textarea::make('description')
+                    Textarea::make('description')
                         ->required(),
                 ]),
                 Card::make()->columns(1)->schema([
@@ -64,27 +70,30 @@ class ProductResource extends Resource
                             ->relationship('discount', 'name'),
                     ]),
                     Grid::make()->schema([
-                        Forms\Components\TextInput::make('weight')
+                        TextInput::make('weight')
                             ->numeric()
                             ->type('number')
                             ->required(),
-                        Forms\Components\TextInput::make('tax')
+                        TextInput::make('tax')
                             ->numeric()
                             ->type('number')
                             ->required(),
                     ]),
-                    Forms\Components\Toggle::make('featured')
+                    Toggle::make('featured')
                         ->required(),
                 ]),
                 Card::make()->columns(1)->schema([
-                    FileUpload::make('images')
+                    SpatieMediaLibraryFileUpload::make('images')
                         ->image()
+                        ->collection('products')
                         ->imageResizeMode('cover')
                         ->imageCropAspectRatio('16:9')
                         ->imageResizeTargetWidth('1920')
                         ->imageResizeTargetHeight('1080')
                         ->multiple()
                         ->maxFiles(4)
+                        ->responsiveImages()
+                        ->acceptedFileTypes(['image/*'])
                         ->required(),
                 ]),
 
@@ -93,17 +102,17 @@ class ProductResource extends Resource
                         ->relationship()
                         ->schema([
                             Grid::make(4)->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->required(),
-                                Forms\Components\TextInput::make('price')
+                                TextInput::make('price')
                                     ->numeric()
                                     ->type('number')
                                     ->required(),
-                                Forms\Components\TextInput::make('min_order')
+                                TextInput::make('min_order')
                                     ->numeric()
                                     ->type('number')
                                     ->required(),
-                                Forms\Components\TextInput::make('max_order')
+                                TextInput::make('max_order')
                                     ->numeric()
                                     ->type('number')
                                     ->required(),
@@ -116,10 +125,10 @@ class ProductResource extends Resource
                         ->relationship()
                         ->schema([
                             Grid::make(1)->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->required(),
                                 Repeater::make('options')->schema([
-                                    Forms\Components\TextInput::make('value')
+                                    TextInput::make('value')
                                         ->required(),
                                 ])->createItemButtonLabel('Add New Option'),
                             ]),
@@ -133,28 +142,29 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->sortable()
+                    ->label('ID')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('images.0')
-                    ->disk('public')
+                SpatieMediaLibraryImageColumn::make('images')
+                    ->collection('products')
                     ->square()
                     ->label('Image'),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
+                TextColumn::make('category.name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('discount.active')
+                IconColumn::make('discount.active')
                     ->sortable()
                     ->boolean(),
-                Tables\Columns\IconColumn::make('featured')
+                IconColumn::make('featured')
                     ->sortable()
                     ->boolean(),
-                Tables\Columns\TextColumn::make('weight')
+                TextColumn::make('weight')
                     ->icon('heroicon-o-cube')
                     ->iconPosition('after'),
-                Tables\Columns\TextColumn::make('tax')
+                TextColumn::make('tax')
                     ->icon('heroicon-o-receipt-tax')
                     ->iconPosition('after'),
             ])
@@ -162,10 +172,10 @@ class ProductResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Design;
 
 use App\Http\Controllers\Controller;
 use App\Models\Template;
-use Illuminate\Support\Facades\Storage;
 
 class DesignController extends Controller
 {
