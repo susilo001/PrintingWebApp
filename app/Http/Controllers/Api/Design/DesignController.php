@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Design;
 
 use App\Http\Controllers\Controller;
+use App\Models\Template;
 use Illuminate\Support\Facades\Storage;
 
 class DesignController extends Controller
@@ -14,37 +15,11 @@ class DesignController extends Controller
      */
     public function index()
     {
-        $files = Storage::disk('public')->files('templates');
+        $templates = Template::all();
 
-        $images = array_filter($files, function ($file) {
-            return preg_match('/\.(jpg|jpeg|png|gif)$/', $file);
+        $templates->each(function ($template) {
+            $template->image = $template->getFirstMediaUrl('templates');
         });
-
-        $json = array_filter($files, function ($file) {
-            return preg_match('/\.(json)$/', $file);
-        });
-
-        $templates = [];
-
-        foreach ($images as $image) {
-            $name = str_replace('templates/', '', $image);
-            $name = str_replace('.jpg', '', $name);
-            $name = str_replace('.jpeg', '', $name);
-            $name = str_replace('.png', '', $name);
-            $name = str_replace('.gif', '', $name);
-
-            $jsonFile = 'templates/'.$name.'.json';
-
-            if (in_array($jsonFile, $json)) {
-                $content = (array) json_decode(Storage::disk('public')->get($jsonFile));
-
-                $templates[] = [
-                    'id' => $name,
-                    'image' => asset('storage/'.$image),
-                    'json' => asset('storage/'.$jsonFile),
-                ];
-            }
-        }
 
         return response()->json([
             'templates' => $templates,

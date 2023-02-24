@@ -28,4 +28,14 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    /**
+     * Has many templates
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function templates()
+    {
+        return $this->hasMany(Template::class);
+    }
 }
