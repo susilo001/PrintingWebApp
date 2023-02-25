@@ -29,11 +29,13 @@ class CartService
      */
     public function getPrice($product_id, $quantity)
     {
-        $product = $this->product->find($product_id);
+        $product = $this->product->with('prices')->find($product_id);
 
         $prices = $product->prices;
 
-        if ($quantity > $prices->max('max_order')) {
+        if ($quantity < $prices->min('min_order')) {
+            throw new \Exception('The minimum order is ' . $prices->min('min_order') . ' pcs');
+        } elseif ($quantity > $prices->max('max_order')) {
             $price = $prices->last();
         } else {
             $price = $prices
@@ -41,6 +43,7 @@ class CartService
                 ->where('max_order', '>=', $quantity)
                 ->first();
         }
+
 
         return $price->price;
     }
@@ -90,39 +93,8 @@ class CartService
      */
     public function checkout()
     {
-        $order = Order::create([
-            'id' => Date::now()->timestamp,
-            'user_id' => auth()->user()->id,
-            'status' => 'pending',
-            'subtotal' => Cart::priceTotal(),
-            'tax' => Cart::tax(),
-            'discount' => Cart::discount(),
-            'total_amount' => Cart::total(),
-        ]);
-
-        foreach (Cart::content() as $item) {
-            $order->orderItems()->create([
-                'product_id' => $item->options->product_id,
-                'name' => $item->options->project_name,
-                'description' => $item->options->description,
-                'image' => $item->options->design,
-                'qty' => $item->qty,
-                'price' => $item->price,
-                'variants' => $item->options->variants,
-                'discount' => $item->discount,
-                'tax' => $item->tax,
-            ]);
-        }
-
-        $order->paymentDetail()->create([
-            'status' => 'pending',
-            'gross_amount' => Cart::priceTotal(),
-        ]);
-
-        $data = $order->load(['orderItems', 'paymentDetail', 'user']);
-
         $payment = new HandlePaymentService();
 
-        return $payment->handle($data);
+        return $payment->handle();
     }
 }

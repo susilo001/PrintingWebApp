@@ -16,10 +16,11 @@ class PaymentDetail extends Model
      */
     protected $fillable = [
         'order_id',
-        'gross_amount',
         'status',
         'payment_type',
-        'expiry',
+        'gross_amount',
+        'transaction_id',
+        'transaction_time',
     ];
 
     /**

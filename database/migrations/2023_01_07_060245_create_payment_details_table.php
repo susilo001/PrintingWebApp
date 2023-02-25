@@ -18,9 +18,9 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->string('status')->nullable();
             $table->string('payment_type')->nullable();
-            $table->string('expiry')->nullable();
-            $table->json('payment_details')->nullable();
             $table->bigInteger('gross_amount');
+            $table->string('transaction_id');
+            $table->string('transaction_time');
             $table->timestamps();
         });
     }

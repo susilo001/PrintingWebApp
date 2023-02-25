@@ -34,17 +34,18 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
     window.snap.show();
     window.snap.pay(page.props.token, {
       onSuccess: function (result) {
-        router.put(
-          route("order.update", {
-            order: result.order_id,
+        console.log(result);
+        router.post(route("order.store"), {
+          data: {
+            order_id: result.order_id,
             status: result.transaction_status,
             payment_type: result.payment_type,
-          }),
-          {
-            preserveScroll: true,
-            preserveState: true,
-          }
-        );
+            gross_amount: result.gross_amount,
+            transaction_id: result.transaction_id,
+            transaction_time: result.transaction_time,
+            transaction_message: result.status_message,
+          },
+        });
       },
       onPending: function (result) {
         router.put(
