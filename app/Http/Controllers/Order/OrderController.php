@@ -54,7 +54,7 @@ class OrderController extends Controller
 
             $path = storage_path('app/public/' . $item->options->design);
 
-            $orderItem->addMedia($path)->preservingOriginal() // preserve the original file for testing
+            $orderItem->addMedia($path)
                 ->toMediaCollection('designs');
         }
 
@@ -66,24 +66,7 @@ class OrderController extends Controller
             'transaction_time' => $request->data['transaction_time'],
         ]);
 
-        return redirect()->route('order.index')->with('message', 'survey');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        $order->update([
-            'status' => 'Proccessing',
-        ]);
-
-        $order->paymentDetail()->update([
-            'status' => $request->status,
-            'payment_type' => $request->payment_type,
-        ]);
+        Cart::destroy();
 
         return redirect()->route('order.index')->with('message', 'survey');
     }

@@ -13,50 +13,28 @@ class OrderTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $user;
+
     /**
-     * Test if customer can view order list page
+     * Setup the test environment.
      *
      * @return void
      */
-    public function testOrderListPage()
+    protected function setUp(): void
     {
-        $user = User::where('email', 'test@test.com')->first();
+        parent::setUp();
 
-        $this->actingAs($user)->get('/order')
-            ->assertStatus(200);
-
-        $this->assertAuthenticatedAs($user);
+        $this->user = User::where('email', 'test@test.com')->first();
     }
 
     /**
-     * Test if Order can be updated
-     *
-     * @return void
+     * Test if customer can view order list page
      */
-    public function testOrderUpdate()
+    public function testOrderListPage(): void
     {
-        $user = User::where('email', 'test@test.com')->first();
+        $this->actingAs($this->user)->get('/order')
+            ->assertStatus(200);
 
-        $order = Order::factory()
-            ->for($user)
-            ->has(OrderItem::factory()->count(1))
-            ->has(PaymentDetail::factory()->count(1))
-            ->create();
-
-        $this->actingAs($user)->put('/order/'.$order->id, [
-            'status' => 'Paid',
-            'payment_type' => 'Bank Transfer',
-        ])
-            ->assertStatus(302);
-
-        $this->assertDatabaseHas('orders', [
-            'id' => $order->id,
-            'status' => 'Proccessing',
-        ]);
-
-        $this->assertDatabaseHas('payment_details', [
-            'id' => $order->paymentDetail->id,
-            'status' => $order->paymentDetail->status,
-        ]);
+        $this->assertAuthenticatedAs($this->user);
     }
 }

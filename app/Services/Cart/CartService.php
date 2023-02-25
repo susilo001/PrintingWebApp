@@ -44,7 +44,6 @@ class CartService
                 ->first();
         }
 
-
         return $price->price;
     }
 

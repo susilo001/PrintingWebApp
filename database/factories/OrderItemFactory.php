@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -36,5 +37,14 @@ class OrderItemFactory extends Factory
             'discount' => $this->faker->numberBetween(1, 10000),
             'tax' => $this->faker->numberBetween(1, 10000),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterMaking(function (OrderItem $orderItem) {
+            $orderItem->addMedia(storage_path('app/public/asset/products/sticker.png'))->preservingOriginal()->toMediaCollection('designs');
+        })->afterCreating(function (OrderItem $orderItem) {
+            $orderItem->addMedia(storage_path('app/public/asset/products/sticker.png'))->preservingOriginal()->toMediaCollection('designs');
+        });
     }
 }
