@@ -2,11 +2,9 @@
 
 namespace App\Services\Cart;
 
-use App\Models\Order;
 use App\Models\Product;
 use App\Services\Payment\HandlePaymentService;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 
 class CartService
@@ -50,39 +48,33 @@ class CartService
     /**
      * Add item to cart
      *
-     * @param  Request  $request
-     * @return void
+     * @param $data
      */
-    public function add($request)
+    public function add($data): void
     {
-        $image = Storage::disk('public')->put('designs', $request->file('design'));
+        $image = Storage::disk('public')->put('designs', $data['design']);
 
-        $price = $this->getPrice($request->product_id, $request->quantity);
+        $price = $this->getPrice($data['product_id'], $data['quantity']);
 
-        $product = $this->product->find($request->product_id);
+        $product = $this->product->find($data['product_id']);
 
         $cartItems = Cart::add([
-            'id' => Date::now()->timestamp,
-            'qty' => $request->quantity,
+            'id' => now()->timestamp,
+            'qty' => $data['quantity'],
             'name' => $product->name,
             'price' => $price,
             'weight' => 0,
             'options' => [
-                'product_id' => $request->product_id,
-                'project_name' => $request->project_name,
-                'description' => $request->description,
+                'product_id' => $data['product_id'],
+                'description' => $data['description'],
                 'design' => $image,
-                'variants' => json_decode($request->variants),
+                'variants' => json_decode($data['variants']),
             ],
         ])->associate(Product::class);
 
-        if ($product->discount->active) {
-            Cart::setDiscount($cartItems->rowId, $product->discount->discount_percentage);
-        }
+        Cart::setTax($cartItems->rowId, $product->tax);
 
-        if ($product->tax) {
-            Cart::setTax($cartItems->rowId, $product->tax);
-        }
+        $product->discount->active ? Cart::setDiscount($cartItems->rowId, $product->discount->discount_percentage) : null;
     }
 
     /**

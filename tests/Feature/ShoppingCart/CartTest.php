@@ -117,9 +117,7 @@ class CartTest extends TestCase
         ]);
 
         $this->patch('/cart/' . Cart::content()->first()->rowId, [
-            'data' => [
-                'qty' => $this->qty,
-            ],
+            'qty' => $this->qty,
         ]);
 
         $this->assertEquals(Cart::content()->first()->qty, $this->qty);

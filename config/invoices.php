@@ -49,7 +49,7 @@ return [
          * By default empty.
          * Example: 1,999.00
          */
-        'thousands_separator' => '',
+        'thousands_separator' => ',',
         /*
          * Supported tags {VALUE}, {SYMBOL}, {CODE}
          * Example: 1.99 €
@@ -78,9 +78,9 @@ return [
          * Default attributes for Seller::class
          */
         'attributes' => [
-            'name' => 'Orbit Trust Corp',
+            'name' => 'CV. Orbit Trust Corp',
             'address' => 'JL Cendrawasih, Maguwo, Banguntapan, Bantul, DI Yogyakarta, 55198',
-            'phone' => '0274 453 9208',
+            'phone' => '0274-453-9208',
             'custom_fields' => [
                 /*
                  * Custom attributes for Seller::class

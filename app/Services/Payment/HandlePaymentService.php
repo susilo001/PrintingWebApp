@@ -40,9 +40,9 @@ class HandlePaymentService extends Midtrans
 
         $additionalFee = [
             [
-                'id' => 'F01',
-                'name' => 'Fee',
-                'price' => 0,
+                'id' => 'D01',
+                'name' => 'Discount',
+                'price' => (int) -Cart::discount(),
                 'quantity' => 1,
             ],
             [
@@ -51,12 +51,7 @@ class HandlePaymentService extends Midtrans
                 'price' => (int) Cart::tax(),
                 'quantity' => 1,
             ],
-            [
-                'id' => 'D01',
-                'name' => 'Discount',
-                'price' => (int) Cart::discount(),
-                'quantity' => 1,
-            ],
+
         ];
 
         $transaction['item_details'] = array_merge($transaction['item_details'], $additionalFee);

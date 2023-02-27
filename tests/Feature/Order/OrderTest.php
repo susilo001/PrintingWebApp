@@ -2,9 +2,6 @@
 
 namespace Tests\Feature\Order;
 
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\PaymentDetail;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -25,6 +22,8 @@ class OrderTest extends TestCase
         parent::setUp();
 
         $this->user = User::where('email', 'test@test.com')->first();
+
+        $this->actingAs($this->user);
     }
 
     /**
@@ -32,9 +31,23 @@ class OrderTest extends TestCase
      */
     public function testOrderListPage(): void
     {
-        $this->actingAs($this->user)->get('/order')
-            ->assertStatus(200);
+        $this->get('/order')->assertStatus(200);
 
         $this->assertAuthenticatedAs($this->user);
     }
+
+    /**
+     * Test if user can get the order invoice
+     */
+    // public function testOrderInvoice(): void
+    // {
+    //     $order = Order::factory()
+    //         ->has(OrderItem::factory()->count(2))
+    //         ->create([
+    //             'user_id' => $this->user->id,
+    //         ]);
+
+    //     $response = $this->getJson('/invoice/' . $order->id);
+    //     dd($response->json());
+    // }
 }

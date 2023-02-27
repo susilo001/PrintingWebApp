@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCartRequest;
 use App\Services\Cart\CartService;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -39,9 +40,9 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCartRequest $request)
     {
-        $this->cartService->add($request);
+        $this->cartService->add($request->validated());
 
         to_route('cart.index', '', 302)->with('message', 'Item added to cart successfully');
     }
@@ -53,7 +54,7 @@ class CartController extends Controller
      */
     public function update(Request $request, $rowId)
     {
-        Cart::update($rowId, (int) $request['data']['qty']);
+        Cart::update($rowId, (int) $request->qty);
 
         return redirect()->route('cart.index')->with('message', 'Cart updated successfully');
     }
@@ -83,8 +84,7 @@ class CartController extends Controller
         return Inertia::render('Cart', [
             'cart' => Cart::content(),
             'weight' => Cart::weight(),
-            'priceTotal' => Cart::priceTotal(),
-            'subtotal' => Cart::subtotal(),
+            'subtotal' => Cart::priceTotal(),
             'tax' => Cart::tax(),
             'discount' => Cart::discount(),
             'total' => Cart::total(),

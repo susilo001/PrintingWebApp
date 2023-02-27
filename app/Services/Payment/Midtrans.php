@@ -7,25 +7,6 @@ use Midtrans\Snap;
 
 abstract class Midtrans
 {
-    protected $clientKey;
-
-    protected $serverKey;
-
-    protected $isProduction;
-
-    protected $isSanitized;
-
-    protected $is3ds;
-
-    public function __construct()
-    {
-        $this->clientKey = config('services.midtrans.client_key');
-        $this->serverKey = config('services.midtrans.server_key');
-        $this->isProduction = config('services.midtrans.is_production');
-        $this->isSanitized = config('services.midtrans.is_sanitized');
-        $this->is3ds = config('services.midtrans.is_3ds');
-    }
-
     /**
      * Configure midtrans
      *

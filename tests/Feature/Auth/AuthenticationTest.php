@@ -2,14 +2,23 @@
 
 namespace Tests\Feature\Auth;
 
+use Tests\TestCase;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
 
     public function testLoginScreenCanBeRendered(): void
     {
@@ -20,10 +29,8 @@ class AuthenticationTest extends TestCase
 
     public function testUsersCanAuthenticateWithLoginScreen(): void
     {
-        $user = User::factory()->create();
-
         $response = $this->post('/login', [
-            'email' => $user->email,
+            'email' => $this->user->email,
             'password' => 'password',
         ]);
 
@@ -77,10 +84,8 @@ class AuthenticationTest extends TestCase
 
     public function testUsersCanNotAuthenticateWithInvalidPassword(): void
     {
-        $user = User::factory()->create();
-
         $this->post('/login', [
-            'email' => $user->email,
+            'email' => $this->user->email,
             'password' => 'wrong-password',
         ]);
 
@@ -92,11 +97,9 @@ class AuthenticationTest extends TestCase
      */
     public function testLoginRequestWithManyAttemptsWillBeLocked(): void
     {
-        $user = User::factory()->create();
-
         for ($i = 0; $i < 10; $i++) {
             $this->post('/login', [
-                'email' => $user->email,
+                'email' => $this->user->email,
                 'password' => 'wrong-password',
             ]);
         }
@@ -109,9 +112,7 @@ class AuthenticationTest extends TestCase
      */
     public function testUserCanLogout(): void
     {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->post('/logout');
 
         $this->assertGuest();

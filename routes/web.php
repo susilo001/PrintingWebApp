@@ -45,12 +45,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
     Route::match(['put', 'patch'], '/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
-    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
     Route::get('/order', [OrderController::class, 'index'])->name('order.index');
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 
-    Route::post('/invoice', InvoiceController::class)->name('invoice');
+    Route::get('/invoice/{order}', InvoiceController::class)->name('invoice.show');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::match(['put', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
