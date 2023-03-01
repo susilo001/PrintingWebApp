@@ -3,23 +3,20 @@
 namespace App\Services\Payment;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Date;
 
-class HandlePaymentService extends Midtrans
+class PaymentService extends Midtrans
 {
-    /**
-     * Transform transaction to midtrans format
-     *
-     * @return array $transaction
-     */
-    public function transform()
+    public function requestPayment(): string
     {
         $cart = Cart::content();
+        $cartDiscount = Cart::discount();
+        $cartTax = Cart::tax();
+        $cartTotal = Cart::total();
 
         $transaction = [
             'transaction_details' => [
-                'order_id' => Date::now()->timestamp,
-                'gross_amount' => (int) Cart::total(),
+                'order_id' => now()->timestamp,
+                'gross_amount' => (int) $cartTotal,
             ],
 
             'customer_details' => [
@@ -42,26 +39,19 @@ class HandlePaymentService extends Midtrans
             [
                 'id' => 'D01',
                 'name' => 'Discount',
-                'price' => (int) -Cart::discount(),
+                'price' => (int) -$cartDiscount,
                 'quantity' => 1,
             ],
             [
                 'id' => 'T01',
                 'name' => 'Tax',
-                'price' => (int) Cart::tax(),
+                'price' => (int) $cartTax,
                 'quantity' => 1,
             ],
 
         ];
 
         $transaction['item_details'] = array_merge($transaction['item_details'], $additionalFee);
-
-        return $transaction;
-    }
-
-    public function handle()
-    {
-        $transaction = $this->transform();
 
         return $this->getSnapToken($transaction);
     }

@@ -13,10 +13,15 @@ class CartTest extends TestCase
     use RefreshDatabase;
 
     protected $user;
+
     protected $qty;
+
     protected $projectName;
+
     protected $description;
+
     protected $variants;
+
     protected $design;
 
     public function setUp(): void
@@ -116,7 +121,7 @@ class CartTest extends TestCase
             'design' => $this->design,
         ]);
 
-        $this->patch('/cart/' . Cart::content()->first()->rowId, [
+        $this->patch('/cart/'.Cart::content()->first()->rowId, [
             'qty' => $this->qty,
         ]);
 
@@ -138,7 +143,7 @@ class CartTest extends TestCase
             'weight' => 0,
         ]);
 
-        $this->delete('/cart/' . Cart::content()->first()->rowId)->assertRedirect('/cart');
+        $this->delete('/cart/'.Cart::content()->first()->rowId)->assertRedirect('/cart');
 
         $this->assertEquals(Cart::content()->count(), 0);
     }

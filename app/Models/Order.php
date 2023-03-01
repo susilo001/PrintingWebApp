@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -26,31 +29,33 @@ class Order extends Model
 
     /**
      * Belongs to user
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Has many order items
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function orderItems()
+    public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
     /**
      * Has one payment detail
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function paymentDetail()
+    public function paymentDetail(): HasOne
     {
         return $this->hasOne(PaymentDetail::class);
+    }
+
+    /**
+     * Has one testimonial
+     */
+    public function testimonial(): HasOne
+    {
+        return $this->hasOne(Testimonial::class);
     }
 }

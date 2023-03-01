@@ -17,7 +17,19 @@ class Testimonial extends Model
     protected $fillable = [
         'user_id',
         'product_id',
+        'order_id',
         'testimonial',
+        'rating',
+        'is_approved',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'is_approved' => 'boolean',
     ];
 
     /**
@@ -38,5 +50,15 @@ class Testimonial extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Belongs to order
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

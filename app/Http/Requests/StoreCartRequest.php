@@ -24,12 +24,12 @@ class StoreCartRequest extends FormRequest
     public function rules()
     {
         return [
-            "product_id" => 'required|integer',
-            "project_name" => 'required|string|max:50',
-            "description" => 'required|string',
-            "quantity" => 'required|integer',
-            "design" => 'required|file|max:2048',
-            "variants" => 'required|json',
+            'product_id' => 'required|integer',
+            'project_name' => 'required|string|max:50',
+            'description' => 'required|string',
+            'quantity' => 'required|integer',
+            'design' => 'required|file|max:2048',
+            'variants' => 'required|json',
         ];
     }
 }

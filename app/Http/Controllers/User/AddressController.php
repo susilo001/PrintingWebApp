@@ -23,8 +23,7 @@ class AddressController extends Controller
             'zip_code' => $request->zip_code,
         ]);
 
-        return redirect('/profile')
-            ->with('message', 'Address added successfully');
+        return redirect('/profile')->with('message', 'Address added successfully');
     }
 
     /**
@@ -42,8 +41,7 @@ class AddressController extends Controller
             'zip_code' => $request->zip_code,
         ]);
 
-        return redirect('/profile')
-            ->with('message', 'Address updated successfully');
+        return redirect('/profile')->with('message', 'Address updated successfully');
     }
 
     /**

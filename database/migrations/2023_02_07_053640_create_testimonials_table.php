@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->longText('testimonial');
+            $table->integer('rating');
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
 
 class ProductSeeder extends Seeder
 {
@@ -16,20 +15,14 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        $other = Category::where('slug', 'others')->first();
-        $undagan = Category::where('slug', 'undangan')->first();
         $calendar = Category::where('slug', 'calendar')->first();
-        $a3 = Category::where('slug', 'a3')->first();
-        $a4 = Category::where('slug', 'a4')->first();
         $packages = Category::where('slug', 'packages')->first();
         $books = Category::where('slug', 'books')->first();
-        $posters = Category::where('slug', 'poster')->first();
-        $brochure = Category::where('slug', 'brochure')->first();
-        $sticker = Category::where('slug', 'sticker')->first();
+        $stationery = Category::where('slug', 'stationery')->first();
 
         $products = [
             [
-                'category_id' => $other->id,
+                'category_id' => $stationery->id,
                 'name' => 'Name Card',
                 'slug' => 'name-card',
                 'images' => [
@@ -37,7 +30,7 @@ class ProductSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $undagan->id,
+                'category_id' => $stationery->id,
                 'name' => 'Undangan',
                 'slug' => 'undangan',
                 'images' => [
@@ -53,7 +46,7 @@ class ProductSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $a3->id,
+                'category_id' => $stationery->id,
                 'name' => 'A3',
                 'slug' => 'a3',
                 'images' => [
@@ -61,7 +54,7 @@ class ProductSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $a4->id,
+                'category_id' => $stationery->id,
                 'name' => 'A4',
                 'slug' => 'a4',
                 'images' => [
@@ -132,7 +125,7 @@ class ProductSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $posters->id,
+                'category_id' => $stationery->id,
                 'name' => 'Poster',
                 'slug' => 'poster',
                 'images' => [
@@ -140,7 +133,7 @@ class ProductSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $brochure->id,
+                'category_id' => $stationery->id,
                 'name' => 'Brochure',
                 'slug' => 'brochure',
                 'images' => [
@@ -148,7 +141,7 @@ class ProductSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $sticker->id,
+                'category_id' => $stationery->id,
                 'name' => 'Sticker',
                 'slug' => 'sticker',
                 'images' => [
@@ -167,7 +160,7 @@ class ProductSeeder extends Seeder
             $item->save();
 
             foreach ($product['images'] as $image) {
-                $path = storage_path('app/public/' . $image);
+                $path = storage_path('app/public/'.$image);
                 $item->addMedia($path)
                     ->preservingOriginal()
                     ->toMediaCollection('products');

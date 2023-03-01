@@ -67,7 +67,7 @@ export default function ExploreByCategory({ categories }) {
           </Link>
         </div>
       </div>
-      <div className="max-h-screen snap-y scroll-pt-12 overflow-y-auto overscroll-x-none">
+      <div>
         {products.length === 0 && (
           <div className="flex items-center justify-center space-x-4 rounded border border-error p-8">
             <ExclamationTriangleIcon className={"h-6 w-6 text-error"} />
@@ -76,20 +76,16 @@ export default function ExploreByCategory({ categories }) {
             </h2>
           </div>
         )}
-        <div className="grid snap-start justify-center gap-x-10 gap-y-10 px-4 pb-4 md:grid-cols-2 md:px-8 xl:grid-cols-3">
+        <div className="grid justify-center gap-x-10 gap-y-10 px-4 pb-4 md:grid-cols-2 md:px-0 xl:grid-cols-3">
           {products.map((product) => (
             <Link
               href={route("product.show", product.id)}
               key={product.id}
-              className="link link-hover"
+              className="link-hover link"
             >
-              <Card className="border shadow-xl hover:bg-base-200">
+              <Card className="card-compact h-96 border shadow-xl hover:bg-base-200">
                 <Card.Image
-                  src={
-                    product.images[0]
-                      ? product.images[0]
-                      : "https://picsum.photos/200/200"
-                  }
+                  src={product.images[0]}
                   className={"aspect-square object-contain"}
                   alt={product.name}
                 />

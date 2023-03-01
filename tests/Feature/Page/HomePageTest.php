@@ -13,7 +13,6 @@ class HomePageTest extends TestCase
      */
     public function testHomePage()
     {
-        $this->get('/')
-            ->assertStatus(200);
+        $this->get('/')->assertStatus(200);
     }
 }

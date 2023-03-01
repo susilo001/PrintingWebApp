@@ -9,8 +9,6 @@ abstract class Midtrans
 {
     /**
      * Configure midtrans
-     *
-     * @return void
      */
     private function configure()
     {

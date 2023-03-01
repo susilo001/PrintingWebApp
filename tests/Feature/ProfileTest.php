@@ -10,103 +10,89 @@ class ProfileTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $user;
+
+    /**
+     * Configure the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+
+        $this->actingAs($this->user);
+    }
+
+    /**
+     * Test that the profile page is displayed.
+     */
     public function testProfilePageIsDisplayed(): void
     {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->get('/profile');
-
-        $response->assertOk();
+        $this->get('/profile')->assertOk();
     }
 
+    /**
+     * Test that the user's profile information can be updated.
+     */
     public function testProfileInformationCanBeUpdated(): void
     {
-        $user = User::factory()->create();
+        $this->patch('/profile', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ])->assertSessionHasNoErrors()->assertRedirect('/profile');
 
-        $response = $this
-            ->actingAs($user)
-            ->patch('/profile', [
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
+        $this->user->refresh();
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
-
-        $user->refresh();
-
-        $this->assertSame('Test User', $user->name);
-        $this->assertSame('test@example.com', $user->email);
-        $this->assertNull($user->email_verified_at);
+        $this->assertSame('Test User', $this->user->name);
+        $this->assertSame('test@example.com', $this->user->email);
+        $this->assertNull($this->user->email_verified_at);
     }
 
+    /**
+     * Test email verification status unchange when the email address is uncanged.
+     */
     public function testEmailVerificationStatusIsUnchangedWhenTheEmailAddressIsUnchanged(): void
     {
-        $user = User::factory()->create();
+        $this->patch('/profile', [
+            'name' => 'Test User',
+            'email' => $this->user->email,
+        ])->assertSessionHasNoErrors()->assertRedirect('/profile');
 
-        $response = $this
-            ->actingAs($user)
-            ->patch('/profile', [
-                'name' => 'Test User',
-                'email' => $user->email,
-            ]);
-
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
-
-        $this->assertNotNull($user->refresh()->email_verified_at);
+        $this->assertNotNull($this->user->refresh()->email_verified_at);
     }
 
+    /**
+     * Test if user can delete their account
+     */
     public function testUserCanDeleteTheirAccount(): void
     {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->delete('/profile', [
-                'password' => 'password',
-            ]);
-
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
+        $this->delete('/profile', [
+            'password' => 'password',
+        ])->assertSessionHasNoErrors()->assertRedirect('/');
 
         $this->assertGuest();
-        $this->assertNull($user->fresh());
+        $this->assertNull($this->user->fresh());
     }
 
+    /**
+     * Test if correct password must be provided to delete account
+     */
     public function testCorrectPasswordMustBeProvidedToDeleteAccount(): void
     {
-        $user = User::factory()->create();
+        $this->from('/profile')->delete('/profile', [
+            'password' => 'wrong-password',
+        ])->assertSessionHasErrors('password')->assertRedirect('/profile');
 
-        $response = $this
-            ->actingAs($user)
-            ->from('/profile')
-            ->delete('/profile', [
-                'password' => 'wrong-password',
-            ]);
-
-        $response
-            ->assertSessionHasErrors('password')
-            ->assertRedirect('/profile');
-
-        $this->assertNotNull($user->fresh());
+        $this->assertNotNull($this->user->fresh());
     }
 
     /**
      * Test if user can add address to their profile
-     *
-     * @return void
      */
-    public function testUserCanAddAddress()
+    public function testUserCanAddAddress(): void
     {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post('/profile/address', [
+        $this->post('/user/'.$this->user->id.'/address', [
             'street_name' => 'Jl. Test',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
@@ -114,7 +100,7 @@ class ProfileTest extends TestCase
         ])->assertRedirect('/profile');
 
         $this->assertDatabaseHas('addresses', [
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'street_name' => 'Jl. Test',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
@@ -124,20 +110,17 @@ class ProfileTest extends TestCase
 
     /**
      * Test if user can update address
-     *
-     * @return void
      */
-    public function testUserCanUpdateAddress()
+    public function testUserCanUpdateAddress(): void
     {
-        $user = User::factory()->create();
-        $address = $user->addresses()->create([
+        $address = $this->user->addresses()->create([
             'street_name' => 'Jl. Test',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
             'zip_code' => '12345',
         ]);
 
-        $this->actingAs($user)->patch('/profile/address/'.$address->id, [
+        $this->patch('/address/'.$address->id, [
             'street_name' => 'Jl. Test 2',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
@@ -145,7 +128,7 @@ class ProfileTest extends TestCase
         ])->assertRedirect('/profile');
 
         $this->assertDatabaseHas('addresses', [
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'street_name' => 'Jl. Test 2',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
@@ -155,24 +138,20 @@ class ProfileTest extends TestCase
 
     /**
      * Test if user can delete address
-     *
-     * @return void
      */
-    public function testUserCanDeleteAddress()
+    public function testUserCanDeleteAddress(): void
     {
-        $user = User::factory()->create();
-        $address = $user->addresses()->create([
+        $address = $this->user->addresses()->create([
             'street_name' => 'Jl. Test',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
             'zip_code' => '12345',
         ]);
 
-        $this->actingAs($user)->delete('/profile/address/'.$address->id)
-            ->assertRedirect('/profile');
+        $this->delete('/address/'.$address->id)->assertRedirect('/profile');
 
         $this->assertDatabaseMissing('addresses', [
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'street_name' => 'Jl. Test',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',

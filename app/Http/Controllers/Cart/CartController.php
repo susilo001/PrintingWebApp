@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cart;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCartRequest;
 use App\Services\Cart\CartService;
+use App\Services\Payment\PaymentService;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,9 +14,12 @@ class CartController extends Controller
 {
     protected $cartService;
 
-    public function __construct(CartService $cartService)
+    protected $paymentService;
+
+    public function __construct(CartService $cartService, PaymentService $paymentService)
     {
         $this->cartService = $cartService;
+        $this->paymentService = $paymentService;
     }
 
     /**
@@ -79,7 +83,7 @@ class CartController extends Controller
      */
     public function checkout()
     {
-        $response = $this->cartService->checkout();
+        $snapToken = $this->paymentService->requestPayment();
 
         return Inertia::render('Cart', [
             'cart' => Cart::content(),
@@ -88,7 +92,7 @@ class CartController extends Controller
             'tax' => Cart::tax(),
             'discount' => Cart::discount(),
             'total' => Cart::total(),
-            'token' => $response,
+            'token' => $snapToken,
         ]);
     }
 }

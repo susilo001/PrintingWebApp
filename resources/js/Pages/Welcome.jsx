@@ -1,6 +1,5 @@
 import Card from "@/Components/Card";
 import ExploreByCategory from "@/Components/ExploreByCategory";
-import FeatureSection from "@/Components/FeatureSection";
 import HeroSection from "@/Components/HeroSection";
 import Testimonial from "@/Components/Testimonial";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -16,10 +15,6 @@ export default function Welcome({ categories, featuredProducts }) {
       <div className="container mx-auto my-12 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="px-6 py-20 md:px-12 md:pb-0 md:pt-40 lg:py-0 lg:px-10">
           <HeroSection />
-        </div>
-
-        <div className="py-20 sm:py-32 lg:py-24">
-          <ExploreByCategory categories={categories} />
         </div>
 
         <div className="py-20 sm:py-32 lg:max-w-7xl lg:py-24">
@@ -79,9 +74,13 @@ export default function Welcome({ categories, featuredProducts }) {
           </Swiper>
         </div>
 
-        <div className="max-w-7xl py-20 sm:py-32 lg:py-24">
-          <FeatureSection />
+        <div className="py-20 sm:py-32 lg:py-24">
+          <ExploreByCategory categories={categories} />
         </div>
+
+        {/* <div className="max-w-7xl py-20 sm:py-32 lg:py-24">
+          <FeatureSection />
+        </div> */}
 
         <div className="max-w-7xl py-20 sm:py-32 lg:py-24">
           <div className="mb-8 flex justify-center">

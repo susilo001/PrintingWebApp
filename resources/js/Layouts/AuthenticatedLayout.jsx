@@ -5,6 +5,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Authenticated({ header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -56,7 +57,7 @@ export default function Authenticated({ header, children }) {
                   >
                     <div className="indicator">
                       {cartCount > 0 && (
-                        <span className="badge-secondary badge badge-sm indicator-item">
+                        <span className="badge badge-secondary badge-sm indicator-item">
                           {cartCount}
                         </span>
                       )}
@@ -95,14 +96,14 @@ export default function Authenticated({ header, children }) {
                 <div className="ml-3 space-x-4">
                   <Link
                     href={route("login")}
-                    className="btn-ghost btn-sm btn"
+                    className="btn-outline btn-primary btn-sm btn"
                     as="button"
                   >
                     Login
                   </Link>
                   <Link
                     href={route("register")}
-                    className="btn-ghost btn-sm btn"
+                    className=" btn-primary btn-sm btn"
                     as="button"
                   >
                     Register
@@ -255,8 +256,35 @@ export default function Authenticated({ header, children }) {
         </div>
       )}
 
+      {flash.message &&
+        Swal.fire({
+          icon: flash.status,
+          title: flash.status,
+          text: flash.message,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 1500,
+        })}
+
+      {flash.message === "survey" &&
+        Swal.fire({
+          title: "Survey",
+          text: "Please fill this survey",
+          icon: "info",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Proceed",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.open(
+              "https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link",
+              "_blank"
+            );
+          }
+        })}
+
       <main className="mb-auto py-4">{children}</main>
-      <footer className="bg-base-200 p-10 text-base-content">
+      <footer className="bg-neutral-focus p-10 text-base-100">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
             <ApplicationLogo className="block h-10 w-auto fill-current" />
@@ -283,7 +311,7 @@ export default function Authenticated({ header, children }) {
             <a className="link-hover link">Press kit</a> */}
           </div>
           <div>
-            <span className="footer-title">Legal</span>
+            <span className="footer-title">Contact Us</span>
             {/* <a className="link-hover link">Terms of use</a>
             <a className="link-hover link">Privacy policy</a>
             <a className="link-hover link">Cookie policy</a> */}

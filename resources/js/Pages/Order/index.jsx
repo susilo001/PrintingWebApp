@@ -2,7 +2,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link, usePage } from "@inertiajs/react";
-import Swal from "sweetalert2";
 
 export default function Order({ orders }) {
   const { flash } = usePage().props;
@@ -13,23 +12,23 @@ export default function Order({ orders }) {
     });
   };
 
-  if (flash.message === "survey") {
-    Swal.fire({
-      title: "Survey",
-      text: "Please fill this survey",
-      icon: "info",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Proceed",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.open(
-          "https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link",
-          "_blank"
-        );
-      }
-    });
-  }
+  // if (flash.message === "survey") {
+  //   Swal.fire({
+  //     title: "Survey",
+  //     text: "Please fill this survey",
+  //     icon: "info",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     confirmButtonText: "Proceed",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       window.open(
+  //         "https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link",
+  //         "_blank"
+  //       );
+  //     }
+  //   });
+  // }
 
   return (
     <AuthenticatedLayout

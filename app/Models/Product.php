@@ -89,4 +89,20 @@ class Product extends Model implements Buyable, HasMedia
     {
         return $this->hasMany(Variant::class);
     }
+
+    /**
+     * get product price by order quantity
+     */
+    public function getPriceByOrderQuantity($quantity)
+    {
+        $prices = $this->prices;
+
+        try {
+            $quantity > $prices->max('max_order') ? $price = $prices->last() : $price = $prices->where('min_order', '<=', $quantity)->where('max_order', '>=', $quantity)->first();
+
+            return $price->price;
+        } catch (\Exception $e) {
+            return throw new \Exception('The minimum order is '.$prices->min('min_order').' pcs');
+        }
+    }
 }
