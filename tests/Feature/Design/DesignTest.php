@@ -37,16 +37,23 @@ class DesignTest extends TestCase
         $response = $this->actingAs($user)->post('/design', [
             'image' => UploadedFile::fake()->image('design.png'),
             'data' => json_encode([
-                'width' => 100,
-                'height' => 100,
-                'objects' => [
+                'pages' => [
                     [
-                        'type' => 'rect',
+                        'custom' => [
+                            'name' => 'Test Design',
+                        ],
                         'width' => 100,
                         'height' => 100,
-                        'fill' => 'red',
-                        'left' => 100,
-                        'top' => 100,
+                        'objects' => [
+                            [
+                                'type' => 'rect',
+                                'width' => 100,
+                                'height' => 100,
+                                'fill' => 'red',
+                                'left' => 100,
+                                'top' => 100,
+                            ],
+                        ],
                     ],
                 ],
             ]),

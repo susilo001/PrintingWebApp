@@ -25,7 +25,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Product({ auth, error, product }) {
+export default function Product({ product }) {
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(0);
@@ -110,8 +110,6 @@ export default function Product({ auth, error, product }) {
 
   return (
     <AuthenticatedLayout
-      auth={auth}
-      errors={error}
       header={
         <div className="flex items-center justify-between">
           <div>

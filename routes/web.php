@@ -37,54 +37,28 @@ Route::controller(ProductController::class)->group(function () {
  * Authenticated Route
  */
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('design', DesignController::class)->names([
-        'index' => 'design.index',
-        'store' => 'design.store',
-    ]);
 
-    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/design', [DesignController::class, 'index'])->name('design.index');
+    Route::post('/design', [DesignController::class, 'store'])->name('design.store');
 
-    Route::resource('cart', CartController::class)->except('show')->names([
-        'index' => 'cart.index',
-        'store' => 'cart.store',
-        'update' => 'cart.update',
-        'destroy' => 'cart.destroy',
-    ]);
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::match(['put', 'patch'], '/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
-    Route::resource('order', OrderController::class)->names([
-        'index' => 'order.index',
-        'update' => 'order.update',
-    ]);
+    Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 
-    Route::post('/invoice', InvoiceController::class)->name('invoice');
+    Route::get('/invoice/{order}', InvoiceController::class)->name('invoice.show');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::match(['put', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/profile/address', AddressController::class)->names([
-        'store' => 'address.store',
-        'update' => 'address.update',
-        'destroy' => 'address.destroy',
-    ]);
+    Route::post('/profile/address', [AddressController::class, 'store'])->name('address.store');
+    Route::match(['put', 'patch'], '/profile/address/{address}', [AddressController::class, 'update'])->name('address.update');
+    Route::delete('/profile/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 });
 
-Route::group(['prefix' => 'artisan'], function () {
-    Route::get('migrate', function () {
-        Artisan::call('migrate');
-
-        return redirect()->back();
-    });
-    Route::get('ssr', function () {
-        Artisan::call('inertia:start-ssr');
-
-        return redirect()->back();
-    });
-    Route::get('optimize', function () {
-        Artisan::call('optimize');
-
-        return redirect()->back();
-    });
-});
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

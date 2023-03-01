@@ -21,15 +21,8 @@ class PaymentDetailFactory extends Factory
             'order_id' => Order::factory(),
             'status' => $this->faker->randomElement(['pending', 'processing', 'completed', 'declined']),
             'payment_type' => $this->faker->randomElement(['credit_card', 'bank_transfer', 'gopay']),
-            'expiry' => $this->faker->date(),
-            'payment_details' => $this->faker->randomElement(
-                [
-                    'account_number' => fake()->creditCardNumber(),
-                ],
-                [
-                    'gopay_phone' => $this->faker->phoneNumber,
-                ],
-            ),
+            'transaction_id' => $this->faker->uuid,
+            'transaction_time' => $this->faker->dateTime,
             'gross_amount' => $this->faker->numberBetween(10000, 10000),
         ];
     }

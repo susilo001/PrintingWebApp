@@ -6,7 +6,7 @@ import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Products({ products, categories, auth, cartCount }) {
+export default function Products({ products, categories }) {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,8 +41,6 @@ export default function Products({ products, categories, auth, cartCount }) {
 
   return (
     <AuthenticatedLayout
-      auth={auth}
-      cartCount={cartCount}
       header={
         <div>
           <div className="flex items-center justify-between">

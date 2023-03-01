@@ -1,6 +1,8 @@
 import ActionControls from "@/Components/Polotno/ActionControls";
 import Container from "@/Components/Polotno/Container";
 import { DesignTemplatesSection } from "@/Components/Polotno/DesignTemplatesPanel";
+import { PageControls } from "@/Components/Polotno/PageControls";
+import { Preview } from "@/Components/Polotno/Preview";
 import SidePanelWrapper from "@/Components/Polotno/SidePanelWrapper";
 import WorkspaceWrapper from "@/Components/Polotno/WorkspaceWrapper";
 import store from "@/lib/polotno";
@@ -33,9 +35,10 @@ export default function Design() {
   return (
     <>
       <Head title="Design Tools" />
+
       <Container
-        className={"bp4-dark polotno-app-container container m-auto"}
-        style={{ width: "100vw", height: "100vh", padding: 0 }}
+        className={"bp4-dark max-w-screen"}
+        style={{ height: "100vw" }}
       >
         <SidePanelWrapper>
           <SidePanel
@@ -50,7 +53,8 @@ export default function Design() {
             downloadButtonEnabled
             components={{ ActionControls: ActionControls }}
           />
-          <Workspace store={store} />
+          <Workspace store={store} components={{ PageControls }} />
+          <Preview store={store} />
           <ZoomButtons store={store} />
         </WorkspaceWrapper>
       </Container>

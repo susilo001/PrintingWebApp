@@ -19,12 +19,12 @@ class OrderItemResource extends JsonResource
             'name' => $this->name,
             'desc' => $this->description,
             'variants' => $this->variants,
-            'image' => asset('storage/'.$this->image),
+            'image' => $this->getMedia('designs')->first()->getFullUrl(),
             'price' => $this->price,
             'qty' => $this->qty,
             'discount' => $this->discount,
             'tax' => $this->tax,
-            'product' => $this->product_id,
+            'product' => new ProductResource($this->product),
         ];
     }
 }

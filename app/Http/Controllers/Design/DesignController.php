@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Design;
 
 use App\Http\Controllers\Controller;
+use App\Models\Template;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class DesignController extends Controller
@@ -17,14 +16,18 @@ class DesignController extends Controller
 
     public function store(Request $request)
     {
-        $fileName = 'templates/'.Date::now()->timestamp;
+        $json = json_decode($request->data);
 
-        $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->image));
+        $name = $json->pages[0]->custom->name;
 
-        Storage::disk('public')->put($fileName.'.json', json_encode($request->data));
+        $template = Template::create([
+            'name' => $name,
+            'template' => $request->data,
+            'category_id' => 1,
+        ]);
 
-        Storage::disk('public')->put($fileName.'.png', $image);
+        $template->addMediaFromRequest('image')->toMediaCollection('templates');
 
-        return redirect()->route('design.index')->with('message', 'Design created successfully');
+        return redirect()->route('design.index')->with('message', 'Template created successfully!');
     }
 }

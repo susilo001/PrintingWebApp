@@ -4,10 +4,9 @@ import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 
-export default function Edit({ auth, mustVerifyEmail, status }) {
+export default function Edit({ mustVerifyEmail, status }) {
   return (
     <AuthenticatedLayout
-      auth={auth}
       header={<h2 className="text-xl font-semibold leading-tight">Profile</h2>}
     >
       <Head title="Profile" />

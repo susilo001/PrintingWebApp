@@ -1,23 +1,27 @@
 <?php
 
-namespace Tests\Unit\Cart;
+namespace Tests\Unit;
 
+use Tests\TestCase;
 use App\Models\Product;
 use App\Services\Cart\CartService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Database\Seeders\CategorySeeder;
 
-class CartTest extends TestCase
+class GetPriceByQuantityTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected $cartService;
+
+    protected $product;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->cartService = new CartService(new Product);
+
+        $this->seed(CategorySeeder::class);
+
+        $this->product = Product::factory()->create();
     }
 
     /**
@@ -27,52 +31,48 @@ class CartTest extends TestCase
      */
     public function testGetPriceIfQuantityIsGreaterThanMaxOrder()
     {
-        $product = Product::factory()->create();
-
-        $product->prices()->create([
+        $this->product->prices()->create([
             'name' => '1 - 10',
             'min_order' => 1,
             'max_order' => 10,
             'price' => 1000,
         ]);
 
-        $product->prices()->create([
+        $this->product->prices()->create([
             'name' => '11 - 20',
             'min_order' => 11,
             'max_order' => 20,
             'price' => 2000,
         ]);
 
-        $price = $this->cartService->getPrice($product->id, 1000);
+        $price = $this->cartService->getPrice($this->product->id, 1000);
 
         $this->assertEquals(2000, $price);
     }
 
     /**
-     * if quantity is between min_order and max_order, return price of first price
-     *
-     * @return void
+     * if quantity is less than min_order, return error message 'The minimum order is 5 pcs'
      */
-    public function testGetPriceIfQuantityIsBetweenMinOrderAndMaxOrder()
+    public function testGetPriceIfQuantityIsLessThanMinOrder(): void
     {
-        $product = Product::factory()->create();
-
-        $product->prices()->create([
+        $this->product->prices()->create([
             'name' => '1 - 10',
-            'min_order' => 1,
+            'min_order' => 5,
             'max_order' => 10,
             'price' => 1000,
         ]);
 
-        $product->prices()->create([
+        $this->product->prices()->create([
             'name' => '11 - 20',
             'min_order' => 11,
             'max_order' => 20,
             'price' => 2000,
         ]);
 
-        $price = $this->cartService->getPrice($product->id, 5);
+        $this->expectException(\Exception::class);
 
-        $this->assertEquals(1000, $price);
+        $this->expectExceptionMessage('The minimum order is 5 pcs');
+
+        $this->cartService->getPrice($this->product->id, 4);
     }
 }

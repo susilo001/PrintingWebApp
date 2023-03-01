@@ -2,9 +2,6 @@
 
 namespace Tests\Feature\Order;
 
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\PaymentDetail;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -13,50 +10,44 @@ class OrderTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $user;
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::where('email', 'test@test.com')->first();
+
+        $this->actingAs($this->user);
+    }
+
     /**
      * Test if customer can view order list page
-     *
-     * @return void
      */
-    public function testOrderListPage()
+    public function testOrderListPage(): void
     {
-        $user = User::where('email', 'test@test.com')->first();
+        $this->get('/order')->assertStatus(200);
 
-        $this->actingAs($user)->get('/order')
-            ->assertStatus(200);
-
-        $this->assertAuthenticatedAs($user);
+        $this->assertAuthenticatedAs($this->user);
     }
 
     /**
-     * Test if Order can be updated
-     *
-     * @return void
+     * Test if user can get the order invoice
      */
-    public function testOrderUpdate()
-    {
-        $user = User::where('email', 'test@test.com')->first();
+    // public function testOrderInvoice(): void
+    // {
+    //     $order = Order::factory()
+    //         ->has(OrderItem::factory()->count(2))
+    //         ->create([
+    //             'user_id' => $this->user->id,
+    //         ]);
 
-        $order = Order::factory()
-            ->for($user)
-            ->has(OrderItem::factory()->count(1))
-            ->has(PaymentDetail::factory()->count(1))
-            ->create();
-
-        $this->actingAs($user)->put('/order/'.$order->id, [
-            'status' => 'Paid',
-            'payment_type' => 'Bank Transfer',
-        ])
-            ->assertStatus(302);
-
-        $this->assertDatabaseHas('orders', [
-            'id' => $order->id,
-            'status' => 'Proccessing',
-        ]);
-
-        $this->assertDatabaseHas('payment_details', [
-            'id' => $order->paymentDetail->id,
-            'status' => $order->paymentDetail->status,
-        ]);
-    }
+    //     $response = $this->getJson('/invoice/' . $order->id);
+    //     dd($response->json());
+    // }
 }

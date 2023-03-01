@@ -2,8 +2,8 @@
 
 namespace App\Services\Payment;
 
-use App\Models\OrderItem;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Date;
 
 class HandlePaymentService extends Midtrans
 {
@@ -12,36 +12,37 @@ class HandlePaymentService extends Midtrans
      *
      * @return array $transaction
      */
-    public function transform($data)
+    public function transform()
     {
-        $orderItems = OrderItem::where('order_id', $data['id'])->get();
+        $cart = Cart::content();
+
         $transaction = [
             'transaction_details' => [
-                'order_id' => $data->id,
-                'gross_amount' => (int) $data->total_amount,
+                'order_id' => Date::now()->timestamp,
+                'gross_amount' => (int) Cart::total(),
             ],
 
             'customer_details' => [
-                'name' => $data->user->name,
-                'email' => $data->user->email,
-                'phone' => $data->user->phone_number,
+                'name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+                'phone' => auth()->user()->phone_number,
             ],
 
-            'item_details' => $orderItems->map(function ($item) {
+            'item_details' => array_map(function ($item) {
                 return [
-                    'id' => $item->id,
-                    'name' => $item->product->name,
-                    'price' => $item->price,
-                    'quantity' => $item->qty,
+                    'id' => (int) $item['options']['product_id'],
+                    'name' => $item['name'],
+                    'price' => $item['price'],
+                    'quantity' => (int) $item['qty'],
                 ];
-            })->toArray(),
+            }, array_values($cart->toArray())),
         ];
 
         $additionalFee = [
             [
-                'id' => 'F01',
-                'name' => 'Fee',
-                'price' => 0,
+                'id' => 'D01',
+                'name' => 'Discount',
+                'price' => (int) -Cart::discount(),
                 'quantity' => 1,
             ],
             [
@@ -50,27 +51,18 @@ class HandlePaymentService extends Midtrans
                 'price' => (int) Cart::tax(),
                 'quantity' => 1,
             ],
-            [
-                'id' => 'D01',
-                'name' => 'Discount',
-                'price' => (int) Cart::discount(),
-                'quantity' => 1,
-            ],
+
         ];
 
         $transaction['item_details'] = array_merge($transaction['item_details'], $additionalFee);
 
-        // Cart::destroy();
-
         return $transaction;
     }
 
-    public function handle($data)
+    public function handle()
     {
-        $transaction = $this->transform($data);
+        $transaction = $this->transform();
 
-        $token = $this->getSnapToken($transaction);
-
-        return $token;
+        return $this->getSnapToken($transaction);
     }
 }

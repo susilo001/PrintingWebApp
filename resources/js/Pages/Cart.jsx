@@ -12,16 +12,7 @@ import { Head, Link, router } from "@inertiajs/react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 
-export default function Cart({
-  auth,
-  cart,
-  cartCount,
-  discount,
-  subtotal,
-  tax,
-  weight,
-  total,
-}) {
+export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
   const data = Object.entries(cart).map(([key, value]) => value);
 
   useEffect(() => {
@@ -30,46 +21,48 @@ export default function Cart({
 
   const handleChangeQty = (rowId, qty) => {
     setTimeout(() => {
-      router.put(route("cart.update", { cart: rowId }), {
-        data: { qty: qty },
+      router.put(route("cart.update", { cart: rowId, qty: qty }), {
         only: ["cart"],
         preserveScroll: true,
         preserveState: true,
       });
-    }, 5000);
+    }, 2000);
   };
 
-  const showSnapPayment = (page) => {
-    window.snap.show();
-    window.snap.pay(page.props.token, {
+  const showSnapPayment = async (page) => {
+    await window.snap.show();
+    await window.snap.pay(page.props.token, {
       onSuccess: function (result) {
-        router.put(
-          route("order.update", {
-            order: result.order_id,
+        router.post(
+          route("order.store", {
+            order_id: result.order_id,
             status: result.transaction_status,
             payment_type: result.payment_type,
+            gross_amount: result.gross_amount,
+            transaction_id: result.transaction_id,
+            transaction_time: result.transaction_time,
+            transaction_message: result.status_message,
           }),
           {
-            preserveScroll: true,
             preserveState: true,
+            preserveScroll: true,
           }
         );
       },
       onPending: function (result) {
-        router.put(
-          route("order.update", {
-            order: result.order_id,
+        router.post(route("order.store"), {
+          data: {
+            order_id: result.order_id,
             status: result.transaction_status,
             payment_type: result.payment_type,
-          }),
-          {
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: () => {
-              router.push(route("order.index"));
-            },
-          }
-        );
+            gross_amount: result.gross_amount,
+            transaction_id: result.transaction_id,
+            transaction_time: result.transaction_time,
+            transaction_message: result.status_message,
+          },
+          preserveState: true,
+          preserveScroll: true,
+        });
       },
       onError: function (result) {
         Swal.fire({
@@ -85,8 +78,13 @@ export default function Cart({
       },
       onClose: function () {
         Swal.fire({
-          title: "Close without procceeding payment",
+          title: "Payment Cancelled",
+          text: "You have cancelled the payment",
           icon: "error",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.get(route("cart.index"));
+          }
         });
       },
     });
@@ -94,20 +92,18 @@ export default function Cart({
 
   const handleSnapPayment = () => {
     Swal.fire({
-      title: "Testing payment",
-      text: "Please use this card information Card Number: 4811 1111 1111 1114 Exp Month: 01 Exp Year: 2025 CVV: 123",
+      title: "Please use this card information",
+      text: "Card No: 4811 1111 1111 1114 Exp MM/YY CVV: 123",
       icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       confirmButtonText: "Proceed",
     }).then((result) => {
       if (result.isConfirmed) {
-        router.post(
+        router.get(
           route("cart.checkout"),
           {},
           {
-            preserveScroll: true,
-            preserveState: true,
             onSuccess: (page) => {
               showSnapPayment(page);
             },
@@ -137,8 +133,6 @@ export default function Cart({
 
   return (
     <AuthenticatedLayout
-      auth={auth}
-      cartCount={cartCount}
       header={
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -232,21 +226,21 @@ export default function Cart({
                       {CurrencyFormater(subtotal)}
                     </span>
                   </div>
-                  <div className="flex justify-between border-b border-base-content pb-4">
+                  {/* <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Weight</div>
                     <span className="font-bold">
                       {CurrencyFormater(weight)}
                     </span>
-                  </div>
-                  <div className="flex justify-between border-b border-base-content pb-4">
-                    <div>Tax</div>
-                    <span className="font-bold">{CurrencyFormater(tax)}</span>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Discount</div>
                     <span className="font-bold">
                       {CurrencyFormater(discount)}
                     </span>
+                  </div>
+                  <div className="flex justify-between border-b border-base-content pb-4">
+                    <div>Tax</div>
+                    <span className="font-bold">{CurrencyFormater(tax)}</span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Total</div>

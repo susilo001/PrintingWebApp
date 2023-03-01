@@ -19,11 +19,9 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'highlights' => $this->highlights,
-            'details' => $this->details,
-            'images' => array_map(function ($image) {
-                return asset('storage/'.$image);
-            }, $this->images),
+            'images' => $this->getMedia('products')->map(function ($image) {
+                return $image->getFullUrl();
+            }),
             'weight' => $this->weight,
             'tax' => $this->tax,
             'featured' => $this->featured,

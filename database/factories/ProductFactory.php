@@ -21,20 +21,12 @@ class ProductFactory extends Factory
     {
         $name = fake()->name();
 
-        $images = [
-            'images/asset/products/Box1.png',
-            'images/asset/products/Box2.png',
-            'images/asset/products/Box3.png',
-            'images/asset/products/Box4.png',
-        ];
-
         return [
             'category_id' => Category::factory(),
             'discount_id' => Discount::factory(),
             'name' => $name,
             'slug' => Str::slug($name),
-            'description' => fake()->realText(200),
-            'images' => $images,
+            'description' => fake()->realText(200), 
             'weight' => fake()->numberBetween(1, 100),
             'tax' => fake()->numberBetween(1, 100),
             'featured' => fake()->boolean(50),

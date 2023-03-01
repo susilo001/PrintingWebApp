@@ -2,19 +2,16 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import {
-  InformationCircleIcon,
-  PencilSquareIcon,
-  ShoppingBagIcon,
-} from "@heroicons/react/24/outline";
+import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Authenticated({ auth, header, children }) {
+export default function Authenticated({ header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
   const { flash } = usePage().props;
+  const { auth } = usePage().props;
   const { cartCount } = usePage().props;
   const { errors } = usePage().props;
 
@@ -247,21 +244,6 @@ export default function Authenticated({ auth, header, children }) {
           </div>
         </header>
       )}
-
-      {/* Flash Message */}
-      {/* {flash.message && (
-        <div className="alert mx-auto mt-20 max-w-7xl shadow-lg">
-          <div>
-            <InformationCircleIcon className="h-6 w-6 text-info" />
-            <p>{flash.message}</p>
-          </div>
-          <div>
-            <Button className={"btn-ghost btn-sm btn-circle"}>
-              <PencilSquareIcon className="h-6 w-6" />
-            </Button>
-          </div>
-        </div>
-      )} */}
 
       {errors.message && (
         <div className="alert alert-error mx-auto mt-20 max-w-7xl shadow-lg">

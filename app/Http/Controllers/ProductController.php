@@ -26,7 +26,6 @@ class ProductController extends Controller
     /**
      * Show Product
      *
-     * @param  Product  $product
      * @return \Inertia\Response
      */
     public function show(Product $product)

@@ -7,10 +7,12 @@ use Gloudemans\Shoppingcart\CanBeBought;
 use Gloudemans\Shoppingcart\Contracts\Buyable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model implements Buyable
+class Product extends Model implements Buyable, HasMedia
 {
-    use HasFactory, CanBeBought, Filterable;
+    use HasFactory, CanBeBought, Filterable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +23,6 @@ class Product extends Model implements Buyable
         'name',
         'slug',
         'description',
-        'images',
         'tax',
         'featured',
         'weight',

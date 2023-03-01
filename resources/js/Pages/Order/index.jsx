@@ -2,14 +2,13 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link, usePage } from "@inertiajs/react";
-import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function Order({ orders, auth, cartCount }) {
+export default function Order({ orders }) {
   const { flash } = usePage().props;
 
-  const handleRequestInvoice = (id) => {
-    axios.post(route("invoice"), { id: id }).then((response) => {
+  const handleRequestInvoice = async (id) => {
+    await axios.get(route("invoice.show", { order: id })).then((response) => {
       window.open(response.data.invoice, "_blank");
     });
   };
@@ -34,8 +33,6 @@ export default function Order({ orders, auth, cartCount }) {
 
   return (
     <AuthenticatedLayout
-      auth={auth}
-      cartCount={cartCount}
       header={
         <div className="flex items-center justify-between">
           <div>
@@ -119,7 +116,7 @@ export default function Order({ orders, auth, cartCount }) {
                     />
                   </div>
                   <div className="my-4 flex-grow space-y-4 lg:my-0 lg:pl-8">
-                    <h2 className="text-lg font-bold">{item.name}</h2>
+                    <h2 className="text-lg font-bold">{item.product.name}</h2>
                     <p>{item.desc}</p>
                     <div className="grid place-items-start lg:grid-cols-3">
                       {item.variants.map((variant, index) => (
