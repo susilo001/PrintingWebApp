@@ -29,6 +29,6 @@ class ProductTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $this->get('/product/'.$product->slug)->assertStatus(200);
+        $this->get('/product/'.$product->id)->assertSee($product->name);
     }
 }

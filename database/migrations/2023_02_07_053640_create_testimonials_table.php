@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('testimonial');
             $table->integer('rating');
             $table->boolean('is_approved')->default(false);
+            $table->boolean('is_featured')->default(false);
             $table->timestamps();
         });
     }

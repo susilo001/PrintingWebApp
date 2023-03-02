@@ -43,8 +43,6 @@ class OrderItemFactory extends Factory
     {
         return $this->afterMaking(function (OrderItem $orderItem) {
             $orderItem->addMedia(storage_path('app/public/asset/products/sticker.png'))->preservingOriginal()->toMediaCollection('designs');
-        })->afterCreating(function (OrderItem $orderItem) {
-            $orderItem->addMedia(storage_path('app/public/asset/products/sticker.png'))->preservingOriginal()->toMediaCollection('designs');
         });
     }
 }

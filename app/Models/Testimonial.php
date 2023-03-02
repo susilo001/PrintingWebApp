@@ -21,6 +21,7 @@ class Testimonial extends Model
         'testimonial',
         'rating',
         'is_approved',
+        'is_featured',
     ];
 
     /**
@@ -30,6 +31,7 @@ class Testimonial extends Model
      */
     protected $casts = [
         'is_approved' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     /**

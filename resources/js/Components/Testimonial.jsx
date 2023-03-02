@@ -1,17 +1,18 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const Testimonial = () => {
+const Testimonial = ({ testimonials }) => {
+  console.log(testimonials);
   return (
     <Swiper spaceBetween={50} slidesPerView={1} className={"swiper"}>
       <div className="swiper-wrapper">
-        {testimonial.map((item, index) => (
+        {testimonials.map((item, index) => (
           <SwiperSlide key={index} className="swiper-slide !bg-transparent">
             <div className="mx-auto text-center md:w-8/12 lg:w-7/12">
               <div className="flex space-x-8">
                 <div className="w-full">
                   <img
                     className="rounded-xl"
-                    src={item.companyLogo}
+                    src="https://picsum.photos/200"
                     alt="company logo"
                     loading="lazy"
                   />
@@ -25,14 +26,18 @@ const Testimonial = () => {
                   <div className="flex space-x-4 pl-4">
                     <div className="avatar">
                       <div className="h-10 w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
-                        <img src={item.img} alt="user avatar" loading="lazy" />
+                        <img
+                          src="https://picsum.photos/200"
+                          alt={item.user.name}
+                          loading="lazy"
+                        />
                       </div>
                     </div>
                     <div>
                       <h3 className="text-left text-lg font-semibold leading-none">
-                        {item.name}
+                        {item.user.name}
                       </h3>
-                      <span className="text-xs ">{item.designation}</span>
+                      <span className="text-xs ">{item.user.email}</span>
                     </div>
                   </div>
                 </div>
@@ -46,48 +51,5 @@ const Testimonial = () => {
     </Swiper>
   );
 };
-
-const testimonial = [
-  {
-    img: "https://picsum.photos/200",
-    name: "John Doe",
-    designation: "Product Designer",
-    companyLogo: "https://picsum.photos/200",
-    testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat repellat perspiciatis excepturi est. Non ipsum iusto aliquam consequatur repellat provident, omnis ut, sapiente voluptates veritatis cum deleniti repudiandae ad doloribus.",
-  },
-  {
-    img: "https://picsum.photos/200",
-    name: "John Doe",
-    designation: "Product Designer",
-    companyLogo: "https://picsum.photos/200",
-    testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat repellat perspiciatis excepturi est. Non ipsum iusto aliquam consequatur repellat provident, omnis ut, sapiente voluptates veritatis cum deleniti repudiandae ad doloribus.",
-  },
-  {
-    img: "https://picsum.photos/200",
-    name: "John Doe",
-    designation: "Product Designer",
-    companyLogo: "https://picsum.photos/200",
-    testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat repellat perspiciatis excepturi est. Non ipsum iusto aliquam consequatur repellat provident, omnis ut, sapiente voluptates veritatis cum deleniti repudiandae ad doloribus.",
-  },
-  {
-    img: "https://picsum.photos/200",
-    name: "John Doe",
-    designation: "Product Designer",
-    companyLogo: "https://picsum.photos/200",
-    testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat repellat perspiciatis excepturi est. Non ipsum iusto aliquam consequatur repellat provident, omnis ut, sapiente voluptates veritatis cum deleniti repudiandae ad doloribus.",
-  },
-  {
-    img: "https://picsum.photos/200",
-    name: "John Doe",
-    designation: "Product Designer",
-    companyLogo: "https://picsum.photos/200",
-    testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat repellat perspiciatis excepturi est. Non ipsum iusto aliquam consequatur repellat provident, omnis ut, sapiente voluptates veritatis cum deleniti repudiandae ad doloribus.",
-  },
-];
 
 export default Testimonial;

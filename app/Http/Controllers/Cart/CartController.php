@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCartRequest;
 use App\Services\Cart\CartService;
 use App\Services\Payment\PaymentService;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -24,10 +25,8 @@ class CartController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         return Inertia::render('Cart', [
             'cart' => Cart::content(),
@@ -41,45 +40,52 @@ class CartController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(StoreCartRequest $request)
+    public function store(StoreCartRequest $request): RedirectResponse
     {
         $this->cartService->add($request->validated());
 
-        to_route('cart.index', '', 302)->with('message', 'Item added to cart successfully');
+        return redirect()->back()->with([
+            'title' => 'Success',
+            'message' => 'Item added to cart successfully',
+            'status' => 'success',
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @param  string  $rowId
      */
-    public function update(Request $request, $rowId)
+    public function update(Request $request, $rowId): RedirectResponse
     {
         Cart::update($rowId, (int) $request->qty);
 
-        return redirect()->route('cart.index')->with('message', 'Cart updated successfully');
+        return redirect()->route('cart.index')->with([
+            'title' => 'Success',
+            'message' => 'Item cart updated successfully',
+            'status' => 'success',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  string  $rowId
      */
-    public function destroy($rowId)
+    public function destroy($rowId): RedirectResponse
     {
         Cart::remove($rowId);
 
-        return to_route('cart.index', '', 302)->with('message', 'Item cart deleted successfully');
+        return to_route('cart.index', '', 302)->with([
+            'title' => 'Success',
+            'message' => 'Item cart removed successfully',
+            'status' => 'error',
+        ]);
     }
 
     /**
      * Checkout the cart content
-     *
-     * @return void
      */
     public function checkout()
     {

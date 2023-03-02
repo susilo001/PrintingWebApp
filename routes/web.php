@@ -28,7 +28,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index')->name('product.index');
-    Route::get('/product/{slug}', 'show')->name('product.show');
+    Route::get('/product/{product}', 'show')->name('product.show');
 });
 
 /**

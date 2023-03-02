@@ -3,7 +3,6 @@ import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
-import { RadioGroup } from "@headlessui/react";
 import { ShoppingBagIcon, StarIcon } from "@heroicons/react/20/solid";
 import { Head, router } from "@inertiajs/react";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
@@ -72,10 +71,9 @@ export default function Product({ product }) {
 
     Swal.fire({
       title: "Are you sure?",
+      text: "You want to add this product to your cart?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
     }).then((result) => {
       if (result.isConfirmed) {
         router.post("/cart", formData, {
@@ -99,9 +97,6 @@ export default function Product({ product }) {
               reset("design");
               designInput.current.focus();
             }
-          },
-          onSuccess: () => {
-            Swal.fire("Added!", "Your product has been added.", "success");
           },
         });
       }
@@ -234,62 +229,27 @@ export default function Product({ product }) {
 
                   {/* Variants */}
                   {product.variants.map((variant) => (
-                    <div key={variant.id} className="mt-10">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-medium">{variant.name}</h3>
-                        <a
-                          href="#"
-                          className="text-sm font-medium text-secondary hover:text-secondary-focus"
+                    <div key={variant.id} className="mt-2">
+                      <div className="form-control w-full">
+                        <label className="label">
+                          <span className="label-text">{variant.name}</span>
+                          <span className="label-text-alt">
+                            {variant.name} guide
+                          </span>
+                        </label>
+                        <select
+                          name={variant.name}
+                          value={variants[variant.id]}
+                          onChange={(e) =>
+                            handleVariantChange(variant.name, e.target.value)
+                          }
+                          className="select-bordered select"
                         >
-                          {variant.name} guide
-                        </a>
-                      </div>
-
-                      <RadioGroup
-                        name={variant.name}
-                        value={variants[variant.id]}
-                        onChange={(value) =>
-                          handleVariantChange(variant.name, value)
-                        }
-                        className="mt-4"
-                      >
-                        <RadioGroup.Label className="sr-only">
-                          Choose a {variant.name}{" "}
-                        </RadioGroup.Label>
-                        <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                           {variant.options.map((option) => (
-                            <RadioGroup.Option
-                              key={option.value}
-                              value={option.value}
-                              className={({ active }) =>
-                                classNames(
-                                  "cursor-pointer bg-white text-gray-900 shadow-sm",
-                                  active ? "ring-2 ring-accent-focus" : "",
-                                  "group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
-                                )
-                              }
-                            >
-                              {({ active, checked }) => (
-                                <>
-                                  <RadioGroup.Label as="span">
-                                    {option.value}
-                                  </RadioGroup.Label>
-                                  <span
-                                    className={classNames(
-                                      active ? "border" : "border-2",
-                                      checked
-                                        ? "border-accent"
-                                        : "border-transparent",
-                                      "pointer-events-none absolute -inset-px rounded-md"
-                                    )}
-                                    aria-hidden="true"
-                                  />
-                                </>
-                              )}
-                            </RadioGroup.Option>
+                            <option key={option.value}>{option.value}</option>
                           ))}
-                        </div>
-                      </RadioGroup>
+                        </select>
+                      </div>
                     </div>
                   ))}
 

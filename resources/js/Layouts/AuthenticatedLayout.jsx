@@ -16,6 +16,39 @@ export default function Authenticated({ header, children }) {
   const { cartCount } = usePage().props;
   const { errors } = usePage().props;
 
+  const showSurveyModal = async () => {
+    await Swal.fire({
+      title: "Survey",
+      text: "Please fill this survey",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Proceed",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.open(
+          "https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link",
+          "_blank"
+        );
+      }
+    });
+  };
+
+  const showFlashMessage = async () => {
+    await Swal.fire({
+      title: flash.title ? flash.title : "",
+      text: flash.message ? flash.message : "",
+      icon: flash.status ? flash.status : "",
+      showCloseButton: true,
+      showConfirmButton: true,
+      timer: 3000,
+    });
+  };
+
+  if (flash.message) {
+    flash.title === "Survey" ? showSurveyModal() : showFlashMessage();
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-base-100 shadow-md">
@@ -255,33 +288,6 @@ export default function Authenticated({ header, children }) {
           </ul>
         </div>
       )}
-
-      {flash.message &&
-        Swal.fire({
-          icon: flash.status,
-          title: flash.status,
-          text: flash.message,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 1500,
-        })}
-
-      {flash.message === "survey" &&
-        Swal.fire({
-          title: "Survey",
-          text: "Please fill this survey",
-          icon: "info",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Proceed",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.open(
-              "https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link",
-              "_blank"
-            );
-          }
-        })}
 
       <main className="mb-auto py-4">{children}</main>
       <footer className="bg-neutral-focus p-10 text-base-100">

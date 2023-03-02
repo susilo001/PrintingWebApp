@@ -20,7 +20,7 @@ class CartService
      */
     public function storeFile($file): string
     {
-        return Storage::disk('public')->put('designs', $file);
+        return Storage::disk('public')->put('designs', $file, 'public');
     }
 
     /**

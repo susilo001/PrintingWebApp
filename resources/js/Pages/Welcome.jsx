@@ -8,7 +8,11 @@ import { Head, Link } from "@inertiajs/react";
 import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function Welcome({ categories, featuredProducts }) {
+export default function Welcome({
+  categories,
+  featuredProducts,
+  testimonials,
+}) {
   return (
     <AuthenticatedLayout>
       <Head title="Welcome" />
@@ -86,7 +90,7 @@ export default function Welcome({ categories, featuredProducts }) {
           <div className="mb-8 flex justify-center">
             <h2 className="text-2xl font-bold">Testimonial</h2>
           </div>
-          <Testimonial />
+          <Testimonial testimonials={testimonials} />
         </div>
       </div>
     </AuthenticatedLayout>

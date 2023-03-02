@@ -29,9 +29,8 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
     }, 2000);
   };
 
-  const showSnapPayment = async (page) => {
-    await window.snap.show();
-    await window.snap.pay(page.props.token, {
+  const showSnapPayment = (page) => {
+    window.snap.pay(page.props.token, {
       onSuccess: function (result) {
         router.post(
           route("order.store", {
@@ -44,14 +43,14 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
             transaction_message: result.status_message,
           }),
           {
-            preserveState: true,
             preserveScroll: true,
+            preserveState: true,
           }
         );
       },
       onPending: function (result) {
-        router.post(route("order.store"), {
-          data: {
+        router.post(
+          route("order.store", {
             order_id: result.order_id,
             status: result.transaction_status,
             payment_type: result.payment_type,
@@ -59,10 +58,12 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
             transaction_id: result.transaction_id,
             transaction_time: result.transaction_time,
             transaction_message: result.status_message,
-          },
-          preserveState: true,
-          preserveScroll: true,
-        });
+          }),
+          {
+            preserveScroll: true,
+            preserveState: true,
+          }
+        );
       },
       onError: function (result) {
         Swal.fire({
@@ -72,7 +73,7 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
           confirmButtonText: "Ok",
         }).then((result) => {
           if (result.isConfirmed) {
-            router.push(route("cart.index"));
+            router.get(route("cart.index"));
           }
         });
       },
@@ -100,6 +101,7 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
       confirmButtonText: "Proceed",
     }).then((result) => {
       if (result.isConfirmed) {
+        window.snap.show();
         router.get(
           route("cart.checkout"),
           {},
@@ -122,11 +124,7 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
       confirmButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
-        router.delete(route("cart.destroy", { cart: rowId }), {
-          onSuccess: () => {
-            Swal.fire("Deleted!", "Your file has been deleted.", "success");
-          },
-        });
+        router.delete(route("cart.destroy", { cart: rowId }));
       }
     });
   };

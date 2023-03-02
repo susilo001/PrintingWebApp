@@ -39,7 +39,9 @@ class HandleInertiaRequests extends Middleware
                 return Cart::content()->count();
             },
             'flash' => [
+                'title' => $request->session()->get('title'),
                 'message' => $request->session()->get('message'),
+                'status' => $request->session()->get('status'),
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

@@ -26,6 +26,7 @@ class TestimonialFactory extends Factory
             'testimonial' => fake()->realText(),
             'rating' => fake()->numberBetween(1, 5),
             'is_approved' => fake()->boolean(50) ? 1 : 0,
+            'is_featured' => fake()->boolean(50) ? 1 : 0,
         ];
     }
 }

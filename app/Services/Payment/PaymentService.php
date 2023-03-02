@@ -20,9 +20,30 @@ class PaymentService extends Midtrans
             ],
 
             'customer_details' => [
-                'name' => auth()->user()->name,
+                'first_name' => auth()->user()->name,
+                'last_name' => auth()->user()->name,
                 'email' => auth()->user()->email,
                 'phone' => auth()->user()->phone_number,
+                'billing_address' => [
+                    'first_name' => 'Budi',
+                    'last_name' => 'Susanto',
+                    'email' => 'budisusanto@example.com',
+                    'phone' => '08123456789',
+                    'address' => 'Sudirman No.12',
+                    'city' => 'Jakarta',
+                    'postal_code' => '12190',
+                    'country_code' => 'IDN',
+                ],
+                'shipping_address' => [
+                    'first_name' => 'Budi',
+                    'last_name' => 'Susanto',
+                    'email' => 'budisusanto@example.com',
+                    'phone' => '08123456789',
+                    'address' => 'Sudirman No.12',
+                    'city' => 'Jakarta',
+                    'postal_code' => '12190',
+                    'country_code' => 'IDN',
+                ],
             ],
 
             'item_details' => array_map(function ($item) {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderCollection;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -46,8 +47,19 @@ class OrderController extends Controller
             'total_amount' => Cart::total(),
         ]);
 
+        $order->paymentDetail()->create([
+            'status' => $request->status,
+            'gross_amount' => (int) $request->gross_amount,
+            'payment_type' => $request->payment_type,
+            'transaction_id' => $request->transaction_id,
+            'transaction_time' => $request->transaction_time,
+        ]);
+
         foreach (Cart::content() as $item) {
-            $orderItem = $order->orderItems()->create([
+            $path = storage_path('app/public/'.$item->options->design);
+
+            $orderItem = OrderItem::create([
+                'order_id' => $order->id,
                 'product_id' => $item->options->product_id,
                 'name' => $item->name,
                 'description' => $item->options->description,
@@ -58,22 +70,12 @@ class OrderController extends Controller
                 'tax' => $item->tax,
             ]);
 
-            $path = storage_path('app/public/'.$item->options->design);
-
             $orderItem->addMedia($path)->toMediaCollection('designs');
         }
 
-        $order->paymentDetail()->create([
-            'status' => $request->status,
-            'gross_amount' => (int) $request->gross_amount,
-            'payment_type' => $request->payment_type,
-            'transaction_id' => $request->transaction_id,
-            'transaction_time' => $request->transaction_time,
-        ]);
-
         Cart::destroy();
 
-        return redirect()->route('order.index')->with('message', 'survey');
+        return redirect()->route('order.index')->with('title', 'Survey');
     }
 
     /**
@@ -89,7 +91,11 @@ class OrderController extends Controller
             'is_approved' => false,
         ]);
 
-        return redirect()->route('order.index')->with(['message' => 'Your testimonial has been submitted. Thank you!', 'status' => 'success']);
+        return redirect()->route('order.index')->with([
+            'title' => 'Success',
+            'message' => 'Your testimonial has been submitted. Thank you!',
+            'status' => 'success',
+        ]);
     }
 
     /**
