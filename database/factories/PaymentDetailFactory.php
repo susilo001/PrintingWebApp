@@ -19,11 +19,11 @@ class PaymentDetailFactory extends Factory
     {
         return [
             'order_id' => Order::factory(),
-            'status' => $this->faker->randomElement(['pending', 'processing', 'completed', 'declined']),
+            'status' => $this->faker->randomElement(['settlement', 'pending', 'capture', 'expired', 'cancel']),
             'payment_type' => $this->faker->randomElement(['credit_card', 'bank_transfer', 'gopay']),
             'transaction_id' => $this->faker->uuid,
             'transaction_time' => $this->faker->dateTime,
-            'gross_amount' => $this->faker->numberBetween(10000, 10000),
+            'gross_amount' => $this->faker->numberBetween(10000, 1000000),
         ];
     }
 }

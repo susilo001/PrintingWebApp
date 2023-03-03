@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\OrderResource\RelationManagers;
 
-use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\TextColumn;
 
 class PaymentDetailRelationManager extends RelationManager
 {
@@ -18,9 +20,9 @@ class PaymentDetailRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('gross_amount')
-                    ->required()
-                    ->maxLength(255),
+                TextInput::make('gross_amount')
+                    ->numeric()
+                    ->required(),
             ]);
     }
 
@@ -28,16 +30,21 @@ class PaymentDetailRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\BadgeColumn::make('status')
+                BadgeColumn::make('status')
                     ->colors([
                         'warning' => 'pending',
-                        'success' => 'completed',
-                        'danger' => 'canceled',
+                        'success' => 'capture',
+                        'success' => 'settlement',
+                        'danger' => 'cancel',
+                        'danger' => 'expired',
                     ])
                     ->sortable(),
-                Tables\Columns\TextColumn::make('gross_amount'),
-                Tables\Columns\TextColumn::make('payment_type'),
-                Tables\Columns\TextColumn::make('expiry'),
+                TextColumn::make('transaction_id'),
+                TextColumn::make('gross_amount')
+                    ->money('IDR', true),
+                TextColumn::make('payment_type'),
+                TextColumn::make('transaction_time')
+                    ->datetime(),
             ])
             ->filters([
                 //
