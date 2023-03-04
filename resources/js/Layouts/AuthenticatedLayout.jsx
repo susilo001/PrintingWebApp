@@ -289,7 +289,7 @@ export default function Authenticated({ header, children }) {
         </div>
       )}
 
-      <main className="mb-auto py-4">{children}</main>
+      <main>{children}</main>
       <footer className="bg-neutral-focus p-10 text-base-100">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
@@ -311,16 +311,16 @@ export default function Authenticated({ header, children }) {
           </div>
           <div>
             <span className="footer-title">Company</span>
-            {/* <a className="link-hover link">About us</a>
+            <a className="link-hover link">About us</a>
             <a className="link-hover link">Contact</a>
             <a className="link-hover link">Jobs</a>
-            <a className="link-hover link">Press kit</a> */}
+            <a className="link-hover link">Press kit</a>
           </div>
           <div>
             <span className="footer-title">Contact Us</span>
-            {/* <a className="link-hover link">Terms of use</a>
+            <a className="link-hover link">Terms of use</a>
             <a className="link-hover link">Privacy policy</a>
-            <a className="link-hover link">Cookie policy</a> */}
+            <a className="link-hover link">Cookie policy</a>
           </div>
         </div>
       </footer>

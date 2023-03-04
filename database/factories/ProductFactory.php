@@ -26,7 +26,7 @@ class ProductFactory extends Factory
             'discount_id' => Discount::factory(),
             'name' => $name,
             'slug' => Str::slug($name),
-            'description' => fake()->realText(200),
+            'description' => fake()->realText(400),
             'weight' => fake()->numberBetween(1, 100),
             'tax' => fake()->numberBetween(1, 100),
             'featured' => fake()->boolean(50),
