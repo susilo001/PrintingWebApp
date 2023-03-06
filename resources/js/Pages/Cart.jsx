@@ -151,7 +151,7 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
               </div>
               <Link
                 href={route("product.index")}
-                className="btn-error btn-sm btn mt-4"
+                className="btn-error btn mt-4"
                 as="button"
               >
                 Shop Now
@@ -164,37 +164,19 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
               {data.map((item) => (
                 <div
                   key={item.id}
-                  className="mb-8 rounded-lg border py-10 shadow-lg"
+                  className="mb-8 rounded-lg border p-8 shadow-lg"
                 >
-                  <div className="flex flex-col items-center lg:space-x-8">
-                    <div className="rounded-xl lg:h-96 lg:w-96">
-                      <img
-                        src={"storage/" + item.options.design}
-                        className="aspect-square object-cover"
-                        alt={item.name}
-                      />
-                    </div>
-                    <div className="mt-8 p-8">
-                      <div className="space-y-4">
+                  <div className="flex flex-col items-center space-y-4 sm:space-y-0 justify-center sm:flex-row sm:items-start sm:space-x-6">
+                    <img
+                      src={"storage/" + item.options.design}
+                      className="aspect-square object-cover rounded-xl w-52 h-52 bg-base-200"
+                      alt={item.name}
+                    />
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
                         <h3 className="text-lg font-bold">{item.name}</h3>
-                        <p>{item.options.description}</p>
-                        <div className="grid grid-cols-3 items-center justify-center gap-2">
-                          {item.options.variants.map((variant, index) => (
-                            <div key={index}>{variant.value}</div>
-                          ))}
-                        </div>
-                        <div className="text-secondary">
-                          {item.weight + "/kg"}
-                        </div>
-                      </div>
-                      <div className="mt-4 flex items-center justify-between space-x-8">
-                        <div>
-                          <span className="font-bold text-primary">
-                            {CurrencyFormater(item.price)}
-                          </span>
-                        </div>
                         <input
-                          className={"input-bordered input input-sm w-24"}
+                          className={"input-bordered input input-sm w-20"}
                           type="number"
                           name="qty"
                           defaultValue={item.qty}
@@ -208,6 +190,15 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
                         >
                           <TrashIcon className="h-6 w-6 text-error" />
                         </button>
+                      </div>
+                      <span className="font-bold text-primary">
+                        {CurrencyFormater(item.price)}
+                      </span>
+                      <p className="break-words text-justify">{item.options.description}</p>
+                      <div className="grid grid-cols-3 items-center justify-center gap-2">
+                        {item.options.variants.map((variant, index) => (
+                          <div key={index}>{variant.value}</div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -224,12 +215,6 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
                       {CurrencyFormater(subtotal)}
                     </span>
                   </div>
-                  {/* <div className="flex justify-between border-b border-base-content pb-4">
-                    <div>Weight</div>
-                    <span className="font-bold">
-                      {CurrencyFormater(weight)}
-                    </span>
-                  </div> */}
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Discount</div>
                     <span className="font-bold">

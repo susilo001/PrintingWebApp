@@ -1,6 +1,6 @@
 {
-  "name": "Orbit Printing",
-  "short_name": "Orbit",
+  "name": "Orbit Trust Digital Printing",
+  "short_name": "Orbit Trust",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -20,7 +20,7 @@
     }
   ],
   "id": "/",
-  "start_url": "/",
+  "start_url": ".",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",
