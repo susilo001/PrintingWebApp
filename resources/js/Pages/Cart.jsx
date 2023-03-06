@@ -194,7 +194,9 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
                       <span className="font-bold text-primary">
                         {CurrencyFormater(item.price)}
                       </span>
-                      <p className="break-words text-justify">{item.options.description}</p>
+                      <p className="break-words text-justify">
+                        {item.options.description}
+                      </p>
                       <div className="grid grid-cols-3 items-center justify-center gap-2">
                         {item.options.variants.map((variant, index) => (
                           <div key={index}>{variant.value}</div>
