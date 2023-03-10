@@ -13,7 +13,6 @@ import { useEffect } from "react";
 import Swal from "sweetalert2";
 
 export default function Cart({ cart }) {
-
   useEffect(() => {
     Midtrans();
   }, []);
@@ -192,10 +191,18 @@ export default function Cart({ cart }) {
                       <span className="font-bold text-primary">
                         {CurrencyFormater(item.price)}
                       </span>
-                      <p className="break-words text-justify">{item.description}</p>
+                      <p className="break-words text-justify">
+                        {item.description}
+                      </p>
                       <ul className="flex items-center space-x-2">
                         {item.variants.map((variant, index) => (
-                          <li className="pr-2 border-r-2 font-semibold" key={index}> {variant.value} </li>
+                          <li
+                            className="pr-2 border-r-2 font-semibold"
+                            key={index}
+                          >
+                            {" "}
+                            {variant.value}{" "}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -221,11 +228,15 @@ export default function Cart({ cart }) {
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Tax</div>
-                    <span className="font-bold">{CurrencyFormater(cart.tax)}</span>
+                    <span className="font-bold">
+                      {CurrencyFormater(cart.tax)}
+                    </span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Total</div>
-                    <span className="font-bold">{CurrencyFormater(cart.total)}</span>
+                    <span className="font-bold">
+                      {CurrencyFormater(cart.total)}
+                    </span>
                   </div>
                 </div>
                 <div className="space-y-4">
