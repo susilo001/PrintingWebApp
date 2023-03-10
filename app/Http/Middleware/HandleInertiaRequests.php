@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -31,12 +31,15 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
             ],
             'cartCount' => function () {
-                return Cart::content()->count();
+                $cart = Cart::where('user_id', auth()->id())->first();
+                return $cart ? $cart->cartItems->count() : 0;
             },
             'flash' => [
                 'title' => $request->session()->get('title'),

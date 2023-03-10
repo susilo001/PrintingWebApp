@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Order;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Resources\OrderCollection;
+use App\Models\Cart;
+use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use LaravelDaily\Invoices\Classes\InvoiceItem;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Resources\OrderCollection;
+use App\Http\Requests\StoreOrderRequest;
 use LaravelDaily\Invoices\Classes\Party;
 use LaravelDaily\Invoices\Facades\Invoice;
+use LaravelDaily\Invoices\Classes\InvoiceItem;
 
 class OrderController extends Controller
 {
@@ -37,14 +37,16 @@ class OrderController extends Controller
     {
         $request->validated();
 
+        $cart = Cart::where('user_id', auth()->id())->first();
+
         $order = Order::create([
             'id' => (int) $request->order_id,
             'user_id' => auth()->user()->id,
             'status' => 'pending',
-            'subtotal' => Cart::priceTotal(),
-            'discount' => Cart::discount(),
-            'tax' => Cart::tax(),
-            'total_amount' => Cart::total(),
+            'subtotal' => $cart->getSubtotal(),
+            'discount' => $cart->getDiscount(),
+            'tax' => $cart->getTax(),
+            'total_amount' => $cart->getTotal(),
         ]);
 
         $order->paymentDetail()->create([
@@ -55,27 +57,31 @@ class OrderController extends Controller
             'transaction_time' => $request->transaction_time,
         ]);
 
-        foreach (Cart::content() as $item) {
-            $path = storage_path('app/public/'.$item->options->design);
-
+        foreach ($cart->cartItems as $item) {
             $orderItem = OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $item->options->product_id,
+                'product_id' => $item->product_id,
                 'name' => $item->name,
-                'description' => $item->options->description,
+                'description' => $item->description,
                 'qty' => $item->qty,
-                'price' => $item->price,
-                'variants' => $item->options->variants,
+                'price' => $item->product->getPriceByOrderQuantity($item->qty),
+                'variants' => $item->variants,
                 'discount' => $item->discount,
                 'tax' => $item->tax,
             ]);
 
-            $orderItem->addMedia($path)->toMediaCollection('designs');
+            $cartItemMedia = $item->getMedia('cart')->first();
+
+            $cartItemMedia->move($orderItem, 'designs');
         }
 
-        Cart::destroy();
+        $cart->cartItems()->delete();
 
-        return redirect()->route('order.index')->with('title', 'Survey');
+        return redirect()->route('order.index')->with([
+            'title' => 'Survey',
+            'message' => 'Your order has been placed. Thank you!',
+            'status' => 'success',
+        ]);
     }
 
     /**
@@ -101,7 +107,7 @@ class OrderController extends Controller
     /**
      * Show order invoice.
      */
-    public function invoice(Order $order): JsonResponse
+    public function invoice(Order $order): \Inertia\Response
     {
         $items = $order->orderItems()->get();
         $payment = $order->paymentDetail()->first();
@@ -131,13 +137,14 @@ class OrderController extends Controller
             ->buyer($customer)
             ->date(now()->subWeeks(3))
             ->dateFormat('m/d/Y')
-            ->filename('INV'.$order->id)
+            ->filename('INV' . $order->id)
             ->addItems($items)
-            ->logo(public_path('vendor/invoices/logo.png'))
+            // ->logo(public_path('vendor/invoices/logo.png'))
             ->notes('Thank you for your business!')
             ->save('public');
 
-        return response()->json([
+        return Inertia::render('Order/index', [
+            'orders' => new OrderCollection(Order::with('orderItems', 'paymentDetail')->where('user_id', auth()->user()->id)->get()),
             'invoice' => $invoice->url(),
         ]);
     }

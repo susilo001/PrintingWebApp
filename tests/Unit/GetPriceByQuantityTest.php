@@ -65,9 +65,9 @@ class GetPriceByQuantityTest extends TestCase
     }
 
     /**
-     * if quantity is less than min_order, return error message 'The minimum order is 5 pcs'
+     * throw Exception if quantity is less than min_order  'The minimum order is 5 pcs'
      */
-    public function testGetPriceIfQuantityIsLessThanMinOrder(): void
+    public function testThrowExceptionIfQtyIsLessThanMinOrder(): void
     {
         $this->product->prices()->create([
             'name' => '1 - 10',

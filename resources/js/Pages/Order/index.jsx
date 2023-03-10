@@ -1,13 +1,21 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 
 export default function Order({ orders }) {
 
   const handleRequestInvoice = async (id) => {
-    await axios.get(route("invoice.show", { order: id })).then((response) => {
-      window.open(response.data.invoice, "_blank");
+    // await axios.get(route("order.invoice", { order: id })).then((response) => {
+    //   window.open(response.data.invoice, "_blank");
+    // });
+    router.get(route("order.invoice", { order: id }), {
+      preserveState: true,
+      preserveScroll: true,
+      onSuccess: (response) => {
+        // window.open(response.data.invoice, "_blank");
+        console.log(response);
+      },
     });
   };
 

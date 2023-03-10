@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCartRequest;
-use App\Services\Cart\CartService;
-use App\Services\Payment\PaymentService;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use App\Models\Cart;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Services\Cart\CartService;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\CartResource;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreCartRequest;
+use App\Models\CartItem;
+use App\Models\Product;
+use App\Services\Payment\PaymentService;
 
 class CartController extends Controller
 {
@@ -29,12 +32,7 @@ class CartController extends Controller
     public function index(): \Inertia\Response
     {
         return Inertia::render('Cart', [
-            'cart' => Cart::content(),
-            'weight' => Cart::weight(),
-            'subtotal' => Cart::priceTotal(),
-            'tax' => Cart::tax(),
-            'discount' => Cart::discount(),
-            'total' => Cart::total(),
+            'cart' => new CartResource(Cart::with('cartItems')->where('user_id', auth()->id())->first()),
         ]);
     }
 
@@ -43,7 +41,31 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request): RedirectResponse
     {
-        $this->cartService->add($request->validated());
+        $request->validated();
+
+        if (Cart::where('user_id', auth()->id())->first()) {
+            $cart = Cart::where('user_id', auth()->id())->first();
+        } else {
+            $cart = Cart::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
+        $product = Product::findOrfail($request->product_id);
+
+        $cartItem = $cart->cartItems()->create([
+            'product_id' => $request->product_id,
+            'qty' => $request->quantity,
+            'name' => $product->name,
+            'description' => $request->description,
+            'variants' => json_decode($request->variants),
+            'discount' => $product->discount->active ? $product->discount->discount_percentage : 0,
+            'tax' => $product->tax,
+        ]);
+
+        if ($request->hasFile('design') && $request->file('design')->isValid()) {
+            $cartItem->addMediaFromRequest('design')->toMediaCollection('cart');
+        }
 
         return redirect()->back()->with([
             'title' => 'Success',
@@ -57,9 +79,13 @@ class CartController extends Controller
      *
      * @param  string  $rowId
      */
-    public function update(Request $request, $rowId): RedirectResponse
+    public function update(Request $request, CartItem $cartItem): RedirectResponse
     {
-        Cart::update($rowId, (int) $request->qty);
+        $cartItem->update($request->all());
+
+        if ($request->hasFile('design') && $request->file('design')->isValid()) {
+            $cartItem->addMediaFromRequest($request->design)->toMediaCollection('cart');
+        }
 
         return redirect()->route('cart.index')->with([
             'title' => 'Success',
@@ -73,9 +99,9 @@ class CartController extends Controller
      *
      * @param  string  $rowId
      */
-    public function destroy($rowId): RedirectResponse
+    public function destroy(CartItem $cartItem): RedirectResponse
     {
-        Cart::remove($rowId);
+        $cartItem->delete();
 
         return to_route('cart.index', '', 302)->with([
             'title' => 'Success',
@@ -92,12 +118,7 @@ class CartController extends Controller
         $snapToken = $this->paymentService->requestPayment();
 
         return Inertia::render('Cart', [
-            'cart' => Cart::content(),
-            'weight' => Cart::weight(),
-            'subtotal' => Cart::priceTotal(),
-            'tax' => Cart::tax(),
-            'discount' => Cart::discount(),
-            'total' => Cart::total(),
+            'cart' => new CartResource(Cart::with('cartItems')->where('user_id', auth()->id())->first()),
             'token' => $snapToken,
         ]);
     }

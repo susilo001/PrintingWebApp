@@ -2,16 +2,18 @@
 
 namespace App\Services\Payment;
 
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Cart;
+use App\Services\Payment\Midtrans;
+
 
 class PaymentService extends Midtrans
 {
     public function requestPayment(): string
     {
-        $cart = Cart::content();
-        $cartDiscount = Cart::discount();
-        $cartTax = Cart::tax();
-        $cartTotal = Cart::total();
+        $cart = Cart::where('user_id', auth()->id())->first();
+        $cartDiscount = $cart->getDiscount();
+        $cartTax = $cart->getTax();
+        $cartTotal = $cart->getTotal();
 
         $transaction = [
             'transaction_details' => [
@@ -46,14 +48,14 @@ class PaymentService extends Midtrans
                 ],
             ],
 
-            'item_details' => array_map(function ($item) {
+            'item_details' => $cart->cartItems->map(function ($item) {
                 return [
-                    'id' => (int) $item['options']['product_id'],
-                    'name' => $item['name'],
-                    'price' => $item['price'],
-                    'quantity' => (int) $item['qty'],
+                    'id' => $item->product->id,
+                    'name' => $item->product->name,
+                    'price' => (int) $item->product->getPriceByOrderQuantity($item->qty),
+                    'quantity' => $item->qty,
                 ];
-            }, array_values($cart->toArray())),
+            })->toArray(),
         ];
 
         $additionalFee = [

@@ -12,16 +12,15 @@ import { Head, Link, router } from "@inertiajs/react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 
-export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
-  const data = Object.entries(cart).map(([key, value]) => value);
+export default function Cart({ cart }) {
 
   useEffect(() => {
     Midtrans();
   }, []);
 
-  const handleChangeQty = (rowId, qty) => {
+  const handleChangeQty = (id, qty) => {
     setTimeout(() => {
-      router.put(route("cart.update", { cart: rowId, qty: qty }), {
+      router.put(route("cart.update", { cartItem: id, qty: qty }), {
         only: ["cart"],
         preserveScroll: true,
         preserveState: true,
@@ -102,20 +101,19 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
     }).then((result) => {
       if (result.isConfirmed) {
         window.snap.show();
-        router.get(
-          route("cart.checkout"),
-          {},
-          {
-            onSuccess: (page) => {
-              showSnapPayment(page);
-            },
-          }
-        );
+        router.visit(route("cart.checkout"), {
+          method: "GET",
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: (page) => {
+            showSnapPayment(page);
+          },
+        });
       }
     });
   };
 
-  const handleDelete = (rowId) => {
+  const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -124,7 +122,7 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
       confirmButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
-        router.delete(route("cart.destroy", { cart: rowId }));
+        router.delete(route("cart.destroy", { cartItem: id }));
       }
     });
   };
@@ -141,8 +139,8 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
       }
     >
       <Head title="Shopping Cart" />
-      <div className="container mx-auto my-12 max-w-7xl px-4 sm:px-6 lg:px-8">
-        {data.length === 0 ? (
+      <div className="container mx-auto my-12 max-w-7xl h-screen px-4 sm:px-6 lg:px-8">
+        {cart.cartItems.length === 0 ? (
           <div className="flex h-96 items-center justify-center">
             <div className="text-center">
               <div className="flex items-center space-x-2">
@@ -161,14 +159,14 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
         ) : (
           <div className="grid grid-flow-row-dense gap-y-4 lg:grid-cols-3 lg:gap-x-8">
             <div className="lg:col-span-2">
-              {data.map((item) => (
+              {cart.cartItems.map((item) => (
                 <div
                   key={item.id}
                   className="mb-8 rounded-lg border p-8 shadow-lg"
                 >
                   <div className="flex flex-col items-center space-y-4 sm:space-y-0 justify-center sm:flex-row sm:items-start sm:space-x-6">
                     <img
-                      src={"storage/" + item.options.design}
+                      src={item.design}
                       className="aspect-square object-cover rounded-xl w-52 h-52 bg-base-200"
                       alt={item.name}
                     />
@@ -181,11 +179,11 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
                           name="qty"
                           defaultValue={item.qty}
                           onChange={(e) =>
-                            handleChangeQty(item.rowId, e.target.value)
+                            handleChangeQty(item.id, e.target.value)
                           }
                         />
                         <button
-                          onClick={() => handleDelete(item.rowId)}
+                          onClick={() => handleDelete(item.id)}
                           className="btn-ghost btn-circle btn"
                         >
                           <TrashIcon className="h-6 w-6 text-error" />
@@ -194,12 +192,12 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
                       <span className="font-bold text-primary">
                         {CurrencyFormater(item.price)}
                       </span>
-                      <p className="break-words text-justify">{item.options.description}</p>
-                      <div className="grid grid-cols-3 items-center justify-center gap-2">
-                        {item.options.variants.map((variant, index) => (
-                          <div key={index}>{variant.value}</div>
+                      <p className="break-words text-justify">{item.description}</p>
+                      <ul className="flex items-center space-x-2">
+                        {item.variants.map((variant, index) => (
+                          <li className="pr-2 border-r-2 font-semibold" key={index}> {variant.value} </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -212,22 +210,22 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Subtotal</div>
                     <span className="font-bold">
-                      {CurrencyFormater(subtotal)}
+                      {CurrencyFormater(cart.subtotal)}
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Discount</div>
                     <span className="font-bold">
-                      {CurrencyFormater(discount)}
+                      {CurrencyFormater(cart.discount)}
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Tax</div>
-                    <span className="font-bold">{CurrencyFormater(tax)}</span>
+                    <span className="font-bold">{CurrencyFormater(cart.tax)}</span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Total</div>
-                    <span className="font-bold">{CurrencyFormater(total)}</span>
+                    <span className="font-bold">{CurrencyFormater(cart.total)}</span>
                   </div>
                 </div>
                 <div className="space-y-4">

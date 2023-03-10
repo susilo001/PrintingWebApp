@@ -40,8 +40,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    Route::match(['put', 'patch'], '/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::match(['put', 'patch'], '/cart/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
     Route::get('/order', [OrderController::class, 'index'])->name('order.index');
@@ -58,4 +58,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
