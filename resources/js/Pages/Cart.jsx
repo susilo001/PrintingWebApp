@@ -12,16 +12,14 @@ import { Head, Link, router } from "@inertiajs/react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 
-export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
-  const data = Object.entries(cart).map(([key, value]) => value);
-
+export default function Cart({ cart }) {
   useEffect(() => {
     Midtrans();
   }, []);
 
-  const handleChangeQty = (rowId, qty) => {
+  const handleChangeQty = (id, qty) => {
     setTimeout(() => {
-      router.put(route("cart.update", { cart: rowId, qty: qty }), {
+      router.put(route("cart.update", { cartItem: id, qty: qty }), {
         only: ["cart"],
         preserveScroll: true,
         preserveState: true,
@@ -29,9 +27,8 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
     }, 2000);
   };
 
-  const showSnapPayment = async (page) => {
-    await window.snap.show();
-    await window.snap.pay(page.props.token, {
+  const showSnapPayment = (page) => {
+    window.snap.pay(page.props.token, {
       onSuccess: function (result) {
         router.post(
           route("order.store", {
@@ -44,14 +41,14 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
             transaction_message: result.status_message,
           }),
           {
-            preserveState: true,
             preserveScroll: true,
+            preserveState: true,
           }
         );
       },
       onPending: function (result) {
-        router.post(route("order.store"), {
-          data: {
+        router.post(
+          route("order.store", {
             order_id: result.order_id,
             status: result.transaction_status,
             payment_type: result.payment_type,
@@ -59,10 +56,12 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
             transaction_id: result.transaction_id,
             transaction_time: result.transaction_time,
             transaction_message: result.status_message,
-          },
-          preserveState: true,
-          preserveScroll: true,
-        });
+          }),
+          {
+            preserveScroll: true,
+            preserveState: true,
+          }
+        );
       },
       onError: function (result) {
         Swal.fire({
@@ -72,7 +71,7 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
           confirmButtonText: "Ok",
         }).then((result) => {
           if (result.isConfirmed) {
-            router.push(route("cart.index"));
+            router.get(route("cart.index"));
           }
         });
       },
@@ -100,20 +99,20 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
       confirmButtonText: "Proceed",
     }).then((result) => {
       if (result.isConfirmed) {
-        router.get(
-          route("cart.checkout"),
-          {},
-          {
-            onSuccess: (page) => {
-              showSnapPayment(page);
-            },
-          }
-        );
+        window.snap.show();
+        router.visit(route("cart.checkout"), {
+          method: "GET",
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: (page) => {
+            showSnapPayment(page);
+          },
+        });
       }
     });
   };
 
-  const handleDelete = (rowId) => {
+  const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -122,11 +121,7 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
       confirmButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
-        router.delete(route("cart.destroy", { cart: rowId }), {
-          onSuccess: () => {
-            Swal.fire("Deleted!", "Your file has been deleted.", "success");
-          },
-        });
+        router.delete(route("cart.destroy", { cartItem: id }));
       }
     });
   };
@@ -143,8 +138,8 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
       }
     >
       <Head title="Shopping Cart" />
-      <div className="container mx-auto my-12 max-w-7xl px-4 sm:px-6 lg:px-8">
-        {data.length === 0 ? (
+      <div className="container mx-auto my-12 max-w-7xl h-screen px-4 sm:px-6 lg:px-8">
+        {cart.cartItems.length === 0 ? (
           <div className="flex h-96 items-center justify-center">
             <div className="text-center">
               <div className="flex items-center space-x-2">
@@ -153,7 +148,7 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
               </div>
               <Link
                 href={route("product.index")}
-                className="btn-error btn-sm btn mt-4"
+                className="btn-error btn mt-4"
                 as="button"
               >
                 Shop Now
@@ -163,54 +158,53 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
         ) : (
           <div className="grid grid-flow-row-dense gap-y-4 lg:grid-cols-3 lg:gap-x-8">
             <div className="lg:col-span-2">
-              {data.map((item) => (
+              {cart.cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="mb-8 rounded-lg border py-10 shadow-lg"
+                  className="mb-8 rounded-lg border p-8 shadow-lg"
                 >
-                  <div className="flex flex-col items-center lg:space-x-8">
-                    <div className="rounded-xl lg:h-96 lg:w-96">
-                      <img
-                        src={"storage/" + item.options.design}
-                        className="aspect-square object-cover"
-                        alt={item.name}
-                      />
-                    </div>
-                    <div className="mt-8 p-8">
-                      <div className="space-y-4">
+                  <div className="flex flex-col items-center space-y-4 sm:space-y-0 justify-center sm:flex-row sm:items-start sm:space-x-6">
+                    <img
+                      src={item.design}
+                      className="aspect-square object-cover rounded-xl w-52 h-52 bg-base-200"
+                      alt={item.name}
+                    />
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
                         <h3 className="text-lg font-bold">{item.name}</h3>
-                        <p>{item.options.description}</p>
-                        <div className="grid grid-cols-3 items-center justify-center gap-2">
-                          {item.options.variants.map((variant, index) => (
-                            <div key={index}>{variant.value}</div>
-                          ))}
-                        </div>
-                        <div className="text-secondary">
-                          {item.weight + "/kg"}
-                        </div>
-                      </div>
-                      <div className="mt-4 flex items-center justify-between space-x-8">
-                        <div>
-                          <span className="font-bold text-primary">
-                            {CurrencyFormater(item.price)}
-                          </span>
-                        </div>
                         <input
-                          className={"input-bordered input input-sm w-24"}
+                          className={"input-bordered input input-sm w-20"}
                           type="number"
                           name="qty"
                           defaultValue={item.qty}
                           onChange={(e) =>
-                            handleChangeQty(item.rowId, e.target.value)
+                            handleChangeQty(item.id, e.target.value)
                           }
                         />
                         <button
-                          onClick={() => handleDelete(item.rowId)}
+                          onClick={() => handleDelete(item.id)}
                           className="btn-ghost btn-circle btn"
                         >
                           <TrashIcon className="h-6 w-6 text-error" />
                         </button>
                       </div>
+                      <span className="font-bold text-primary">
+                        {CurrencyFormater(item.price)}
+                      </span>
+                      <p className="break-words text-justify">
+                        {item.description}
+                      </p>
+                      <ul className="flex items-center space-x-2">
+                        {item.variants.map((variant, index) => (
+                          <li
+                            className="pr-2 border-r-2 font-semibold"
+                            key={index}
+                          >
+                            {" "}
+                            {variant.value}{" "}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -223,28 +217,26 @@ export default function Cart({ cart, discount, subtotal, tax, weight, total }) {
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Subtotal</div>
                     <span className="font-bold">
-                      {CurrencyFormater(subtotal)}
+                      {CurrencyFormater(cart.subtotal)}
                     </span>
                   </div>
-                  {/* <div className="flex justify-between border-b border-base-content pb-4">
-                    <div>Weight</div>
-                    <span className="font-bold">
-                      {CurrencyFormater(weight)}
-                    </span>
-                  </div> */}
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Discount</div>
                     <span className="font-bold">
-                      {CurrencyFormater(discount)}
+                      {CurrencyFormater(cart.discount)}
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Tax</div>
-                    <span className="font-bold">{CurrencyFormater(tax)}</span>
+                    <span className="font-bold">
+                      {CurrencyFormater(cart.tax)}
+                    </span>
                   </div>
                   <div className="flex justify-between border-b border-base-content pb-4">
                     <div>Total</div>
-                    <span className="font-bold">{CurrencyFormater(total)}</span>
+                    <span className="font-bold">
+                      {CurrencyFormater(cart.total)}
+                    </span>
                   </div>
                 </div>
                 <div className="space-y-4">

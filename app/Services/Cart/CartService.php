@@ -3,7 +3,6 @@
 namespace App\Services\Cart;
 
 use App\Models\Product;
-use App\Services\Payment\HandlePaymentService;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,52 +10,29 @@ class CartService
 {
     protected Product $product;
 
-    protected Cart $cart;
-
     public function __construct(Product $product)
     {
         $this->product = $product;
     }
 
     /**
-     * Get price of product based on quantity ordered by user
-     *
-     * @param  int  $product_id
-     * @param  int  $quantity
-     * @return int
+     * Store the file in the storage and return the path
      */
-    public function getPrice($product_id, $quantity)
+    public function storeFile($file): string
     {
-        $product = $this->product->with('prices')->find($product_id);
-
-        $prices = $product->prices;
-
-        if ($quantity < $prices->min('min_order')) {
-            throw new \Exception('The minimum order is ' . $prices->min('min_order') . ' pcs');
-        } elseif ($quantity > $prices->max('max_order')) {
-            $price = $prices->last();
-        } else {
-            $price = $prices
-                ->where('min_order', '<=', $quantity)
-                ->where('max_order', '>=', $quantity)
-                ->first();
-        }
-
-        return $price->price;
+        return Storage::disk('public')->put('designs', $file, 'public');
     }
 
     /**
      * Add item to cart
-     *
-     * @param $data
      */
     public function add($data): void
     {
-        $image = Storage::disk('public')->put('designs', $data['design']);
-
-        $price = $this->getPrice($data['product_id'], $data['quantity']);
+        $filePath = $this->storeFile($data['design']);
 
         $product = $this->product->find($data['product_id']);
+
+        $price = $product->getPriceByOrderQuantity($data['quantity']);
 
         $cartItems = Cart::add([
             'id' => now()->timestamp,
@@ -67,7 +43,7 @@ class CartService
             'options' => [
                 'product_id' => $data['product_id'],
                 'description' => $data['description'],
-                'design' => $image,
+                'design' => $filePath,
                 'variants' => json_decode($data['variants']),
             ],
         ])->associate(Product::class);
@@ -75,17 +51,5 @@ class CartService
         Cart::setTax($cartItems->rowId, $product->tax);
 
         $product->discount->active ? Cart::setDiscount($cartItems->rowId, $product->discount->discount_percentage) : null;
-    }
-
-    /**
-     * Checkout the cart content
-     *
-     * @return void
-     */
-    public function checkout()
-    {
-        $payment = new HandlePaymentService();
-
-        return $payment->handle();
     }
 }

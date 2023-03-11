@@ -15,10 +15,13 @@ class PaymentDetailResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'status' => $this->status,
             'paymentType' => $this->payment_type,
             'transactionId' => $this->transaction_id,
             'transactionTime' => $this->transaction_time,
+            'user' => new UserResource($this->whenLoaded('user')),
+            'order' => new OrderResource($this->whenLoaded('order')),
         ];
     }
 }

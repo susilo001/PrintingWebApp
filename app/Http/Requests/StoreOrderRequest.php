@@ -24,9 +24,9 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            "order_id" => 'required|string',
-            "status" => 'required|string',
-            "payment_type" => 'required|string',
+            'order_id' => 'required|string',
+            'status' => 'required|string',
+            'payment_type' => 'required|string',
             'gross_amount' => 'required|string',
             'transaction_id' => 'required|string',
             'transaction_time' => 'required|string',

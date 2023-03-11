@@ -3,7 +3,6 @@ import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
-import { RadioGroup } from "@headlessui/react";
 import { ShoppingBagIcon, StarIcon } from "@heroicons/react/20/solid";
 import { Head, router } from "@inertiajs/react";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
@@ -26,7 +25,6 @@ function classNames(...classes) {
 }
 
 export default function Product({ product }) {
-  const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [design, setDesign] = useState("");
@@ -64,7 +62,6 @@ export default function Product({ product }) {
 
     const formData = new FormData();
     formData.append("product_id", product.id);
-    formData.append("project_name", projectName);
     formData.append("description", description);
     formData.append("quantity", quantity);
     formData.append("design", design);
@@ -72,10 +69,9 @@ export default function Product({ product }) {
 
     Swal.fire({
       title: "Are you sure?",
+      text: "You want to add this product to your cart?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
     }).then((result) => {
       if (result.isConfirmed) {
         router.post("/cart", formData, {
@@ -99,9 +95,6 @@ export default function Product({ product }) {
               reset("design");
               designInput.current.focus();
             }
-          },
-          onSuccess: () => {
-            Swal.fire("Added!", "Your product has been added.", "success");
           },
         });
       }
@@ -151,179 +144,150 @@ export default function Product({ product }) {
       <Head title={product.name} />
 
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div>
-          <div className="pt-6">
-            {/* Image gallery */}
-            <ImageGallery images={product.images} />
+        <div className="pt-6">
+          {/* Image gallery */}
+          <ImageGallery images={product.images} />
 
-            {/* Product info */}
-            <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
-              <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                  {product.name}
-                </h1>
+          {/* Product info */}
+          <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
+            <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                {product.name}
+              </h1>
+            </div>
+
+            {/* Options */}
+            <div className="mt-4 lg:row-span-3 lg:mt-0">
+              <h2 className="sr-only">Product information</h2>
+              <p className="text-3xl tracking-tight">
+                {CurrencyFormater(product.prices[0].price)}{" "}
+                <span className="badge-secondary badge">/ Starting Price</span>
+              </p>
+
+              {/* Reviews */}
+              <div className="mt-6">
+                <h3 className="sr-only">Reviews</h3>
+                <div className="flex items-center">
+                  <div className="flex items-center">
+                    {[0, 1, 2, 3, 4].map((rating) => (
+                      <StarIcon
+                        key={rating}
+                        className={classNames(
+                          reviews.average > rating
+                            ? "text-accent"
+                            : "text-base-content",
+                          "h-5 w-5 flex-shrink-0"
+                        )}
+                        aria-hidden="true"
+                      />
+                    ))}
+                  </div>
+                  <p className="sr-only">{reviews.average} out of 5 stars</p>
+                  <a
+                    href={reviews.href}
+                    className="ml-3 text-sm font-medium text-secondary hover:text-secondary-focus"
+                  >
+                    {reviews.totalCount} reviews
+                  </a>
+                </div>
               </div>
 
-              {/* Options */}
-              <div className="mt-4 lg:row-span-3 lg:mt-0">
-                <h2 className="sr-only">Product information</h2>
-                <p className="text-3xl tracking-tight">
-                  {CurrencyFormater(product.prices[0].price)}{" "}
-                  <span className="badge-secondary badge">
-                    / Starting Price
-                  </span>
-                </p>
+              <form className="mt-10" onSubmit={handleSubmit}>
+                <TextArea
+                  name="description"
+                  label={"Description"}
+                  className={"textarea-bordered"}
+                  required
+                  value={description}
+                  handleChange={(e) => setDescription(e.target.value)}
+                />
 
-                {/* Reviews */}
-                <div className="mt-6">
-                  <h3 className="sr-only">Reviews</h3>
-                  <div className="flex items-center">
-                    <div className="flex items-center">
-                      {[0, 1, 2, 3, 4].map((rating) => (
-                        <StarIcon
-                          key={rating}
-                          className={classNames(
-                            reviews.average > rating
-                              ? "text-accent"
-                              : "text-base-content",
-                            "h-5 w-5 flex-shrink-0"
-                          )}
-                          aria-hidden="true"
-                        />
-                      ))}
-                    </div>
-                    <p className="sr-only">{reviews.average} out of 5 stars</p>
-                    <a
-                      href={reviews.href}
-                      className="ml-3 text-sm font-medium text-secondary hover:text-secondary-focus"
-                    >
-                      {reviews.totalCount} reviews
-                    </a>
-                  </div>
-                </div>
+                <Input
+                  name="qty"
+                  label={"Quantity"}
+                  required
+                  value={quantity}
+                  handleChange={(e) => setQuantity(e.target.value)}
+                  type="number"
+                  className={"input-bordered w-full"}
+                />
 
-                <form className="mt-10" onSubmit={handleSubmit}>
-                  <Input
-                    name="project_name"
-                    label={"Project Name"}
-                    type="text"
-                    required
-                    value={projectName}
-                    handleChange={(e) => setProjectName(e.target.value)}
-                    className={"input-bordered w-full"}
-                  />
-
-                  <TextArea
-                    name="description"
-                    label={"Description"}
-                    className={"textarea-bordered"}
-                    required
-                    value={description}
-                    handleChange={(e) => setDescription(e.target.value)}
-                  />
-
-                  <Input
-                    name="qty"
-                    label={"Quantity"}
-                    required
-                    value={quantity}
-                    handleChange={(e) => setQuantity(e.target.value)}
-                    type="number"
-                    className={"input-bordered w-full"}
-                  />
-
-                  {/* Variants */}
-                  {product.variants.map((variant) => (
-                    <div key={variant.id} className="mt-10">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-medium">{variant.name}</h3>
-                        <a
-                          href="#"
-                          className="text-sm font-medium text-secondary hover:text-secondary-focus"
-                        >
+                {/* Variants */}
+                {product.variants.map((variant) => (
+                  <div key={variant.id} className="mt-2">
+                    <div className="form-control w-full">
+                      <label className="label">
+                        <span className="label-text">{variant.name}</span>
+                        <span className="label-text-alt">
                           {variant.name} guide
-                        </a>
-                      </div>
-
-                      <RadioGroup
+                        </span>
+                      </label>
+                      <select
                         name={variant.name}
                         value={variants[variant.id]}
-                        onChange={(value) =>
-                          handleVariantChange(variant.name, value)
+                        onChange={(e) =>
+                          handleVariantChange(variant.name, e.target.value)
                         }
-                        className="mt-4"
+                        className="select-bordered select"
                       >
-                        <RadioGroup.Label className="sr-only">
-                          Choose a {variant.name}{" "}
-                        </RadioGroup.Label>
-                        <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                          {variant.options.map((option) => (
-                            <RadioGroup.Option
-                              key={option.value}
-                              value={option.value}
-                              className={({ active }) =>
-                                classNames(
-                                  "cursor-pointer bg-white text-gray-900 shadow-sm",
-                                  active ? "ring-2 ring-accent-focus" : "",
-                                  "group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
-                                )
-                              }
-                            >
-                              {({ active, checked }) => (
-                                <>
-                                  <RadioGroup.Label as="span">
-                                    {option.value}
-                                  </RadioGroup.Label>
-                                  <span
-                                    className={classNames(
-                                      active ? "border" : "border-2",
-                                      checked
-                                        ? "border-accent"
-                                        : "border-transparent",
-                                      "pointer-events-none absolute -inset-px rounded-md"
-                                    )}
-                                    aria-hidden="true"
-                                  />
-                                </>
-                              )}
-                            </RadioGroup.Option>
-                          ))}
-                        </div>
-                      </RadioGroup>
+                        {variant.options.map((option) => (
+                          <option key={option.value}>{option.value}</option>
+                        ))}
+                      </select>
                     </div>
-                  ))}
-
-                  {/* FileUpload */}
-                  <div className="mt-10">
-                    <FilePond
-                      name="filepond"
-                      files={design}
-                      storeAsFile={true}
-                      onupdatefiles={(fileItems) => {
-                        setDesign(fileItems[0].file);
-                      }}
-                    />
                   </div>
+                ))}
 
-                  <button
-                    name="addToCart"
-                    type="submit"
-                    className="btn-primary btn mt-8 w-full gap-2"
-                  >
-                    Add to Cart
-                    <ShoppingBagIcon className="h-6 w-6" />
-                  </button>
-                </form>
-              </div>
+                {/* FileUpload */}
+                <div className="mt-10">
+                  <FilePond
+                    name="filepond"
+                    files={design}
+                    storeAsFile={true}
+                    onupdatefiles={(fileItems) => {
+                      setDesign(fileItems[0].file);
+                    }}
+                  />
+                </div>
 
-              <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r  lg:pt-6 lg:pb-16 lg:pr-8">
-                {/* Description and details */}
-                <div>
-                  <h3 className="sr-only">Description</h3>
+                <button
+                  name="addToCart"
+                  type="submit"
+                  className="btn-primary btn mt-8 w-full gap-2"
+                >
+                  Add to Cart
+                  <ShoppingBagIcon className="h-6 w-6" />
+                </button>
+              </form>
+            </div>
 
-                  <div className="space-y-6">
-                    <p className="text-base ">{product.description}</p>
-                  </div>
+            <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r  lg:pt-6 lg:pb-16 lg:pr-8">
+              {/* Description and details */}
+              <div>
+                <h3 className="sr-only">Description</h3>
+
+                <div className="space-y-6">
+                  <p className="text-base ">{product.description}</p>
+                </div>
+                <div className="mt-4 overflow-x-auto">
+                  <table className="table-zebra table w-full">
+                    <thead>
+                      <tr>
+                        <th>Price</th>
+                        <th>Min Order</th>
+                        <th>Max Order</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {product.prices.map((price) => (
+                        <tr key={price.id}>
+                          <td>{CurrencyFormater(price.price)}</td>
+                          <td>{price.min_order}</td>
+                          <td>{price.max_order}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

@@ -22,6 +22,7 @@ class ProductResource extends JsonResource
             'images' => $this->getMedia('products')->map(function ($image) {
                 return $image->getFullUrl();
             }),
+            'test' => $this->getMedia('products'),
             'weight' => $this->weight,
             'tax' => $this->tax,
             'featured' => $this->featured,

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Product;
 
+use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,9 +17,7 @@ class ProductTest extends TestCase
      */
     public function testProductList()
     {
-        $response = $this->get('/products');
-
-        $response->assertStatus(200);
+        $this->get('/products')->assertStatus(200);
     }
 
     /**
@@ -28,8 +27,8 @@ class ProductTest extends TestCase
      */
     public function testProductShow()
     {
-        $response = $this->get('/product/1');
+        $product = Product::factory()->create();
 
-        $response->assertStatus(200);
+        $this->get('/product/'.$product->id)->assertSee($product->name);
     }
 }

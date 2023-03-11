@@ -5,18 +5,21 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
-use Filament\Forms;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\TextColumn;
 
 class OrderResource extends Resource
 {
@@ -29,10 +32,11 @@ class OrderResource extends Resource
         return $form
             ->schema([
                 Section::make('Order Information')->schema([
-                    Forms\Components\TextInput::make('user_id')
+                    TextInput::make('user_id')
                         ->disabled()
                         ->required(),
                     Select::make('status')
+                        ->preload()
                         ->options([
                             'pending' => 'Pending',
                             'processing' => 'Processing',
@@ -42,16 +46,16 @@ class OrderResource extends Resource
                         ->required(),
                     Card::make()->columns(1)->schema([
                         Grid::make()->schema([
-                            Forms\Components\TextInput::make('subtotal')
+                            TextInput::make('subtotal')
                                 ->numeric()
                                 ->required(),
-                            Forms\Components\TextInput::make('discount')
+                            TextInput::make('discount')
                                 ->numeric()
                                 ->required(),
-                            Forms\Components\TextInput::make('tax')
+                            TextInput::make('tax')
                                 ->numeric()
                                 ->required(),
-                            Forms\Components\TextInput::make('total_amount')
+                            TextInput::make('total_amount')
                                 ->numeric()
                                 ->required(),
                         ]),
@@ -62,26 +66,28 @@ class OrderResource extends Resource
                         ->relationship()
                         ->schema([
                             Grid::make()->schema([
-                                Forms\Components\TextInput::make('product_id')
+                                TextInput::make('product_id')
                                     ->disabled()
                                     ->required(),
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->required(),
                                 Textarea::make('description')
                                     ->required(),
-                                FileUpload::make('image')
+                                SpatieMediaLibraryFileUpload::make('designs')
+                                    ->multiple()
                                     ->enableDownload(true)
-                                    ->required(),
-                                Forms\Components\TextInput::make('qty')
+                                    ->collection('designs')
+                                    ->responsiveImages(),
+                                TextInput::make('qty')
                                     ->numeric()
                                     ->required(),
-                                Forms\Components\TextInput::make('discount')
+                                TextInput::make('discount')
                                     ->numeric()
                                     ->required(),
-                                Forms\Components\TextInput::make('tax')
+                                TextInput::make('tax')
                                     ->numeric()
                                     ->required(),
-                                Forms\Components\TextInput::make('price')
+                                TextInput::make('price')
                                     ->numeric()
                                     ->required(),
                             ]),
@@ -94,29 +100,29 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('status')
+                BadgeColumn::make('status')
                     ->colors([
-                        'primary',
+                        'primary' => static fn ($state): bool => $state === 'order placed',
                         'secondary' => static fn ($state): bool => $state === 'pending',
                         'warning' => static fn ($state): bool => $state === 'processing',
                         'success' => static fn ($state): bool => $state === 'completed',
                         'danger' => static fn ($state): bool => $state === 'cancelled',
                     ])
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('subtotal')
+                TextColumn::make('subtotal')
                     ->money('IDR', true),
-                Tables\Columns\TextColumn::make('discount')
+                TextColumn::make('discount')
                     ->money('IDR', true),
-                Tables\Columns\TextColumn::make('tax')
+                TextColumn::make('tax')
                     ->money('IDR', true),
-                Tables\Columns\TextColumn::make('total_amount')
+                TextColumn::make('total_amount')
                     ->money('IDR', true),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable()
                     ->dateTime('d/m/Y'),
             ])
@@ -124,10 +130,10 @@ class OrderResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 

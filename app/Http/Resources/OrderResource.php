@@ -25,8 +25,7 @@ class OrderResource extends JsonResource
             'discount' => $this->discount,
             'tax' => $this->tax,
             'total' => $this->total_amount,
-            'createdAt' => Date::parse($this->created_at)->format('Y-m-d'),
-            'updatedAt' => $this->updated_at,
+            'createdAt' => Date::parse($this->created_at)->format('d M Y'),
         ];
     }
 }

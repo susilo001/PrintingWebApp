@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Testimonial;
 use App\Models\User;
@@ -18,10 +19,12 @@ class TestimonialSeeder extends Seeder
     {
         $users = User::all();
         $products = Product::all();
+        $orders = Order::all();
 
-        foreach ($users as $user) {
-            Testimonial::factory()->count(10)->create([
-                'user_id' => $user->id,
+        foreach ($orders as $order) {
+            Testimonial::factory()->count(1)->create([
+                'order_id' => $order->id,
+                'user_id' => $users->random()->id,
                 'product_id' => $products->random()->id,
             ]);
         }

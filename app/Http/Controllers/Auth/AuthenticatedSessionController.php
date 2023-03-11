@@ -40,9 +40,12 @@ class AuthenticatedSessionController extends Controller
             return to_route('filament.pages.dashboard', '', 302);
         }
 
-        return redirect()
-            ->intended(RouteServiceProvider::HOME)
-            ->with('message', 'Welcome back, '.$user->name.'!');
+        return redirect()->intended(RouteServiceProvider::HOME)
+            ->with([
+                'title' => 'Welcome back!',
+                'message' => $user->name.'!',
+                'status' => 'success',
+            ]);
     }
 
     /**

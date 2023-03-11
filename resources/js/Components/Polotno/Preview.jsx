@@ -22,7 +22,6 @@ export const Preview = observer(({ store }) => {
         bottom: "20px",
         right: 0,
         zIndex: 10,
-        zIndex: 10000,
         transformOrigin: "top left",
         background: "white",
         border: "1px solid rgba(16, 22, 26, 0.2)",

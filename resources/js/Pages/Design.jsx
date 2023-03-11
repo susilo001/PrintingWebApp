@@ -2,8 +2,8 @@ import ActionControls from "@/Components/Polotno/ActionControls";
 import Container from "@/Components/Polotno/Container";
 import { DesignTemplatesSection } from "@/Components/Polotno/DesignTemplatesPanel";
 import { PageControls } from "@/Components/Polotno/PageControls";
-import { Preview } from "@/Components/Polotno/Preview";
 import SidePanelWrapper from "@/Components/Polotno/SidePanelWrapper";
+import { SizeSection } from "@/Components/Polotno/SizePanel";
 import WorkspaceWrapper from "@/Components/Polotno/WorkspaceWrapper";
 import store from "@/lib/polotno";
 import { Head } from "@inertiajs/react";
@@ -13,7 +13,6 @@ import {
   ElementsSection,
   LayersSection,
   SidePanel,
-  SizeSection,
   TemplatesSection,
   TextSection,
   UploadSection,
@@ -54,7 +53,7 @@ export default function Design() {
             components={{ ActionControls: ActionControls }}
           />
           <Workspace store={store} components={{ PageControls }} />
-          <Preview store={store} />
+          {/* <Preview store={store} /> */}
           <ZoomButtons store={store} />
         </WorkspaceWrapper>
       </Container>
