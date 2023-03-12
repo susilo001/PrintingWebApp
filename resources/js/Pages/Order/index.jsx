@@ -5,7 +5,10 @@ import { Head, Link, router } from "@inertiajs/react";
 
 export default function Order({ orders }) {
 
-  const handleRequestInvoice = (id) => {
+  const handleRequestInvoice = async (id) => {
+    // await axios.get(route("order.invoice", { order: id })).then((response) => {
+    //   window.open(response.data.invoice, "_blank");
+    // });
     router.get(route("order.invoice", { order: id }), {
       preserveState: true,
       preserveScroll: true,
@@ -57,13 +60,11 @@ export default function Order({ orders }) {
               </div>
               <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
                 <span className="font-bold ">Date placed</span>
-                <span >{order.createdAt}</span>
+                <span>{order.createdAt}</span>
               </div>
               <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
                 <span className="font-bold">Total amount</span>
-                <span>
-                  {CurrencyFormater(order.total)}
-                </span>
+                <span>{CurrencyFormater(order.total)}</span>
               </div>
               <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
                 <span className="font-bold">Status</span>
