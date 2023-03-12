@@ -161,7 +161,9 @@ export default function Product({ product }) {
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight">
                 {CurrencyFormater(product.prices[0].price)}
-                <span className="badge-secondary badge ml-2">/ Starting Price</span>
+                <span className="badge-secondary badge ml-2">
+                  / Starting Price
+                </span>
               </p>
 
               {/* Reviews */}

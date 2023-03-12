@@ -13,10 +13,7 @@ import { useState } from "react";
 import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function Welcome({
-  products,
-  testimonials,
-}) {
+export default function Welcome({ products, testimonials }) {
   const [Products, setProducts] = useState(products);
 
   const getFeaturedProducts = () => {
@@ -24,25 +21,27 @@ export default function Welcome({
   };
 
   const getProductCategoryName = () => {
-    const data = products.map((product) => product.category)
+    const data = products.map((product) => product.category);
 
-    const unique = [...new Set(data.map(item => item.id))];
-    const categories = unique.map(id => {
+    const unique = [...new Set(data.map((item) => item.id))];
+    const categories = unique.map((id) => {
       return {
         id,
-        name: data.find(item => item.id === id).name,
-        slug: data.find(item => item.id === id).slug
-      }
-    })
+        name: data.find((item) => item.id === id).name,
+        slug: data.find((item) => item.id === id).slug,
+      };
+    });
 
-    return categories
-  }
+    return categories;
+  };
 
   const getProductsByCategory = (id) => {
-    const selectedCategory = products.filter((product) => product.category.id === id);
+    const selectedCategory = products.filter(
+      (product) => product.category.id === id
+    );
 
     setProducts(selectedCategory);
-  }
+  };
 
   const handleSearch = (e) => {
     const filteredProducts = [];
@@ -66,11 +65,11 @@ export default function Welcome({
                 Print like a pro with our premium printing services.
               </h1>
               <p className="mt-4">
-                From business cards to brochures, we&apos;ve got you covered. With
-                state-of-the-art equipment, experienced technicians and a wide
-                range of paper and ink options, we guarantee your print job will
-                exceed your expectations. Trust us for your next project and
-                experience the difference in quality.
+                From business cards to brochures, we&apos;ve got you covered.
+                With state-of-the-art equipment, experienced technicians and a
+                wide range of paper and ink options, we guarantee your print job
+                will exceed your expectations. Trust us for your next project
+                and experience the difference in quality.
               </p>
               <div className="my-8 grid gap-6 sm:grid-cols-2">
                 <div className="flex items-center">
@@ -283,7 +282,10 @@ export default function Welcome({
           <Swiper spaceBetween={50} slidesPerView={1} className={"swiper"}>
             <div className="swiper-wrapper">
               {testimonials.map((item, index) => (
-                <SwiperSlide key={index} className="swiper-slide !bg-transparent">
+                <SwiperSlide
+                  key={index}
+                  className="swiper-slide !bg-transparent"
+                >
                   <div className="mx-auto text-center md:w-8/12 lg:w-7/12">
                     <div className="flex space-x-8">
                       <div className="w-full">
