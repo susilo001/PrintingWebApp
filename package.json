@@ -2,8 +2,6 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "test": "php artisan test --coverage-html tests/reports/coverage",
-    "pint": "./vendor/bin/pint",
     "lint": "eslint",
     "ssr": "php artisan inertia:start-ssr",
     "build": "vite build && vite build --ssr"

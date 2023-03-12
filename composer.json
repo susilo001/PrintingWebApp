@@ -8,8 +8,7 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^8.0.2",
-    "bumbummen99/shoppingcart": "^4.2",
+    "php": "^8.1.0",
     "filament/filament": "^2.0",
     "filament/spatie-laravel-media-library-plugin": "*",
     "flowframe/laravel-trend": "^0.1.1",
