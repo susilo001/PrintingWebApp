@@ -115,7 +115,11 @@ export default function Products({ products, categories }) {
               key={product.id}
               href={route("product.show", product.id)}
             >
-              <Card className={"w-64 h-72 border shadow-xl hover:bg-base-200 card-compact"}>
+              <Card
+                className={
+                  "w-64 h-72 border shadow-xl hover:bg-base-200 card-compact"
+                }
+              >
                 <Card.Image
                   className={"aspect-square object-contain"}
                   src={product.images[0]}
