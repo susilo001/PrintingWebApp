@@ -16,7 +16,8 @@ export default function FeatureSection() {
           Offset and Digital Printing Ordering
         </p>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 ">
-          With our easy-to-use online ordering system, you can easily place your order for either offset or digital printing.
+          With our easy-to-use online ordering system, you can easily place your
+          order for either offset or digital printing.
         </p>
       </div>
 
