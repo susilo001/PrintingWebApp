@@ -9,7 +9,6 @@
   "license": "MIT",
   "require": {
     "php": "^8.1.0",
-    "bumbummen99/shoppingcart": "^4.2",
     "filament/filament": "^2.0",
     "filament/spatie-laravel-media-library-plugin": "*",
     "flowframe/laravel-trend": "^0.1.1",
