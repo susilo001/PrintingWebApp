@@ -146,7 +146,7 @@ export default function Product({ product }) {
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="pt-6">
           {/* Image gallery */}
-          <ImageGallery images={product.images} />
+          <ImageGallery images={product.images} alt={product.name} />
 
           {/* Product info */}
           <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
@@ -160,8 +160,8 @@ export default function Product({ product }) {
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight">
-                {CurrencyFormater(product.prices[0].price)}{" "}
-                <span className="badge-secondary badge">/ Starting Price</span>
+                {CurrencyFormater(product.prices[0].price)}
+                <span className="badge-secondary badge ml-2">/ Starting Price</span>
               </p>
 
               {/* Reviews */}
@@ -263,32 +263,31 @@ export default function Product({ product }) {
 
             <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r  lg:pt-6 lg:pb-16 lg:pr-8">
               {/* Description and details */}
-              <div>
-                <h3 className="sr-only">Description</h3>
+              <h3 className="sr-only">Description</h3>
 
-                <div className="space-y-6">
-                  <p className="text-base ">{product.description}</p>
-                </div>
-                <div className="mt-4 overflow-x-auto">
-                  <table className="table-zebra table w-full">
-                    <thead>
-                      <tr>
-                        <th>Price</th>
-                        <th>Min Order</th>
-                        <th>Max Order</th>
+              <div className="space-y-6">
+                <p className="text-base ">{product.description}</p>
+              </div>
+              {/* Table Prices */}
+              <div className="mt-8 overflow-x-auto border-t pt-4">
+                <table className="table-zebra table w-full">
+                  <thead>
+                    <tr>
+                      <th>Price</th>
+                      <th>Min Order</th>
+                      <th>Max Order</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {product.prices.map((price) => (
+                      <tr key={price.id}>
+                        <td>{CurrencyFormater(price.price)}</td>
+                        <td>{price.min_order}</td>
+                        <td>{price.max_order}</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {product.prices.map((price) => (
-                        <tr key={price.id}>
-                          <td>{CurrencyFormater(price.price)}</td>
-                          <td>{price.min_order}</td>
-                          <td>{price.max_order}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

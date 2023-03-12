@@ -5,10 +5,7 @@ import { Head, Link, router } from "@inertiajs/react";
 
 export default function Order({ orders }) {
 
-  const handleRequestInvoice = async (id) => {
-    // await axios.get(route("order.invoice", { order: id })).then((response) => {
-    //   window.open(response.data.invoice, "_blank");
-    // });
+  const handleRequestInvoice = (id) => {
     router.get(route("order.invoice", { order: id }), {
       preserveState: true,
       preserveScroll: true,

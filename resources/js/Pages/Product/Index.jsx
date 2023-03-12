@@ -108,24 +108,24 @@ export default function Products({ products, categories }) {
             <p className="text-gray-500">Try searching for something else</p>
           </div>
         )}
-        <div className="grid justify-center gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid justify-center gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {products.map((product) => (
             <Link
               className="link-hover link w-fit"
               key={product.id}
               href={route("product.show", product.id)}
             >
-              <Card className={"w-80 border shadow-xl hover:bg-base-200"}>
+              <Card className={"w-64 h-72 border shadow-xl hover:bg-base-200 card-compact"}>
                 <Card.Image
-                  className={"aspect-square h-72 w-full object-contain"}
+                  className={"aspect-square object-contain"}
                   src={product.images[0]}
                   alt={product.name}
                 />
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>
                   <div className="flex justify-between">
-                    <span className="text-lg font-bold text-primary">
-                      {CurrencyFormater(product.prices[0].price)}
+                    <span className="font-bold text-primary">
+                      {CurrencyFormater(product.price)}
                     </span>
                     <span className="badge-accent badge badge-sm p-2 font-bold">
                       {product.category.name}

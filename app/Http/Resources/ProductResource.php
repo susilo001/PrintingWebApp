@@ -18,18 +18,18 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'prices' => PriceResource::collection($this->whenLoaded('prices')),
+            'price' => $this->prices[0]['price'],
             'description' => $this->description,
             'images' => $this->getMedia('products')->map(function ($image) {
                 return $image->getFullUrl();
             }),
-            'test' => $this->getMedia('products'),
             'weight' => $this->weight,
+            'discount' => new DiscountResource($this->whenLoaded('discount')),
             'tax' => $this->tax,
             'featured' => $this->featured,
-            'category' => new CategoryResource($this->whenLoaded('category')),
-            'discount' => $this->discount,
             'variants' => VariantResource::collection($this->whenLoaded('variants')),
-            'prices' => $this->prices,
+            'category' => new CategoryResource($this->whenLoaded('category')),
         ];
     }
 }
