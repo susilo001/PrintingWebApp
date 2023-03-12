@@ -155,6 +155,7 @@ class ProductSeeder extends Seeder
                 'slug' => 'name-card',
                 'images' => [
                     'asset/products/name-card.png',
+                    'asset/products/name-card.png',
                 ],
             ],
             [
@@ -162,6 +163,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Undangan',
                 'slug' => 'undangan',
                 'images' => [
+                    'asset/products/invitation.png',
                     'asset/products/invitation.png',
                 ],
             ],
@@ -287,7 +289,7 @@ class ProductSeeder extends Seeder
 
             $item->save();
             foreach ($product['images'] as $image) {
-                $path = storage_path('app/public/'.$image);
+                $path = storage_path('app/public/' . $image);
                 $item->addMedia($path)->preservingOriginal()->toMediaCollection('products');
             }
         }

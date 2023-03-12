@@ -20,8 +20,7 @@ class HomeController extends Controller
     public function index()
     {
         return Inertia::render('Welcome', [
-            'categories' => new CategoryCollection(Category::with('products')->get()),
-            'featuredProducts' => new ProductCollection(Product::with(['category', 'prices'])->where('featured', true)->get()),
+            'products' => new ProductCollection(Product::with(['category'])->get()),
             'testimonials' => new TestimonialCollection(Testimonial::with(['user', 'product', 'order'])
                 ->where(function ($query) {
                     $query->where('is_approved', true)->Where('is_featured', true);

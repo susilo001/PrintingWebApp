@@ -10,14 +10,13 @@ export default function FeatureSection() {
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="sm:text-center">
         <h2 className="text-lg font-semibold leading-8 text-secondary">
-          Transactions
+          Benefits
         </h2>
         <p className="mt-2 text-3xl font-bold tracking-tight  sm:text-4xl">
-          A better way to send money
+          Offset and Digital Printing Ordering
         </p>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 ">
-          Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam
-          voluptatum cupiditate veritatis in accusamus quisquam.
+          With our easy-to-use online ordering system, you can easily place your order for either offset or digital printing.
         </p>
       </div>
 
@@ -49,27 +48,27 @@ export default function FeatureSection() {
 
 const features = [
   {
-    name: "Competitive exchange rates",
+    name: "Offset Printing",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.",
+      "Our offset printing option offers high-quality printing with vibrant colors and a variety of paper and finishing options to choose from. With our offset printing option, you can print large quantities of materials at an affordable price point.",
     icon: GlobeAltIcon,
   },
   {
-    name: "No hidden fees",
+    name: "Digital Printing",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.",
+      "With our digital printing option, you can print smaller quantities of materials with quick turnaround times and no minimum order requirements. Digital printing also offers the flexibility to print variable data, so you can customize your materials with individualized information.",
     icon: ScaleIcon,
   },
   {
-    name: "Transfers are instant",
+    name: "Easy Online Ordering",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.",
+      "Our online ordering system is designed to make ordering your printing materials simple and convenient. With just a few clicks, you can select your printing option, paper type, finishing options, and upload your artwork. You can also easily track the status of your order and receive notifications when it's ready for pickup or delivery.",
     icon: BoltIcon,
   },
   {
-    name: "Mobile notifications",
+    name: "Offset and Digital Printing Experts",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.",
+      "Our team of printing experts is dedicated to providing high-quality printing services and exceptional customer support. Whether you have questions about which printing option to choose, need help with artwork preparation, or have any other questions, our team is here to help.",
     icon: DevicePhoneMobileIcon,
   },
 ];

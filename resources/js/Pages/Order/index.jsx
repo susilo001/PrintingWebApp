@@ -4,6 +4,7 @@ import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 
 export default function Order({ orders }) {
+
   const handleRequestInvoice = async (id) => {
     // await axios.get(route("order.invoice", { order: id })).then((response) => {
     //   window.open(response.data.invoice, "_blank");

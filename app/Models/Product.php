@@ -3,16 +3,14 @@
 namespace App\Models;
 
 use App\Filters\Filterable;
-use Gloudemans\Shoppingcart\CanBeBought;
-use Gloudemans\Shoppingcart\Contracts\Buyable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model implements Buyable, HasMedia
+class Product extends Model implements HasMedia
 {
-    use HasFactory, CanBeBought, Filterable, InteractsWithMedia;
+    use HasFactory, Filterable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -102,7 +100,7 @@ class Product extends Model implements Buyable, HasMedia
 
             return $price->price;
         } catch (\Exception $e) {
-            return throw new \Exception('The minimum order is '.$prices->min('min_order').' pcs');
+            return throw new \Exception('The minimum order is ' . $prices->min('min_order') . ' pcs');
         }
     }
 }

@@ -15,20 +15,18 @@ class ProductController extends Controller
     /**
      * Return the product list
      */
-    public function index(ProductFilter $filter)
+    public function index(ProductFilter $filter): \Inertia\Response
     {
         return Inertia::render('Product/Index', [
-            'products' => new ProductCollection(Product::filter($filter)->with(['prices', 'category'])->get()),
+            'products' => new ProductCollection(Product::filter($filter)->with(['category'])->get()),
             'categories' => new CategoryCollection(Category::all()),
         ]);
     }
 
     /**
      * Show Product
-     *
-     * @return \Inertia\Response
      */
-    public function show(Product $product)
+    public function show(Product $product): \Inertia\Response
     {
         return Inertia::render('Product/Show', [
             'product' => new ProductResource($product->load(['variants', 'prices', 'category'])),
