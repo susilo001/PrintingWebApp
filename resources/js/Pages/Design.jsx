@@ -1,10 +1,5 @@
-import ActionControls from "@/Components/Polotno/ActionControls";
-import Container from "@/Components/Polotno/Container";
 import { DesignTemplatesSection } from "@/Components/Polotno/DesignTemplatesPanel";
-import { PageControls } from "@/Components/Polotno/PageControls";
-import SidePanelWrapper from "@/Components/Polotno/SidePanelWrapper";
 import { SizeSection } from "@/Components/Polotno/SizePanel";
-import WorkspaceWrapper from "@/Components/Polotno/WorkspaceWrapper";
 import store from "@/lib/polotno";
 import { Head } from "@inertiajs/react";
 import { Workspace } from "polotno/canvas/workspace";
@@ -19,8 +14,14 @@ import {
 } from "polotno/side-panel";
 import { Toolbar } from "polotno/toolbar/toolbar";
 import { ZoomButtons } from "polotno/toolbar/zoom-buttons";
+import CustomToolbar from "@/Components/Polotno/CustomToolbar";
+import { PolotnoContainer, SidePanelWrap, WorkspaceWrap } from 'polotno';
 
-export default function Design() {
+export default function Design({ template }) {
+  if (template) {
+    store.loadJSON(JSON.parse(template.template));
+  }
+
   const sections = [
     LayersSection,
     SizeSection,
@@ -32,31 +33,25 @@ export default function Design() {
     ElementsSection,
   ];
   return (
-    <>
+    <PolotnoContainer
+      className={"bp4-dark"}
+      style={{ height: "100vw", width: "100vw" }}
+    >
       <Head title="Design Tools" />
-
-      <Container
-        className={"bp4-dark max-w-screen"}
-        style={{ height: "100vw" }}
-      >
-        <SidePanelWrapper>
-          <SidePanel
-            store={store}
-            sections={sections}
-            defaultSection={"templates"}
-          />
-        </SidePanelWrapper>
-        <WorkspaceWrapper>
-          <Toolbar
-            store={store}
-            downloadButtonEnabled
-            components={{ ActionControls: ActionControls }}
-          />
-          <Workspace store={store} components={{ PageControls }} />
-          {/* <Preview store={store} /> */}
-          <ZoomButtons store={store} />
-        </WorkspaceWrapper>
-      </Container>
-    </>
+      <SidePanelWrap>
+        <SidePanel
+          store={store}
+          sections={sections}
+          defaultSection={"templates"}
+        />
+      </SidePanelWrap>
+      <WorkspaceWrap>
+        <CustomToolbar store={store} />
+        <Toolbar store={store} />
+        <Workspace store={store} />
+        {/* <Preview store={store} /> */}
+        <ZoomButtons store={store} />
+      </WorkspaceWrap>
+    </PolotnoContainer>
   );
 }

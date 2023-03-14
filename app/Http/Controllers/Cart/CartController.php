@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Cart;
 use App\Models\Cart;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use App\Services\Cart\CartService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
 use Illuminate\Http\RedirectResponse;
@@ -16,13 +15,10 @@ use App\Services\Payment\PaymentService;
 
 class CartController extends Controller
 {
-    protected $cartService;
-
     protected $paymentService;
 
-    public function __construct(CartService $cartService, PaymentService $paymentService)
+    public function __construct(PaymentService $paymentService)
     {
-        $this->cartService = $cartService;
         $this->paymentService = $paymentService;
     }
 

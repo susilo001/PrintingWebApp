@@ -4,14 +4,15 @@ import TextArea from "@/Components/TextArea";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import { ShoppingBagIcon, StarIcon } from "@heroicons/react/20/solid";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, Link } from "@inertiajs/react";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FilePond, registerPlugin } from "react-filepond";
 import Swal from "sweetalert2";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 registerPlugin(
   FilePondPluginImageExifOrientation,
@@ -29,11 +30,22 @@ export default function Product({ product }) {
   const [quantity, setQuantity] = useState(0);
   const [design, setDesign] = useState("");
   const [variants, setVariants] = useState([]);
+  const [templates, setTemplates] = useState([]);
 
   const projectNameInput = useRef();
   const descriptionInput = useRef();
   const quantityInput = useRef();
   const designInput = useRef();
+
+  const getTemplates = async () => {
+    const response = await fetch("/api/design");
+    const data = await response.json();
+    setTemplates(data.templates);
+  };
+
+  useEffect(() => {
+    getTemplates();
+  }, [templates]);
 
   const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -288,6 +300,32 @@ export default function Product({ product }) {
                     ))}
                   </tbody>
                 </table>
+              </div>
+
+              <div className='divider divider-dashed my-4' />
+
+              {/* Design Templates */}
+              <div className="mt-8 overflow-x-auto space-y-4 bg-base-200 rounded-lg p-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium">Design Templates</h3>
+                  <Link href="/designs">
+                    <a className="text-sm font-medium text-secondary hover:text-secondary-focus">
+                      View all
+                    </a>
+                  </Link>
+                </div>
+                <Swiper slidesPerView={4} spaceBetween={10} className="p-4 rounded-lg bg-base-100">
+                  {templates.map((design) => (
+                    <SwiperSlide key={design.id}>
+                      <Link href={route('design.show', design.id)}>
+                        <div className="flex flex-col items-center justify-center">
+                          <img src={design.image} alt="" />
+                          <p className="text-center">{design.name}</p>
+                        </div>
+                      </Link>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </div>
           </div>

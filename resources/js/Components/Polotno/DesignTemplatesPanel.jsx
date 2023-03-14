@@ -3,31 +3,36 @@ import { observer } from "mobx-react-lite";
 import { ImagesGrid } from "polotno/side-panel/images-grid";
 import { SectionTab } from "polotno/side-panel/tab-button";
 import { useEffect, useState } from "react";
+import { Spinner, InputGroup } from "@blueprintjs/core";
 
 export const DesignTemplatesPanel = observer(({ store }) => {
   const [templates, setTemplates] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/design")
       .then((response) => response.json())
       .then((data) => {
         setTemplates(data.templates);
+        setIsLoading(false);
       });
-  }, []);
+  }, [templates]);
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex flex-row items-center justify-between">
-        <SectionTab title="Design Templates" icon={<RectangleGroupIcon />} />
+    <div className="flex h-full flex-col space-y-4">
+      <div>
+        <InputGroup className="bp4-fill" placeholder="Search..." leftIcon='search' />
       </div>
       <div className="flex flex-grow flex-col overflow-y-auto">
-        <ImagesGrid
-          images={templates}
-          getPreview={(template) => template.image}
-          onSelect={async (template) => {
-            store.loadJSON(JSON.parse(template.template));
-          }}
-        />
+        {isLoading ? <Spinner /> :
+          <ImagesGrid
+            images={templates}
+            getPreview={(template) => template.image}
+            onSelect={async (template) => {
+              store.loadJSON(JSON.parse(template.template));
+            }}
+          />
+        }
       </div>
     </div>
   );

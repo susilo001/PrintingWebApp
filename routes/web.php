@@ -37,6 +37,9 @@ Route::controller(ProductController::class)->group(function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/design', [DesignController::class, 'index'])->name('design.index');
     Route::post('/design', [DesignController::class, 'store'])->name('design.store');
+    Route::get('/design/{template}', [DesignController::class, 'show'])->name('design.show');
+    Route::match(['put', 'patch'], '/design/{template}', [DesignController::class, 'update'])->name('design.update');
+    Route::delete('/design/{template}', [DesignController::class, 'destroy'])->name('design.destroy');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
