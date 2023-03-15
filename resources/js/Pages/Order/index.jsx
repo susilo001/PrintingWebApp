@@ -1,22 +1,16 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/lib/CurrencyFormater";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 
 export default function Order({ orders }) {
 
+  const { flash } = usePage().props
+
+  flash.invoice ? window.open(flash.invoice, "_blank") : null
+
   const handleRequestInvoice = async (id) => {
-    // await axios.get(route("order.invoice", { order: id })).then((response) => {
-    //   window.open(response.data.invoice, "_blank");
-    // });
-    router.get(route("order.invoice", { order: id }), {
-      preserveState: true,
-      preserveScroll: true,
-      onSuccess: (response) => {
-        // window.open(response.data.invoice, "_blank");
-        console.log(response);
-      },
-    });
+    router.get(route("order.invoice", { order: id }));
   };
 
   return (

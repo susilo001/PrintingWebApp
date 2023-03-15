@@ -21,18 +21,15 @@ registerPlugin(
   FilePondPluginFileEncode
 );
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Product({ product }) {
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(0);
-  const [design, setDesign] = useState("");
+  const [design, setDesign] = useState([]);
   const [variants, setVariants] = useState([]);
   const [templates, setTemplates] = useState([]);
 
-  const projectNameInput = useRef();
+
+
   const descriptionInput = useRef();
   const quantityInput = useRef();
   const designInput = useRef();
@@ -45,7 +42,11 @@ export default function Product({ product }) {
 
   useEffect(() => {
     getTemplates();
-  }, [templates]);
+  }, []);
+
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+  }
 
   const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -76,7 +77,7 @@ export default function Product({ product }) {
     formData.append("product_id", product.id);
     formData.append("description", description);
     formData.append("quantity", quantity);
-    formData.append("design", design);
+    formData.append("design", design[0].file);
     formData.append("variants", JSON.stringify(variants));
 
     Swal.fire({
@@ -91,11 +92,6 @@ export default function Product({ product }) {
             if (errors.quantity) {
               reset("quantity");
               quantityInput.current.focus();
-            }
-
-            if (errors.project_name) {
-              reset("project_name");
-              projectNameInput.current.focus();
             }
 
             if (errors.description) {
@@ -125,9 +121,11 @@ export default function Product({ product }) {
             <nav aria-label="Breadcrumb">
               <div className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="flex items-center">
-                  <a href={"#"} className="mr-2 text-sm font-medium">
-                    {product.category.name}
-                  </a>
+                  <Link href={route('product.index')}>
+                    <span className="mr-2 text-sm font-medium">
+                      {product.category.name}
+                    </span>
+                  </Link>
                   <svg
                     width={16}
                     height={20}
@@ -140,13 +138,11 @@ export default function Product({ product }) {
                     <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
                   </svg>
                 </div>
-                <a
-                  href={"#"}
-                  aria-current="page"
+                <span
                   className="font-medium hover:text-gray-600"
                 >
                   {product.name}
-                </a>
+                </span>
               </div>
             </nav>
           </div>
@@ -253,12 +249,11 @@ export default function Product({ product }) {
                 {/* FileUpload */}
                 <div className="mt-10">
                   <FilePond
-                    name="filepond"
+                    name="design"
                     files={design}
                     storeAsFile={true}
-                    onupdatefiles={(fileItems) => {
-                      setDesign(fileItems[0].file);
-                    }}
+                    checkValidity={true}
+                    onupdatefiles={setDesign}
                   />
                 </div>
 
@@ -309,9 +304,9 @@ export default function Product({ product }) {
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-medium">Design Templates</h3>
                   <Link href="/designs">
-                    <a className="text-sm font-medium text-secondary hover:text-secondary-focus">
+                    <span className="text-sm font-medium text-secondary hover:text-secondary-focus">
                       View all
-                    </a>
+                    </span>
                   </Link>
                 </div>
                 <Swiper slidesPerView={4} spaceBetween={10} className="p-4 rounded-lg bg-base-100">
