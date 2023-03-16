@@ -2,15 +2,13 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Navbar, Alignment, Button, EditableText, MenuItem } from '@blueprintjs/core';
 import { Popover2 } from "@blueprintjs/popover2";
-import { Link, router, usePage } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { Select2 } from "@blueprintjs/select";
 
-const CustomToolbar = observer(({ store }) => {
+const CustomToolbar = observer(({ store, auth, role }) => {
     const [categories, setCategories] = React.useState([]);
-
-    const { auth } = usePage().props;
 
     React.useEffect(() => {
         axios.get('/api/category').then((response) => {
@@ -66,6 +64,10 @@ const CustomToolbar = observer(({ store }) => {
     const handleSaveAsPDF = async () => {
         await store.saveAsPDF({ includeBleed: true });
     };
+
+    const handleLogout = () => {
+        router.post('/logout');
+    };
     return (
         <Navbar className='bp4-dark flex justify-between'>
             <Navbar.Group align={Alignment.LEFT}>
@@ -112,7 +114,7 @@ const CustomToolbar = observer(({ store }) => {
                     <Button text={store.pages[0].custom?.category ? store.pages[0].custom.category.name : 'Select a Category'} rightIcon='double-caret-vertical' />
                 </Select2>
             </Navbar.Group>
-            <Navbar.Group align={Alignment.RIGHT} className='pr-4'>
+            <Navbar.Group align={Alignment.RIGHT}>
                 <Popover2
                     position='bottom'
                     content={
@@ -123,15 +125,14 @@ const CustomToolbar = observer(({ store }) => {
                     }>
                     <Button icon='import' />
                 </Popover2>
-                <Button icon='floppy-disk' onClick={handleSaveTemplate} />
+                {role == 'administrator' && <Button icon='floppy-disk' onClick={handleSaveTemplate} />}
                 <Navbar.Divider />
                 <Popover2
                     position='bottom'
                     content={
                         <div className='flex flex-col'>
-                            <Button icon='person' >{auth.user.name}</Button>
-                            <Button icon='people' >Profile</Button>
-                            <Button icon='log-out'>Logout</Button>
+                            <Button icon='person'>{auth.user.name}</Button>
+                            <Button icon='log-out' onClick={handleLogout}>Logout</Button>
                         </div>
                     }>
                     <Button icon='person' />

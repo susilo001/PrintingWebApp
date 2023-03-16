@@ -11,7 +11,12 @@ class DesignController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Design');
+        $user = auth()->user();
+        $role = $user->roles->first()->name;
+
+        return Inertia::render('Design', [
+            'role' => $role,
+        ]);
     }
 
     public function store(Request $request)

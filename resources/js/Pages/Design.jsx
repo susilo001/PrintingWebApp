@@ -17,7 +17,8 @@ import { ZoomButtons } from "polotno/toolbar/zoom-buttons";
 import CustomToolbar from "@/Components/Polotno/CustomToolbar";
 import { PolotnoContainer, SidePanelWrap, WorkspaceWrap } from 'polotno';
 
-export default function Design({ template }) {
+export default function Design({ template, role, auth }) {
+
   if (template) {
     store.loadJSON(JSON.parse(template.template));
   }
@@ -25,28 +26,33 @@ export default function Design({ template }) {
   const sections = [
     LayersSection,
     SizeSection,
-    UploadSection,
-    DesignTemplatesSection,
     TextSection,
-    TemplatesSection,
     BackgroundSection,
     ElementsSection,
+    UploadSection,
+    DesignTemplatesSection,
+    TemplatesSection,
   ];
+
+  if (role !== 'administrator') {
+    sections.pop();
+  }
+
   return (
     <PolotnoContainer
       className={"bp4-dark"}
-      style={{ height: "100vw", width: "100vw" }}
+      style={{ height: "100vh", width: "100vw" }}
     >
       <Head title="Design Tools" />
       <SidePanelWrap>
         <SidePanel
           store={store}
           sections={sections}
-          defaultSection={"templates"}
+          defaultSection={"Custom"}
         />
       </SidePanelWrap>
       <WorkspaceWrap>
-        <CustomToolbar store={store} />
+        <CustomToolbar store={store} auth={auth} role={role} />
         <Toolbar store={store} />
         <Workspace store={store} />
         {/* <Preview store={store} /> */}
