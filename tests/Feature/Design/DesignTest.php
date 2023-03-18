@@ -20,6 +20,8 @@ class DesignTest extends TestCase
     {
         $user = User::factory()->create();
 
+        $user->assignRole('customer');
+
         $response = $this->actingAs($user)->get('/design');
 
         $response->assertStatus(200);

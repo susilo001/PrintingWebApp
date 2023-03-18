@@ -86,6 +86,27 @@ export const SizePanel = observer(({ store }) => {
           </div>
         </Button>
       ))}
+      <Button
+        alignText="left"
+        onClick={() => store.pages[0].set({
+          // you can use "custom" attribute to save your own custom data
+          custom: {
+            preview: {
+              src: '../asset/blank-book-cover.jpg'
+            }
+          },
+          bleed: 40, // in pixels
+          width: 1410, // in pixels. You can use 'auto' to inherit width from the store
+          height: 2250, // in pixels. You can use 'auto' to inherit height from the store
+        })}
+      >
+        <div className="flex justify-between">
+          <span className="text-sm font-semibold">Book Cover</span>
+          <span className="text-sm font-semibold">
+            1410 x 2250 px
+          </span>
+        </div>
+      </Button>
     </div >
   );
 });

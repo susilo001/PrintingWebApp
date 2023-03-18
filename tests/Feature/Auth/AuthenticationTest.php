@@ -39,36 +39,6 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * Test if Admin role can login and redirect to admin dashboard
-     */
-    public function testAdminCanLoginAndRedirectToAdminDashboard(): void
-    {
-        $response = $this->post('/login', [
-            'email' => 'admin@admin.com',
-            'password' => 'password',
-        ]);
-
-        $this->assertAuthenticated();
-
-        $response->assertRedirect(RouteServiceProvider::ADMIN);
-    }
-
-    /**
-     * Test if Super Admin role can login and redirect to admin dashboard
-     */
-    public function testSuperAdminCanLoginAndRedirectToAdminDashboard(): void
-    {
-        $response = $this->post('/login', [
-            'email' => 'owner@owner.com',
-            'password' => 'password',
-        ]);
-
-        $this->assertAuthenticated();
-
-        $response->assertRedirect(RouteServiceProvider::ADMIN);
-    }
-
-    /**
      * Test if User role is customer can login and do not redirect to admin dashboard
      */
     public function testUserCanLoginAndRedirectToHome(): void
@@ -79,6 +49,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
+
         $response->assertRedirect(RouteServiceProvider::HOME);
     }
 

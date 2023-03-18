@@ -69,7 +69,7 @@ const CustomToolbar = observer(({ store, auth, role }) => {
         router.post('/logout');
     };
     return (
-        <Navbar className='bp4-dark flex justify-between'>
+        <Navbar className='flex justify-between'>
             <Navbar.Group align={Alignment.LEFT}>
                 <Navbar.Heading>
                     <Link href={route("home")} as="a">

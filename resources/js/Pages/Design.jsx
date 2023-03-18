@@ -16,6 +16,10 @@ import { Toolbar } from "polotno/toolbar/toolbar";
 import { ZoomButtons } from "polotno/toolbar/zoom-buttons";
 import CustomToolbar from "@/Components/Polotno/CustomToolbar";
 import { PolotnoContainer, SidePanelWrap, WorkspaceWrap } from 'polotno';
+import { Preview } from "@/Components/Polotno/Preview";
+import { observer } from "mobx-react-lite";
+import { Button } from '@blueprintjs/core';
+
 
 export default function Design({ template, role, auth }) {
 
@@ -24,12 +28,12 @@ export default function Design({ template, role, auth }) {
   }
 
   const sections = [
-    LayersSection,
     SizeSection,
-    TextSection,
-    BackgroundSection,
+    LayersSection,
     ElementsSection,
     UploadSection,
+    BackgroundSection,
+    TextSection,
     DesignTemplatesSection,
     TemplatesSection,
   ];
@@ -38,26 +42,40 @@ export default function Design({ template, role, auth }) {
     sections.pop();
   }
 
+  const PageBleedButton = observer(({ store }) => {
+    return (
+      <Button onClick={() => store.toggleBleed()}>Page Bleed</Button>
+    );
+  });
+
+  store.toggleRulers(true);
+
   return (
-    <PolotnoContainer
-      className={"bp4-dark"}
-      style={{ height: "100vh", width: "100vw" }}
-    >
-      <Head title="Design Tools" />
-      <SidePanelWrap>
-        <SidePanel
-          store={store}
-          sections={sections}
-          defaultSection={"Custom"}
-        />
-      </SidePanelWrap>
-      <WorkspaceWrap>
-        <CustomToolbar store={store} auth={auth} role={role} />
-        <Toolbar store={store} />
-        <Workspace store={store} />
-        {/* <Preview store={store} /> */}
-        <ZoomButtons store={store} />
-      </WorkspaceWrap>
-    </PolotnoContainer>
+    <div style={{ height: "100vh" }}>
+      <CustomToolbar store={store} auth={auth} role={role} />
+      <PolotnoContainer style={{ height: "calc(100% - 50px)" }}>
+        <Head title="Design Tools" />
+        <SidePanelWrap>
+          <SidePanel
+            store={store}
+            sections={sections}
+            defaultSection={"Custom"}
+          />
+        </SidePanelWrap>
+        <WorkspaceWrap>
+          <Toolbar
+            store={store}
+            components={{
+              PageBleedButton,
+            }}
+          />
+          <Workspace store={store} bleedColor="red" />
+          {store.activePage.custom?.preview &&
+            <Preview store={store} />
+          }
+          <ZoomButtons store={store} />
+        </WorkspaceWrap>
+      </PolotnoContainer>
+    </div>
   );
 }
