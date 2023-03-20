@@ -12,9 +12,13 @@ export const Preview = observer(({ store }) => {
     });
   }, [store]);
 
+  if (!store.pages[0].custom?.preview) {
+    return null;
+  }
+
   return (
     <div
-      className="fixed bottom-5 right-6 z-10 transform-origin-top-left bg-white border border-gray-200 rounded overflow-hidden"
+      className="fixed bottom-14 right-2 sm:bottom-5 sm:right-6 z-10 transform-origin-top-left bg-white border shadow-lg border-gray-200 rounded overflow-hidden"
     >
       <Navbar>
         <Navbar.Group align="right">
@@ -38,16 +42,14 @@ export const Preview = observer(({ store }) => {
           )}
         </Navbar.Group>
       </Navbar>
-      <div
-        className="preview-container"
-        style={{ display: previewVisible ? "" : "none", position: "relative" }}
-      >
-        <img src={store.pages[0].custom.preview.src} style={{ width: '300px' }} />
+      <div className={`${previewVisible ? "" : "hidden"} relative`}>
+        <img src={store.pages[0].custom?.preview.src} style={{ width: '300px' }} />
         <img
-          className="absolute inset-20 border-2 border-red-300 w-1/2 h-1/2"
+          className="absolute inset-20 border-2 border-red-300 object-contain w-36"
           src={content}
         />
       </div>
-    </div>
+    </div >
+
   );
 });
