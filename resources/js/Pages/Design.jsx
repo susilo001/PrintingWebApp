@@ -1,10 +1,5 @@
-import ActionControls from "@/Components/Polotno/ActionControls";
-import Container from "@/Components/Polotno/Container";
 import { DesignTemplatesSection } from "@/Components/Polotno/DesignTemplatesPanel";
-import { PageControls } from "@/Components/Polotno/PageControls";
-import SidePanelWrapper from "@/Components/Polotno/SidePanelWrapper";
 import { SizeSection } from "@/Components/Polotno/SizePanel";
-import WorkspaceWrapper from "@/Components/Polotno/WorkspaceWrapper";
 import store from "@/lib/polotno";
 import { Head } from "@inertiajs/react";
 import { Workspace } from "polotno/canvas/workspace";
@@ -19,44 +14,68 @@ import {
 } from "polotno/side-panel";
 import { Toolbar } from "polotno/toolbar/toolbar";
 import { ZoomButtons } from "polotno/toolbar/zoom-buttons";
+import CustomToolbar from "@/Components/Polotno/CustomToolbar";
+import { PolotnoContainer, SidePanelWrap, WorkspaceWrap } from 'polotno';
+import { Preview } from "@/Components/Polotno/Preview";
+import { observer } from "mobx-react-lite";
+import { Button } from '@blueprintjs/core';
 
-export default function Design() {
+
+export default function Design({ template, role, auth }) {
+
+  if (template) {
+    store.loadJSON(JSON.parse(template.template));
+  }
+
   const sections = [
-    LayersSection,
     SizeSection,
-    UploadSection,
-    DesignTemplatesSection,
-    TextSection,
-    TemplatesSection,
-    BackgroundSection,
+    LayersSection,
     ElementsSection,
+    UploadSection,
+    BackgroundSection,
+    TextSection,
+    DesignTemplatesSection,
+    TemplatesSection,
   ];
-  return (
-    <>
-      <Head title="Design Tools" />
 
-      <Container
-        className={"bp4-dark max-w-screen"}
-        style={{ height: "100vw" }}
-      >
-        <SidePanelWrapper>
+  if (role !== 'administrator') {
+    sections.pop();
+  }
+
+  const PageBleedButton = observer(({ store }) => {
+    return (
+      <Button onClick={() => store.toggleBleed()}>Page Bleed</Button>
+    );
+  });
+
+  store.toggleRulers(true);
+
+  return (
+    <div style={{ height: "100vh" }}>
+      <CustomToolbar store={store} auth={auth} role={role} />
+      <PolotnoContainer style={{ height: "calc(100% - 50px)" }}>
+        <Head title="Design Tools" />
+        <SidePanelWrap>
           <SidePanel
             store={store}
             sections={sections}
-            defaultSection={"templates"}
+            defaultSection={"Custom"}
           />
-        </SidePanelWrapper>
-        <WorkspaceWrapper>
+        </SidePanelWrap>
+        <WorkspaceWrap>
           <Toolbar
             store={store}
-            downloadButtonEnabled
-            components={{ ActionControls: ActionControls }}
+            components={{
+              PageBleedButton,
+            }}
           />
-          <Workspace store={store} components={{ PageControls }} />
-          {/* <Preview store={store} /> */}
+          <Workspace store={store} bleedColor="red" />
+          {store.activePage.custom?.preview &&
+            <Preview store={store} />
+          }
           <ZoomButtons store={store} />
-        </WorkspaceWrapper>
-      </Container>
-    </>
+        </WorkspaceWrap>
+      </PolotnoContainer>
+    </div>
   );
 }

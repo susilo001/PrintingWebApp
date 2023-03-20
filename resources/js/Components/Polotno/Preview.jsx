@@ -6,28 +6,15 @@ export const Preview = observer(({ store }) => {
   const [previewVisible, setPreviewVisible] = useState(true);
   const [content, setContent] = useState("");
 
-  const updateContent = async () => {
-    setContent(await store.toDataURL({ ignoreBackground: true }));
-  };
-
   useEffect(() => {
-    store.waitLoading().then(updateContent);
-    store.on("change", updateContent);
-  }, []);
+    store.on("change", async () => {
+      setContent(await store.toDataURL({ ignoreBackground: false }));
+    });
+  }, [store]);
 
   return (
     <div
-      style={{
-        position: "fixed",
-        bottom: "20px",
-        right: 0,
-        zIndex: 10,
-        transformOrigin: "top left",
-        background: "white",
-        border: "1px solid rgba(16, 22, 26, 0.2)",
-        borderRadius: "5px",
-        overflow: "hidden",
-      }}
+      className="fixed bottom-5 right-6 z-10 transform-origin-top-left bg-white border border-gray-200 rounded overflow-hidden"
     >
       <Navbar>
         <Navbar.Group align="right">
@@ -38,9 +25,7 @@ export const Preview = observer(({ store }) => {
               onClick={() => {
                 setPreviewVisible(false);
               }}
-            >
-              Hide preview
-            </Button>
+            />
           )}
           {!previewVisible && (
             <Button
@@ -49,9 +34,7 @@ export const Preview = observer(({ store }) => {
               onClick={() => {
                 setPreviewVisible(true);
               }}
-            >
-              Show preview
-            </Button>
+            />
           )}
         </Navbar.Group>
       </Navbar>
@@ -59,16 +42,10 @@ export const Preview = observer(({ store }) => {
         className="preview-container"
         style={{ display: previewVisible ? "" : "none", position: "relative" }}
       >
-        {/* <img src="../../asset/logo.png" style={{ width: "300px" }} /> */}
+        <img src={store.pages[0].custom.preview.src} style={{ width: '300px' }} />
         <img
+          className="absolute inset-20 border-2 border-red-300 w-1/2 h-1/2"
           src={content}
-          style={{
-            position: "absolute",
-            top: "35px",
-            left: "80px",
-            width: "150px",
-            border: "1px solid lightgrey",
-          }}
         />
       </div>
     </div>

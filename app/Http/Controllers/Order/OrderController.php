@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\OrderCollection;
 use App\Http\Requests\StoreOrderRequest;
+use Illuminate\Http\Response;
 use LaravelDaily\Invoices\Classes\Party;
 use LaravelDaily\Invoices\Facades\Invoice;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
@@ -107,7 +108,7 @@ class OrderController extends Controller
     /**
      * Show order invoice.
      */
-    public function invoice(Order $order): \Inertia\Response
+    public function invoice(Order $order): RedirectResponse
     {
         $items = $order->orderItems()->get();
         $payment = $order->paymentDetail()->first();
@@ -130,21 +131,15 @@ class OrderController extends Controller
         });
 
         $invoice = Invoice::make('Invoice')
-            ->series('INV')
             ->status($payment->status)
-            ->sequence(1)
-            ->serialNumberFormat('{SERIES}{SEQUENCE}')
             ->buyer($customer)
-            ->date(now()->subWeeks(3))
-            ->dateFormat('m/d/Y')
-            ->filename('INV' . $order->id)
             ->addItems($items)
-            // ->logo(public_path('vendor/invoices/logo.png'))
+            ->logo(public_path('vendor/invoices/logo.png'))
             ->notes('Thank you for your business!')
+            ->filename('INV' . $order->id)
             ->save('public');
 
-        return Inertia::render('Order/index', [
-            'orders' => new OrderCollection(Order::with('orderItems', 'paymentDetail')->where('user_id', auth()->user()->id)->get()),
+        return redirect()->route('order.index')->with([
             'invoice' => $invoice->url(),
         ]);
     }

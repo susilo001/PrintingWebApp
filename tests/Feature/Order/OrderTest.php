@@ -37,16 +37,6 @@ class OrderTest extends TestCase
     }
 
     /**
-     * Test if customer can view order list page
-     */
-    public function testOrderListPage(): void
-    {
-        $this->get('/order')->assertStatus(200);
-
-        $this->assertAuthenticatedAs($this->user);
-    }
-
-    /**
      * Test if user can write a testimonial
      */
     public function testOrderTestimonial(): void

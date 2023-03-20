@@ -1,4 +1,4 @@
-import { Button, NumericInput, Switch } from "@blueprintjs/core";
+import { Button, NumericInput, Switch, Divider, FormGroup } from "@blueprintjs/core";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
 import { observer } from "mobx-react-lite";
 import { SectionTab } from "polotno/side-panel/tab-button";
@@ -9,12 +9,19 @@ export const SizePanel = observer(({ store }) => {
   const [height, setHeight] = useState(store.height);
   const [magicResizer, setMagicResizer] = useState(true);
 
+  const AVAILABLE_SIZES = [
+    { desc: 'A3 Size', width: 842, height: 1191 },
+    { desc: 'A3 Size', width: 1123, height: 1587 },
+    { desc: 'A3 Size', width: 1754, height: 2480 },
+    { desc: 'A3 Size', width: 3508, height: 4960 },
+  ];
+
   const handleWidthChange = (e) => {
-    setWidth(parseInt(e.target.value));
+    setWidth(parseInt(e));
   };
 
   const handleHeightChange = (e) => {
-    setHeight(parseInt(e.target.value));
+    setHeight(parseInt(e));
   };
 
   const handleSubmit = () => {
@@ -25,65 +32,82 @@ export const SizePanel = observer(({ store }) => {
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between">
         <span className="text-sm font-semibold">Size</span>
-        <Button
-          icon="refresh"
-          minimal
-          onClick={() => store.setSize(500, 500, true)}
-        />
-
         <Switch
           checked={magicResizer}
           onChange={(e) => setMagicResizer(e.target.checked)}
         />
       </div>
-      <div className="flex flex-grow flex-col overflow-y-auto">
-        <div className="flex flex-col">
-          <span>Width</span>
+      <div className="flex items-center">
+        <FormGroup
+          label="Width"
+          labelFor="width"
+        >
           <NumericInput
-            name="page width"
+            name="width"
+            className="bp4-fill"
             value={width}
-            className="bp4-fill"
-            onValueChange={(e) => handleWidthChange(e)}
+            onValueChange={(e) => handleWidthChange(e)
+            }
           />
-
-          <span>Height</span>
+        </FormGroup>
+        <FormGroup
+          label="Height"
+          labelFor="height"
+        >
           <NumericInput
-            name="page height"
-            value={height}
+            name="height"
             className="bp4-fill"
+            value={height}
             onValueChange={(e) => handleHeightChange(e)}
           />
-          <Button onClick={() => handleSubmit()}>Apply</Button>
-          <div className="divider" />
-          <Button
-            alignText="left"
-            onClick={() => {
-              store.setSize(3508, 4960, magicResizer);
-            }}
-          >
-            A3 resolution 300ppi 3508 x 4960 px
-          </Button>
-          <Button
-            alignText="left"
-            onClick={() => store.setSize(1754, 2480, magicResizer)}
-          >
-            A3 resolution 150ppi 1754 x 2480 px
-          </Button>
-          <Button
-            alignText="left"
-            onClick={() => store.setSize(1123, 1587, magicResizer)}
-          >
-            A3 resolution 96ppi 1123 x 1587 px
-          </Button>
-          <Button
-            alignText="left"
-            onClick={() => store.setSize(842, 1191, magicResizer)}
-          >
-            A3 resolution 72ppi 842 x 1191 px
-          </Button>
-        </div>
+        </FormGroup>
       </div>
-    </div>
+      <div className="flex items-center">
+        <Button
+          className='bp4-fill'
+          rightIcon="refresh"
+          alignText="left"
+          onClick={() => store.setSize(500, 500, true)}
+        >Reset</Button>
+        <Button onClick={() => handleSubmit()} className='bp4-fill'>Apply</Button>
+      </div>
+      <Divider />
+      {AVAILABLE_SIZES.map(({ width, height, desc }, index) => (
+        <Button
+          key={index}
+          alignText="left"
+          onClick={() => store.setSize(width, height, magicResizer)}
+        >
+          <div className="flex justify-between">
+            <span className="text-sm font-semibold">{desc}</span>
+            <span className="text-sm font-semibold">
+              {width} x {height} px
+            </span>
+          </div>
+        </Button>
+      ))}
+      <Button
+        alignText="left"
+        onClick={() => store.pages[0].set({
+          // you can use "custom" attribute to save your own custom data
+          custom: {
+            preview: {
+              src: '../asset/blank-book-cover.jpg'
+            }
+          },
+          bleed: 40, // in pixels
+          width: 1410, // in pixels. You can use 'auto' to inherit width from the store
+          height: 2250, // in pixels. You can use 'auto' to inherit height from the store
+        })}
+      >
+        <div className="flex justify-between">
+          <span className="text-sm font-semibold">Book Cover</span>
+          <span className="text-sm font-semibold">
+            1410 x 2250 px
+          </span>
+        </div>
+      </Button>
+    </div >
   );
 });
 
