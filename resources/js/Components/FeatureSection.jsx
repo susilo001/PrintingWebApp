@@ -50,25 +50,25 @@ const features = [
   {
     name: "Offset Printing",
     description:
-      "Our offset printing option offers high-quality printing with vibrant colors and a variety of paper and finishing options to choose from. With our offset printing option, you can print large quantities of materials at an affordable price point.",
+      "Pilihan cetak offset kami menawarkan cetakan berkualitas tinggi dengan warna yang cerah dan beragam opsi kertas dan penyelesaian yang dapat dipilih. Dengan pilihan cetak offset kami, Anda dapat mencetak jumlah material dalam jumlah besar dengan harga terjangkau.",
     icon: GlobeAltIcon,
   },
   {
     name: "Digital Printing",
     description:
-      "With our digital printing option, you can print smaller quantities of materials with quick turnaround times and no minimum order requirements. Digital printing also offers the flexibility to print variable data, so you can customize your materials with individualized information.",
+      "Dengan pilihan cetak digital kami, Anda dapat mencetak jumlah material dalam jumlah kecil dengan waktu pengerjaan yang cepat dan tanpa persyaratan pesanan minimum. Cetakan digital juga menawarkan fleksibilitas untuk mencetak data variabel, sehingga Anda dapat menyesuaikan material Anda dengan informasi yang individual.",
     icon: ScaleIcon,
   },
   {
-    name: "Easy Online Ordering",
+    name: "Pemesanan Online yang Mudah",
     description:
-      "Our online ordering system is designed to make ordering your printing materials simple and convenient. With just a few clicks, you can select your printing option, paper type, finishing options, and upload your artwork. You can also easily track the status of your order and receive notifications when it's ready for pickup or delivery.",
+      "Sistem pemesanan online kami dirancang untuk membuat pemesanan material cetak Anda menjadi sederhana dan nyaman. Hanya dengan beberapa klik, Anda dapat memilih pilihan cetak, jenis kertas, opsi penyelesaian, dan mengunggah desain Anda. Anda juga dapat dengan mudah melacak status pesanan Anda dan menerima pemberitahuan saat pesanan siap untuk diambil atau dikirim.",
     icon: BoltIcon,
   },
   {
-    name: "Offset and Digital Printing Experts",
+    name: "Dukungan Pelanggan yang Luar Biasa",
     description:
-      "Our team of printing experts is dedicated to providing high-quality printing services and exceptional customer support. Whether you have questions about which printing option to choose, need help with artwork preparation, or have any other questions, our team is here to help.",
+      "Tim ahli cetak kami berdedikasi untuk menyediakan layanan cetak berkualitas tinggi dan dukungan pelanggan yang luar biasa. Apakah Anda memiliki pertanyaan tentang pilihan cetak yang harus dipilih, membutuhkan bantuan dalam persiapan desain, atau memiliki pertanyaan lainnya, tim kami siap membantu.",
     icon: DevicePhoneMobileIcon,
   },
 ];

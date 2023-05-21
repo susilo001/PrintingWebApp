@@ -1,7 +1,9 @@
+import Button from "@/Components/Button";
 import Card from "@/Components/Card";
+import Container from "@/Components/Container";
 import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/lib/CurrencyFormater";
+import CurrencyFormater from "@/utils/CurrencyFormater";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
@@ -65,8 +67,8 @@ export default function Products({ products, categories }) {
               </select>
             </div>
             <div className="sm:hidden">
-              <button
-                className="btn-ghost btn-circle btn"
+              <Button
+                className="btn-ghost btn-circle"
                 onClick={() => setIsOpen((previousState) => !previousState)}
               >
                 {isOpen ? (
@@ -74,7 +76,7 @@ export default function Products({ products, categories }) {
                 ) : (
                   <FunnelIcon className="h-5 w-5 text-gray-500" />
                 )}
-              </button>
+              </Button>
             </div>
           </div>
           <div className={(isOpen ? "block" : "hidden") + " mt-4 sm:hidden"}>
@@ -99,7 +101,7 @@ export default function Products({ products, categories }) {
       }
     >
       <Head title="Products Page" />
-      <div className="mx-auto my-10 flex max-w-7xl justify-center">
+      <Container>
         {products.length === 0 && (
           <div className="text-center">
             <h1 className="text-3xl font-bold text-warning">
@@ -115,7 +117,11 @@ export default function Products({ products, categories }) {
               key={product.id}
               href={route("product.show", product.id)}
             >
-              <Card className={"w-64 h-72 border shadow-xl hover:bg-base-200 card-compact"}>
+              <Card
+                className={
+                  "card-compact h-72 w-64 border shadow-xl hover:bg-base-200"
+                }
+              >
                 <Card.Image
                   className={"aspect-square object-contain"}
                   src={product.images[0]}
@@ -136,7 +142,7 @@ export default function Products({ products, categories }) {
             </Link>
           ))}
         </div>
-      </div>
+      </Container>
     </AuthenticatedLayout>
   );
 }

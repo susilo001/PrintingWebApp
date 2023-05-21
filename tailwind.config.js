@@ -19,4 +19,9 @@ module.exports = {
     logs: true,
     themes: ["cmyk"],
   },
+  theme: {
+    fontFamily: {
+      'open-sans': ['Open Sans', 'sans-serif'],
+    },
+  },
 };

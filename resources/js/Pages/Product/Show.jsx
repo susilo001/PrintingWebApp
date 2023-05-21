@@ -1,25 +1,20 @@
+import Button from "@/Components/Button";
+import Container from "@/Components/Container";
+import FilepondComponent from "@/Components/Filepond";
 import ImageGallery from "@/Components/ImageGallery";
 import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/lib/CurrencyFormater";
-import { ShoppingBagIcon, StarIcon } from "@heroicons/react/20/solid";
-import { Head, router, Link } from "@inertiajs/react";
-import FilePondPluginFileEncode from "filepond-plugin-file-encode";
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import FilePondPluginImageTransform from "filepond-plugin-image-transform";
-import { useRef, useState, useEffect } from "react";
-import { FilePond, registerPlugin } from "react-filepond";
+import CurrencyFormater from "@/utils/CurrencyFormater";
+import {
+  ChevronRightIcon,
+  ShoppingBagIcon,
+  StarIcon,
+} from "@heroicons/react/24/solid";
+import { Head, Link, router } from "@inertiajs/react";
+import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-registerPlugin(
-  FilePondPluginImageExifOrientation,
-  FilePondPluginImagePreview,
-  FilePondPluginImageTransform,
-  FilePondPluginFileEncode
-);
 
 export default function Product({ product }) {
   const [description, setDescription] = useState("");
@@ -27,8 +22,6 @@ export default function Product({ product }) {
   const [design, setDesign] = useState([]);
   const [variants, setVariants] = useState([]);
   const [templates, setTemplates] = useState([]);
-
-
 
   const descriptionInput = useRef();
   const quantityInput = useRef();
@@ -121,26 +114,14 @@ export default function Product({ product }) {
             <nav aria-label="Breadcrumb">
               <div className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="flex items-center">
-                  <Link href={route('product.index')}>
+                  <Link href={route("product.index")}>
                     <span className="mr-2 text-sm font-medium">
                       {product.category.name}
                     </span>
                   </Link>
-                  <svg
-                    width={16}
-                    height={20}
-                    viewBox="0 0 16 20"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                    className="h-5 w-4 "
-                  >
-                    <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                  </svg>
+                  <ChevronRightIcon className="h-5 w-5" />
                 </div>
-                <span
-                  className="font-medium hover:text-gray-600"
-                >
+                <span className="font-medium hover:text-gray-600">
                   {product.name}
                 </span>
               </div>
@@ -151,7 +132,7 @@ export default function Product({ product }) {
     >
       <Head title={product.name} />
 
-      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <Container>
         <div className="pt-6">
           {/* Image gallery */}
           <ImageGallery images={product.images} alt={product.name} />
@@ -169,7 +150,9 @@ export default function Product({ product }) {
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight">
                 {CurrencyFormater(product.prices[0].price)}
-                <span className="badge-secondary badge ml-2">/ Starting Price</span>
+                <span className="badge badge-secondary ml-2">
+                  / Starting Price
+                </span>
               </p>
 
               {/* Reviews */}
@@ -248,23 +231,21 @@ export default function Product({ product }) {
 
                 {/* FileUpload */}
                 <div className="mt-10">
-                  <FilePond
+                  <FilepondComponent
                     name="design"
                     files={design}
-                    storeAsFile={true}
-                    checkValidity={true}
-                    onupdatefiles={setDesign}
+                    onUpdateFiles={setDesign}
                   />
                 </div>
 
-                <button
+                <Button
                   name="addToCart"
                   type="submit"
-                  className="btn-primary btn mt-8 w-full gap-2"
+                  className="btn-primary mt-8 w-full gap-2"
                 >
                   Add to Cart
                   <ShoppingBagIcon className="h-6 w-6" />
-                </button>
+                </Button>
               </form>
             </div>
 
@@ -297,11 +278,11 @@ export default function Product({ product }) {
                 </table>
               </div>
 
-              <div className='divider divider-dashed my-4' />
+              <div className="divider-dashed divider my-4" />
 
               {/* Design Templates */}
-              <div className="mt-8 overflow-x-auto space-y-4 bg-base-200 rounded-lg p-4">
-                <div className="flex justify-between items-center">
+              <div className="mt-8 space-y-4 overflow-x-auto rounded-lg bg-base-200 p-4">
+                <div className="flex items-center justify-between">
                   <h3 className="text-lg font-medium">Design Templates</h3>
                   <Link href="/designs">
                     <span className="text-sm font-medium text-secondary hover:text-secondary-focus">
@@ -309,23 +290,33 @@ export default function Product({ product }) {
                     </span>
                   </Link>
                 </div>
-                <Swiper slidesPerView={4} spaceBetween={10} className="p-4 rounded-lg bg-base-100">
-                  {templates.map((design) => (
-                    <SwiperSlide key={design.id}>
-                      <Link href={route('design.show', design.id)}>
-                        <div className="flex flex-col items-center justify-center">
-                          <img src={design.image} alt="" />
-                          <p className="text-center">{design.name}</p>
-                        </div>
-                      </Link>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                {templates.length === 0 ? (
+                  <div className="flex items-center justify-center">
+                    <p className="text-center">No templates available</p>
+                  </div>
+                ) : (
+                  <Swiper
+                    slidesPerView={4}
+                    spaceBetween={10}
+                    className="rounded-lg bg-base-100 p-4"
+                  >
+                    {templates.map((design) => (
+                      <SwiperSlide key={design.id}>
+                        <Link href={route("design.show", design.id)}>
+                          <div className="flex flex-col items-center justify-center">
+                            <img src={design.image} alt="" />
+                            <p className="text-center">{design.name}</p>
+                          </div>
+                        </Link>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </AuthenticatedLayout>
   );
 }

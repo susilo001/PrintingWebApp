@@ -1,6 +1,7 @@
 import Input from "@/Components/Input";
 import { Transition } from "@headlessui/react";
 import { Link, useForm, usePage } from "@inertiajs/react";
+import Button from "@/Components/Button";
 
 export default function UpdateProfileInformation({
   mustVerifyEmail,
@@ -83,9 +84,9 @@ export default function UpdateProfileInformation({
         )}
 
         <div className="flex items-center gap-4">
-          <button className="btn-outline btn-ghost btn" disabled={processing}>
+          <Button className="btn-outline btn-ghost" disabled={processing}>
             Save
-          </button>
+          </Button>
 
           <Transition
             show={recentlySuccessful}

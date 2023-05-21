@@ -16,24 +16,6 @@ export default function Authenticated({ header, children }) {
   const { cartCount } = usePage().props;
   const { errors } = usePage().props;
 
-  const showSurveyModal = async () => {
-    await Swal.fire({
-      title: "Survey",
-      text: "Please fill this survey",
-      icon: "info",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Proceed",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.open(
-          "https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link",
-          "_blank"
-        );
-      }
-    });
-  };
-
   const showFlashMessage = async () => {
     await Swal.fire({
       title: flash.title ? flash.title : "",
@@ -45,9 +27,7 @@ export default function Authenticated({ header, children }) {
     });
   };
 
-  if (flash.message) {
-    flash.title === "Survey" ? showSurveyModal() : showFlashMessage();
-  }
+  flash.message ? showFlashMessage() : null;
 
   return (
     <div className="relative flex min-h-screen flex-col">
@@ -290,7 +270,7 @@ export default function Authenticated({ header, children }) {
       )}
 
       <main>{children}</main>
-      <footer className="bg-neutral-focus p-10 text-base-100">
+      <footer className="mt-auto bg-neutral-focus p-10 text-base-100">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
             <ApplicationLogo className="block h-10 w-auto fill-current" />

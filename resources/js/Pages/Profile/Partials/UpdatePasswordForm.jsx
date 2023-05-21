@@ -2,6 +2,7 @@ import Input from "@/Components/Input";
 import { Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { useRef } from "react";
+import Button from "@/Components/Button";
 
 export default function UpdatePasswordForm({ className }) {
   const passwordInput = useRef();
@@ -87,9 +88,9 @@ export default function UpdatePasswordForm({ className }) {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="btn-outline btn-ghost btn" disabled={processing}>
+          <Button className="btn-outline btn-ghost" disabled={processing}>
             Save
-          </button>
+          </Button>
 
           <Transition
             show={recentlySuccessful}

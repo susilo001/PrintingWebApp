@@ -79,7 +79,7 @@ class OrderController extends Controller
         $cart->cartItems()->delete();
 
         return redirect()->route('order.index')->with([
-            'title' => 'Survey',
+            'title' => 'Success',
             'message' => 'Your order has been placed. Thank you!',
             'status' => 'success',
         ]);

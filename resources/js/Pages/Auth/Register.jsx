@@ -2,6 +2,7 @@ import Input from "@/Components/Input";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect } from "react";
+import Button from "@/Components/Button";
 
 export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -102,9 +103,9 @@ export default function Register() {
         </div>
 
         <div className="mt-4">
-          <button className="btn-primary btn-block btn" disabled={processing}>
+          <Button className="btn-primary btn-block" disabled={processing}>
             Register
-          </button>
+          </Button>
         </div>
       </form>
     </GuestLayout>

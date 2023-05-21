@@ -3,6 +3,7 @@ import Input from "@/Components/Input";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect } from "react";
+import Button from "@/Components/Button";
 
 export default function Login({ status, canResetPassword }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -94,9 +95,9 @@ export default function Login({ status, canResetPassword }) {
         </div>
 
         <div className="mt-4 flex justify-center">
-          <button className="btn-primary btn-block btn" disabled={processing}>
+          <Button className="btn-primary btn-block" disabled={processing}>
             Login
-          </button>
+          </Button>
         </div>
       </form>
     </GuestLayout>

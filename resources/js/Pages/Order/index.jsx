@@ -1,13 +1,14 @@
+import Button from "@/Components/Button";
+import Container from "@/Components/Container";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/lib/CurrencyFormater";
+import CurrencyFormater from "@/utils/CurrencyFormater";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 
 export default function Order({ orders }) {
+  const { flash } = usePage().props;
 
-  const { flash } = usePage().props
-
-  flash.invoice ? window.open(flash.invoice, "_blank") : null
+  flash.invoice ? window.open(flash.invoice, "_blank") : null;
 
   const handleRequestInvoice = async (id) => {
     router.get(route("order.invoice", { order: id }));
@@ -24,14 +25,14 @@ export default function Order({ orders }) {
             </p>
           </div>
           <div className="flex space-x-4">
-            <button className="btn-ghost btn">Filter</button>
-            <button className="btn-ghost btn">Sort</button>
+            <Button className="btn-ghost">Filter</Button>
+            <Button className="btn-ghost">Sort</Button>
           </div>
         </div>
       }
     >
       <Head title="Order History" />
-      <div className="mx-auto my-4 max-w-7xl px-8">
+      <Container>
         {orders.length === 0 && (
           <div className="flex h-96 items-center justify-center">
             <div className="text-center">
@@ -77,20 +78,20 @@ export default function Order({ orders }) {
                   <span className="font-bold text-error">{order.status}</span>
                 )}
               </div>
-              <button
-                className="btn-outline btn-ghost btn-md btn gap-2 font-bold"
+              <Button
+                className="btn-outline btn-ghost btn-md gap-2 font-bold"
                 onClick={() => handleRequestInvoice(order.id)}
               >
                 <span>Invoice</span>
                 <ReceiptPercentIcon className="h-5 w-5" />
-              </button>
+              </Button>
             </div>
             {order.items.map((item) => (
               <div key={item.id} className="border-y p-8">
-                <div className="flex flex-col items-center sm:items-start sm:flex-row sm:space-x-4">
+                <div className="flex flex-col items-center sm:flex-row sm:items-start sm:space-x-4">
                   <img
                     src={item.image}
-                    className="aspect-square object-contain w-52 h-52 rounded-lg bg-base-200"
+                    className="aspect-square h-52 w-52 rounded-lg bg-base-200 object-contain"
                     alt={item.name}
                   />
                   <div className="my-4 flex-grow space-y-4 lg:my-0">
@@ -103,23 +104,23 @@ export default function Order({ orders }) {
                     <p className="break-words text-justify">{item.desc}</p>
                     <ul className="flex items-center space-x-2">
                       {item.variants.map((variant, index) => (
-                        <li key={index} className="pr-2 border-r-2">
+                        <li key={index} className="border-r-2 pr-2">
                           <span className="font-bold">{variant.value}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
-                <div className="flex items-center justify-center sm:justify-end space-x-4">
+                <div className="flex items-center justify-center space-x-4 sm:justify-end">
                   <Link
                     href={route("product.show", { product: item.product })}
-                    className="link link-primary link-hover font-bold text-lg"
+                    className="link-hover link-primary link text-lg font-bold"
                   >
                     View Product
                   </Link>
                   <Link
                     href={route("product.show", { product: item.product })}
-                    className="link link-primary link-hover font-bold text-lg"
+                    className="link-hover link-primary link text-lg font-bold"
                   >
                     View Order
                   </Link>
@@ -128,7 +129,7 @@ export default function Order({ orders }) {
             ))}
           </div>
         ))}
-      </div>
+      </Container>
     </AuthenticatedLayout>
   );
 }
