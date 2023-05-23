@@ -2,7 +2,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import { ShoppingBagIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -259,13 +259,16 @@ export default function Authenticated({ header, children }) {
         </header>
       )}
 
-      {errors.message && (
-        <div className="alert alert-error mx-auto mt-20 max-w-7xl shadow-lg">
-          <ul className="list-inside list-disc">
-            {Object.values(errors).map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
+      {Object.keys(errors).length !== 0 && (
+        <div className="alert alert-error mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex-1">
+            <XCircleIcon className="h-6 w-6" />
+            <ul className="list-inside">
+              {Object.values(errors).map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
 
