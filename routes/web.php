@@ -4,9 +4,10 @@ use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Design\DesignController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\AddressController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index')->name('product.index');
     Route::get('/product/{product}', 'show')->name('product.show');
+});
+
+Route::controller(PaymentController::class)->group(function () {
+    Route::post('/payment/notification', 'store')->name('payment.store');
 });
 
 /**
@@ -61,4 +66,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

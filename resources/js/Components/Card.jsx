@@ -7,17 +7,21 @@ const Body = ({ children, className }) => {
 };
 
 const Title = ({ children, className }) => {
-  return <h3 className={`card-title ${className}`}>{children}</h3>;
+  return (
+    <h3 className={`card-title text-xs sm:text-base  ${className}`}>
+      {children}
+    </h3>
+  );
 };
 
 const Actions = ({ children, className }) => {
   return <div className={`card-actions ${className}`}>{children}</div>;
 };
 
-const Image = ({ src, alt, className }) => {
+const Image = ({ src, alt, className, srcSet }) => {
   return (
     <figure>
-      <img src={src} alt={alt} className={className} />
+      <img src={src} alt={alt} className={className} srcSet={srcSet} />
     </figure>
   );
 };

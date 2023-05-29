@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\ShoppingCart;
 
-use Tests\TestCase;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
 
 class CartTest extends TestCase
 {

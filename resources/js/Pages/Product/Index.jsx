@@ -6,11 +6,28 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/utils/CurrencyFormater";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Products({ products, categories }) {
+export default function Products({ products }) {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    getCategoryProducts();
+  }, []);
+
+  const getCategoryProducts = () => {
+    const uniqueCategories = new Map();
+    products.forEach(({ category }) => {
+      const { id, name, slug } = category;
+      if (!uniqueCategories.has(id)) {
+        uniqueCategories.set(id, { id, name, slug });
+      }
+    });
+    const categoryName = Array.from(uniqueCategories.values());
+    setCategories(categoryName);
+  };
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -110,7 +127,7 @@ export default function Products({ products, categories }) {
             <p className="text-gray-500">Try searching for something else</p>
           </div>
         )}
-        <div className="grid justify-center gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid place-items-center gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {products.map((product) => (
             <Link
               className="link-hover link w-fit"
@@ -124,8 +141,8 @@ export default function Products({ products, categories }) {
               >
                 <Card.Image
                   className={"aspect-square object-contain"}
-                  src={product.images[0]}
                   alt={product.name}
+                  srcSet={product.images[0]}
                 />
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>

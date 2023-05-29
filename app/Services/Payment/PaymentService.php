@@ -3,11 +3,10 @@
 namespace App\Services\Payment;
 
 use App\Models\Cart;
-use App\Services\Payment\Midtrans;
 
 class PaymentService extends Midtrans
 {
-    protected $cart ;
+    protected $cart;
 
     public function __construct()
     {
@@ -23,7 +22,7 @@ class PaymentService extends Midtrans
 
         $transaction = [
             'transaction_details' => [
-                'order_id' => now()->timestamp,
+                'order_id' => 'OTC'.'-'.now()->timestamp.'-'.substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5),
                 'gross_amount' => (int) $cartTotal,
             ],
 

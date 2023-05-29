@@ -96,7 +96,7 @@ export default function Welcome({ products, testimonials }) {
           <div className="mb-10 flex justify-center">
             <h2 className="text-2xl font-bold">Explore by Category</h2>
           </div>
-          <div className="flex flex-col space-y-8 sm:flex-row sm:space-x-8">
+          <div className="flex flex-col space-y-8 md:flex-row md:space-x-8">
             <div className="flex flex-col">
               <div className="flex-none">
                 <div className="flex h-fit justify-center">
@@ -122,7 +122,7 @@ export default function Welcome({ products, testimonials }) {
                 </div>
               </div>
               <div className="flex-none">
-                <div className="flex justify-center sm:justify-start">
+                <div className="flex justify-center md:justify-start">
                   <Link
                     href={route("product.index")}
                     as="button"
@@ -144,7 +144,7 @@ export default function Welcome({ products, testimonials }) {
                 </div>
               )}
               <div
-                className="grid gap-4 overflow-hidden overflow-y-auto pb-2 pr-4 sm:grid-cols-2 sm:scroll-smooth"
+                className="grid grid-cols-2 gap-4 overflow-hidden overflow-y-auto pb-2 pr-4 sm:scroll-smooth lg:grid-cols-3"
                 style={{
                   height: "810px",
                 }}
@@ -157,14 +157,14 @@ export default function Welcome({ products, testimonials }) {
                   >
                     <Card className="card-compact h-64 border shadow-lg hover:bg-base-200">
                       <Card.Image
-                        src={product.images[0]}
+                        srcSet={product.images[0]}
                         className={"aspect-square object-contain"}
                         alt={product.name}
                       />
                       <Card.Body>
                         <Card.Title
                           className={
-                            "flex items-center justify-between text-xl hover:font-bold"
+                            "flex items-center justify-between hover:font-bold "
                           }
                         >
                           <span>{product.name}</span>
@@ -193,17 +193,20 @@ export default function Welcome({ products, testimonials }) {
               type: "progressbar",
             }}
             breakpoints={{
-              640: {
-                slidesPerView: 1,
-              },
-              768: {
+              400: {
                 slidesPerView: 2,
               },
-              1024: {
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
                 slidesPerView: 3,
               },
-              1280: {
+              1024: {
                 slidesPerView: 4,
+              },
+              1280: {
+                slidesPerView: 5,
               },
             }}
             modules={[Pagination]}
@@ -217,17 +220,17 @@ export default function Welcome({ products, testimonials }) {
                     }
                   >
                     <Card.Image
-                      src={product.images[0]}
+                      srcSet={product.images[0]}
                       alt={product.name}
                       className="aspect-square object-contain"
                     />
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>
                       <div className="mt-4 flex items-center justify-between">
-                        <span className="text-lg font-bold text-primary">
+                        <span className="text-xs font-bold text-primary sm:text-base">
                           {CurrencyFormater(product.price)}
                         </span>
-                        <span className="badge-accent badge p-2 font-semibold">
+                        <span className="badge-accent badge p-2 text-xs font-semibold sm:text-base">
                           {product.category.name}
                         </span>
                       </div>

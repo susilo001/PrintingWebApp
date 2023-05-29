@@ -31,7 +31,7 @@ class DesignController extends Controller
                 'name' => $name,
                 'template' => $request->data,
                 'category_id' => $category,
-            ])->addMediaFromRequest('image')->toMediaCollection('templates');;
+            ])->addMediaFromRequest('image')->toMediaCollection('templates');
         } catch (\Exception $e) {
             return redirect()->route('design.index')->with('error', $e->getMessage());
         }
@@ -41,7 +41,6 @@ class DesignController extends Controller
 
     public function show(Template $template)
     {
-
         return Inertia::render('Design', [
             'template' => $template,
         ]);

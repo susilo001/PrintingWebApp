@@ -2,89 +2,89 @@ export default function ImageGallery({ images, alt }) {
   return (
     <>
       {images.length === 1 && (
-        <div className="mx-auto mt-6 sm:px-6 flex justify-center ">
-          <div className="rounded-lg overflow-hidden">
+        <div className="mx-auto mt-6 flex justify-center sm:px-6 ">
+          <div className="overflow-hidden rounded-lg">
             <img
-              src={images[0]}
+              srcSet={images[0]}
               alt={alt}
-              className="aspect-square object-contain bg-base-200 h-96"
+              className="aspect-square h-96 bg-base-200 object-contain"
             />
           </div>
         </div>
       )}
       {images.length === 2 && (
         <div className="mt-6 grid gap-y-4 sm:grid-cols-2 sm:gap-8">
-          <div className="rounded-lg sm:flex sm:justify-end overflow-hidden">
+          <div className="overflow-hidden rounded-lg sm:flex sm:justify-end">
             <img
-              src={images[0]}
+              srcSet={images[0]}
               alt={alt}
-              className="object-contain bg-base-200 aspect-square h-96"
+              className="aspect-square h-96 bg-base-200 object-contain"
             />
           </div>
-          <div className="rounded-lg sm:flex sm:justify-start overflow-hidden">
+          <div className="overflow-hidden rounded-lg sm:flex sm:justify-start">
             <img
-              src={images[1]}
+              srcSet={images[1]}
               alt={alt}
-              className="object-contain bg-base-200 aspect-square h-96"
+              className="aspect-square h-96 bg-base-200 object-contain"
             />
           </div>
         </div>
       )}
       {images.length === 3 && (
         <div className="mx-auto mt-6 grid gap-y-8 sm:grid-cols-3 sm:gap-8">
-          <div className="rounded-lg overflow-hidden">
+          <div className="overflow-hidden rounded-lg">
             <img
-              src={images[0]}
+              srcSet={images[0]}
               alt={alt}
-              className="object-contain bg-base-200 aspect-square h-full"
+              className="aspect-square h-full bg-base-200 object-contain"
             />
           </div>
-          <div className="rounded-lg overflow-hidden hidden sm:block">
+          <div className="hidden overflow-hidden rounded-lg sm:block">
             <img
-              src={images[1]}
+              srcSet={images[1]}
               alt={alt}
-              className="object-contain bg-base-200 aspect-square h-full"
+              className="aspect-square h-full bg-base-200 object-contain"
             />
           </div>
-          <div className="rounded-lg overflow-hidden hidden sm:block">
+          <div className="hidden overflow-hidden rounded-lg sm:block">
             <img
-              src={images[2]}
+              srcSet={images[2]}
               alt={alt}
-              className="object-contain bg-base-200 aspect-square h-full"
+              className="aspect-square h-full bg-base-200 object-contain"
             />
           </div>
         </div>
       )}
       {images.length === 4 && (
-        <div className="mx-auto mt-6 sm:px-6 sm:grid sm:grid-cols-3  place-items-center">
-          <div className="hidden rounded-lg sm:block overflow-hidden h-96">
+        <div className="mx-auto mt-6 place-items-center sm:grid sm:grid-cols-3  sm:px-6">
+          <div className="hidden h-96 overflow-hidden rounded-lg sm:block">
             <img
-              src={images[0]}
+              srcSet={images[0]}
               alt={alt}
-              className="object-contain bg-base-200 h-full"
+              className="h-full bg-base-200 object-contain"
             />
           </div>
-          <div className="hidden sm:grid sm:grid-cols-1 sm:gap-y-8 h-96">
-            <div className="rounded-lg overflow-hidden">
+          <div className="hidden h-96 sm:grid sm:grid-cols-1 sm:gap-y-8">
+            <div className="overflow-hidden rounded-lg">
               <img
-                src={images[1]}
+                srcSet={images[1]}
                 alt={alt}
-                className="object-contain bg-base-200 aspect-square h-full"
+                className="aspect-square h-full bg-base-200 object-contain"
               />
             </div>
-            <div className="rounded-lg overflow-hidden">
+            <div className="overflow-hidden rounded-lg">
               <img
-                src={images[2]}
+                srcSet={images[2]}
                 alt={alt}
-                className="object-contain bg-base-200 aspect-square h-full"
+                className="aspect-square h-full bg-base-200 object-contain"
               />
             </div>
           </div>
-          <div className="lg:lg:sm:sm:rounded-lg overflow-hidden h-96">
+          <div className="h-96 overflow-hidden lg:lg:sm:sm:rounded-lg">
             <img
-              src={images[3]}
+              srcSet={images[3]}
               alt={alt}
-              className="object-contain bg-base-200 h-full"
+              className="h-full bg-base-200 object-contain"
             />
           </div>
         </div>

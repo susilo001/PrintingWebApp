@@ -16,79 +16,21 @@ import Swal from "sweetalert2";
 
 export default function Cart({ cart }) {
   useEffect(() => {
-    Midtrans();
+    Midtrans.load();
   }, []);
 
-  const handleChangeQty = (id, qty) => {
-    setTimeout(() => {
+  const handleChangeQty = async (id, qty) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       router.put(route("cart.update", { cartItem: id, qty: qty }), {
         only: ["cart"],
         preserveScroll: true,
         preserveState: true,
       });
-    }, 2000);
-  };
-
-  const showSnapPayment = (page) => {
-    window.snap.pay(page.props.token, {
-      onSuccess: function (result) {
-        router.post(
-          route("order.store", {
-            order_id: result.order_id,
-            status: result.transaction_status,
-            payment_type: result.payment_type,
-            gross_amount: result.gross_amount,
-            transaction_id: result.transaction_id,
-            transaction_time: result.transaction_time,
-            transaction_message: result.status_message,
-          }),
-          {
-            preserveScroll: true,
-            preserveState: true,
-          }
-        );
-      },
-      onPending: function (result) {
-        router.post(
-          route("order.store", {
-            order_id: result.order_id,
-            status: result.transaction_status,
-            payment_type: result.payment_type,
-            gross_amount: result.gross_amount,
-            transaction_id: result.transaction_id,
-            transaction_time: result.transaction_time,
-            transaction_message: result.status_message,
-          }),
-          {
-            preserveScroll: true,
-            preserveState: true,
-          }
-        );
-      },
-      onError: function (result) {
-        Swal.fire({
-          title: "Error",
-          text: result.status_message,
-          icon: "error",
-          confirmButtonText: "Ok",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.get(route("cart.index"));
-          }
-        });
-      },
-      onClose: function () {
-        Swal.fire({
-          title: "Payment Cancelled",
-          text: "You have cancelled the payment",
-          icon: "error",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.get(route("cart.index"));
-          }
-        });
-      },
-    });
+    } catch (error) {
+      // Handle the error appropriately (e.g., show an error message)
+      console.error(error);
+    }
   };
 
   const handleSnapPayment = () => {
@@ -97,18 +39,15 @@ export default function Cart({ cart }) {
       text: "Apakah anda yakin ingin melanjutkan pembayaran?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, Lanjutkan",
     }).then((result) => {
       if (result.isConfirmed) {
-        window.snap.show();
+        Midtrans.snapLoading();
         router.visit(route("cart.checkout"), {
-          method: "GET",
-          preserveScroll: true,
-          preserveState: true,
+          method: "get",
           onSuccess: (page) => {
-            showSnapPayment(page);
+            Midtrans.snapPay(page.props.token);
           },
         });
       }
@@ -143,10 +82,10 @@ export default function Cart({ cart }) {
       <Head title="Shopping Cart" />
       <Container>
         {cart.cartItems.length === 0 ? (
-          <div className="flex h-96 items-center justify-center">
+          <div className="flex h-96 items-center justify-center rounded-lg border border-error">
             <div className="text-center">
               <div className="flex items-center space-x-2">
-                <h2 className="text-2xl font-bold">Your cart is empty</h2>
+                <h2 className="text-2xl font-bold">Keranjang Belanja Kosong</h2>
                 <ExclamationTriangleIcon className="h-8 w-8 text-error" />
               </div>
               <Link
@@ -154,21 +93,22 @@ export default function Cart({ cart }) {
                 className="btn-error btn mt-4"
                 as="button"
               >
-                Shop Now
+                Belanja Sekarang
               </Link>
             </div>
           </div>
         ) : (
           <div className="grid grid-flow-row-dense gap-y-4 lg:grid-cols-3 lg:gap-x-8">
-            <div className="lg:col-span-2">
+            <div className="mx-auto lg:col-span-2">
               {cart.cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="mb-8 rounded-lg border p-8 shadow-lg"
+                  className="mb-8 rounded-lg border p-4 shadow-lg sm:p-8"
                 >
                   <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:space-x-6">
                     <img
-                      src={item.design}
+                      // src={item.design}
+                      srcSet={item.test}
                       className="aspect-square h-52 w-52 rounded-xl bg-base-200 object-cover"
                       alt={item.name}
                     />
@@ -194,9 +134,7 @@ export default function Cart({ cart }) {
                       <span className="font-bold text-primary">
                         {CurrencyFormater(item.price)}
                       </span>
-                      <p className="break-words text-justify">
-                        {item.description}
-                      </p>
+                      <p className="break-words">{item.description}</p>
                       <ul className="flex items-center space-x-2">
                         {item.variants.map((variant, index) => (
                           <li

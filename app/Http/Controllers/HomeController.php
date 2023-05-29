@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\TestimonialCollection;
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\Testimonial;
 use Inertia\Inertia;

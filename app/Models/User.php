@@ -75,7 +75,6 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Has one cart
      */
-
     public function cart()
     {
         return $this->hasOne(Cart::class);

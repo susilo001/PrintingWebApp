@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Filters\Instances\ProductFilter;
-use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
-use App\Models\Category;
 use App\Models\Product;
 use Inertia\Inertia;
 
@@ -19,7 +17,6 @@ class ProductController extends Controller
     {
         return Inertia::render('Product/Index', [
             'products' => new ProductCollection(Product::filter($filter)->with(['category'])->get()),
-            'categories' => new CategoryCollection(Category::all()),
         ]);
     }
 

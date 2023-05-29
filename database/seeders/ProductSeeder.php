@@ -289,8 +289,11 @@ class ProductSeeder extends Seeder
 
             $item->save();
             foreach ($product['images'] as $image) {
-                $path = storage_path('app/public/' . $image);
-                $item->addMedia($path)->preservingOriginal()->toMediaCollection('products');
+                $path = storage_path('app/public/'.$image);
+                $item->addMedia($path)
+                    ->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->toMediaCollection('products');
             }
         }
     }

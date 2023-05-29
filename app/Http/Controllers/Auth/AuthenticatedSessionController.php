@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME)
             ->with([
                 'title' => 'Welcome back!',
-                'message' => $user->name . '!',
+                'message' => $user->name.'!',
                 'status' => 'success',
             ]);
     }

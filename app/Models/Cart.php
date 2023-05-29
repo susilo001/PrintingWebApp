@@ -54,4 +54,9 @@ class Cart extends Model
     {
         return $this->getSubtotal() - $this->getDiscount() + $this->getTax();
     }
+
+    public function getUserCart()
+    {
+        return $this->where('user_id', auth()->id())->first();
+    }
 }

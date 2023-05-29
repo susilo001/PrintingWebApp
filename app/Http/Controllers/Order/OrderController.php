@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers\Order;
 
-use App\Models\Cart;
-use Inertia\Inertia;
-use App\Models\Order;
-use App\Models\OrderItem;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Resources\OrderCollection;
 use App\Http\Requests\StoreOrderRequest;
-use Illuminate\Http\Response;
+use App\Http\Resources\OrderCollection;
+use App\Models\Order;
+use App\Services\OrderService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use LaravelDaily\Invoices\Classes\InvoiceItem;
 use LaravelDaily\Invoices\Classes\Party;
 use LaravelDaily\Invoices\Facades\Invoice;
-use LaravelDaily\Invoices\Classes\InvoiceItem;
 
 class OrderController extends Controller
 {
@@ -34,55 +31,25 @@ class OrderController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function store(StoreOrderRequest $request): RedirectResponse
+    public function store(StoreOrderRequest $request, OrderService $orderService): RedirectResponse
     {
-        $request->validated();
+        try {
+            $request->validated();
 
-        $cart = Cart::where('user_id', auth()->id())->first();
+            $orderService->createOrder($request);
 
-        $order = Order::create([
-            'id' => (int) $request->order_id,
-            'user_id' => auth()->user()->id,
-            'status' => 'pending',
-            'subtotal' => $cart->getSubtotal(),
-            'discount' => $cart->getDiscount(),
-            'tax' => $cart->getTax(),
-            'total_amount' => $cart->getTotal(),
-        ]);
-
-        $order->paymentDetail()->create([
-            'status' => $request->status,
-            'gross_amount' => (int) $request->gross_amount,
-            'payment_type' => $request->payment_type,
-            'transaction_id' => $request->transaction_id,
-            'transaction_time' => $request->transaction_time,
-        ]);
-
-        foreach ($cart->cartItems as $item) {
-            $orderItem = OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'name' => $item->name,
-                'description' => $item->description,
-                'qty' => $item->qty,
-                'price' => $item->product->getPriceByOrderQuantity($item->qty),
-                'variants' => $item->variants,
-                'discount' => $item->discount,
-                'tax' => $item->tax,
+            return redirect()->route('order.index')->with([
+                'title' => 'Success',
+                'message' => 'Your order has been placed. Thank you!',
+                'status' => 'success',
             ]);
-
-            $cartItemMedia = $item->getMedia('cart')->first();
-
-            $cartItemMedia->move($orderItem, 'designs');
+        } catch (\Exception $e) {
+            return redirect()->route('order.index')->with([
+                'title' => 'Error',
+                'message' => $e->getMessage(),
+                'status' => 'error',
+            ]);
         }
-
-        $cart->cartItems()->delete();
-
-        return redirect()->route('order.index')->with([
-            'title' => 'Success',
-            'message' => 'Your order has been placed. Thank you!',
-            'status' => 'success',
-        ]);
     }
 
     /**
@@ -136,7 +103,7 @@ class OrderController extends Controller
             ->addItems($items)
             ->logo(public_path('vendor/invoices/logo.png'))
             ->notes('Thank you for your business!')
-            ->filename('INV' . $order->id)
+            ->filename('INV'.$order->id)
             ->save('public');
 
         return redirect()->route('order.index')->with([

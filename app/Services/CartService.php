@@ -29,7 +29,7 @@ class CartService
         $userCart = $this->checkCart();
         $product = Product::findOrfail($request->product_id);
 
-        if (!$product) {
+        if (! $product) {
             throw new \Exception('Product not found');
         }
 
@@ -48,7 +48,9 @@ class CartService
         ]);
 
         if ($request->hasFile('design') && $request->file('design')->isValid()) {
-            $cartItem->addMediaFromRequest('design')->toMediaCollection('cart');
+            $cartItem->addMediaFromRequest('design')
+                ->withResponsiveImages()
+                ->toMediaCollection('cart');
         }
     }
 
