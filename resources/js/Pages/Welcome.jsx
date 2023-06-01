@@ -2,7 +2,6 @@ import Button from "@/Components/Button";
 import Card from "@/Components/Card";
 import Container from "@/Components/Container";
 import FeatureSection from "@/Components/FeatureSection";
-import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/utils/CurrencyFormater";
 import {
@@ -59,7 +58,7 @@ export default function Welcome({ products, testimonials }) {
       <Head title="Welcome" />
       <Container>
         {/* Hero Section */}
-        <div className="flex flex-col space-y-6 py-10 lg:h-[32rem] lg:flex-row lg:items-center lg:py-16">
+        <div className="flex flex-col space-y-6 rounded-b-lg bg-gray-50 p-10 lg:h-[32rem] lg:flex-row lg:items-center lg:py-16">
           <div className="w-full lg:w-1/2">
             <div className="space-y-4 lg:max-w-lg">
               <h1 className="text-3xl font-semibold tracking-wide lg:text-4xl">
@@ -96,15 +95,15 @@ export default function Welcome({ products, testimonials }) {
           <div className="mb-10 flex justify-center">
             <h2 className="text-2xl font-bold">Explore by Category</h2>
           </div>
-          <div className="flex flex-col space-y-8 md:flex-row md:space-x-8">
-            <div className="flex flex-col">
+          <div className="flex flex-col space-y-8 sm:space-y-0 md:flex-row md:space-x-8">
+            <div className="mb-8 flex flex-col md:mb-0">
               <div className="flex-none">
                 <div className="flex h-fit justify-center">
-                  <Input
-                    type={"text"}
-                    placeholder={"Search"}
-                    className={"input-bordered"}
-                    handleChange={handleSearch}
+                  <input
+                    type="text"
+                    placeholder="Search Here"
+                    className="input-bordered input w-full"
+                    onChange={handleSearch}
                   />
                 </div>
               </div>
@@ -112,7 +111,8 @@ export default function Welcome({ products, testimonials }) {
                 <div className="flex h-full flex-row flex-wrap items-center justify-center space-x-4 md:flex-col md:items-start md:justify-start md:space-x-0">
                   {getProductCategoryName().map((category) => (
                     <Button
-                      className="btn-ghost"
+                      className="btn-ghost sm:btn-wide md:justify-start"
+                      type="button"
                       key={category.id}
                       onClick={() => getProductsByCategory(category.id)}
                     >
@@ -125,7 +125,6 @@ export default function Welcome({ products, testimonials }) {
                 <div className="flex justify-center md:justify-start">
                   <Link
                     href={route("product.index")}
-                    as="button"
                     className="btn-primary btn-wide btn h-fit gap-2"
                   >
                     Explore More
@@ -230,7 +229,7 @@ export default function Welcome({ products, testimonials }) {
                         <span className="text-xs font-bold text-primary sm:text-base">
                           {CurrencyFormater(product.price)}
                         </span>
-                        <span className="badge-accent badge p-2 text-xs font-semibold sm:text-base">
+                        <span className="badge badge-accent p-2 text-xs font-semibold sm:text-base">
                           {product.category.name}
                         </span>
                       </div>
@@ -257,7 +256,7 @@ export default function Welcome({ products, testimonials }) {
                   key={index}
                   className="swiper-slide !bg-transparent"
                 >
-                  <div className="mx-auto text-center md:w-8/12 lg:w-7/12">
+                  <div className="mx-auto p-4 text-center md:w-8/12 lg:w-7/12">
                     <div className="flex space-x-8">
                       <div className="w-full">
                         <img
