@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->bigInteger('price');
             $table->bigInteger('min_order');
             $table->bigInteger('max_order');

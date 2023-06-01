@@ -19,7 +19,6 @@ class PriceFactory extends Factory
     {
         return [
             'product_id' => Product::factory(),
-            'name' => fake()->name(),
             'price' => fake()->numberBetween(1000, 10000),
             'min_order' => fake()->numberBetween(1, 10),
             'max_order' => fake()->numberBetween(10, 100),

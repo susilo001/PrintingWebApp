@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -15,12 +16,46 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::factory()->count(10)->create();
+        $users = User::factory()
+            ->has(Cart::factory()->count(1))
+            ->count(10)
+            ->create();
 
-        $customer = Role::create(['name' => 'customer']);
+        $owner = User::factory()
+            ->has(Cart::factory()->count(1))
+            ->create([
+                'name' => 'John Sin',
+                'email' => 'owner@owner.com',
+                'password' => bcrypt('password'),
+                'phone_number' => fake()->phoneNumber(),
+            ]);
 
-        $user->each(function ($user) use ($customer) {
-            $user->assignRole($customer);
+        $admin = User::factory()
+            ->has(Cart::factory()->count(1))
+            ->create([
+                'name' => 'John Doe',
+                'email' => 'admin@admin.com',
+                'password' => bcrypt('password'),
+                'phone_number' => fake()->phoneNumber(),
+            ]);
+
+        $test = User::factory()
+            ->has(Cart::factory()->count(1))
+            ->create([
+                'name' => 'John Jhonny',
+                'email' => 'test@test.com',
+                'password' => bcrypt('password'),
+                'phone_number' => fake()->phoneNumber(),
+            ]);
+
+        $owner->assignRole('super-admin');
+
+        $admin->assignRole('administrator');
+
+        $test->assignRole('customer');
+
+        $users->each(function ($user) {
+            $user->assignRole('customer');
         });
     }
 }
