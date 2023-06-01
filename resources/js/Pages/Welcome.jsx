@@ -1,3 +1,4 @@
+import Bannner from "@/Components/Banner";
 import Button from "@/Components/Button";
 import Card from "@/Components/Card";
 import Container from "@/Components/Container";
@@ -57,38 +58,72 @@ export default function Welcome({ products, testimonials }) {
     <AuthenticatedLayout>
       <Head title="Welcome" />
       <Container>
-        {/* Hero Section */}
-        <div className="flex flex-col space-y-6 rounded-b-lg bg-gray-50 p-10 lg:h-[32rem] lg:flex-row lg:items-center lg:py-16">
-          <div className="w-full lg:w-1/2">
-            <div className="space-y-4 lg:max-w-lg">
-              <h1 className="text-3xl font-semibold tracking-wide lg:text-4xl">
-                Tingkatkan Visi Anda dengan Layanan Cetak Profesional.
-              </h1>
-              <p className="mt-4">
-                Apakah Anda membutuhkan poster yang menarik perhatian, foto yang
-                memukau, rencana arsitektur yang detail, atau materi pemasaran
-                yang berdampak, kami memiliki keahlian dan peralatan canggih
-                untuk mewujudkan visi Anda. Dengan perhatian terhadap detail
-                yang teliti dan akurasi warna yang luar biasa, cetakan A3 kami
-                akan memukau audiens Anda dan meninggalkan kesan yang tak
-                terlupakan. Rasakan kualitas dan ketepatan cetak A3 kami yang
-                tak tertandingi untuk kebutuhan bisnis Anda dan angkat
-                komunikasi visual Anda ke level yang baru.
-              </p>
-              <Link href="/design" as="button" className="btn-primary btn">
-                Try Design Tool
-              </Link>
-            </div>
-          </div>
+        {/* Banner Section */}
+        <Bannner />
 
-          <div className="flex h-96 w-full items-center justify-center lg:w-1/2">
-            <img
-              className="aspect-square h-full w-full max-w-2xl rounded-md object-contain"
-              src="../asset/hero-section.png"
-              alt="Printing Services"
-            />
+         {/* Feature Section */}
+         <FeatureSection />
+
+         {/* Featured Product */}
+        <>
+          <div className="mb-10 flex justify-center">
+            <h2 className="text-2xl font-bold">Popular Products</h2>
           </div>
-        </div>
+          <Swiper
+            spaceBetween={20}
+            className={"swiper py-4"}
+            pagination={{
+              type: "progressbar",
+            }}
+            breakpoints={{
+              400: {
+                slidesPerView: 2,
+              },
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+              1280: {
+                slidesPerView: 5,
+              },
+            }}
+            modules={[Pagination]}
+          >
+            {getFeaturedProducts().map((product, index) => (
+              <SwiperSlide key={index}>
+                <Link href={route("product.show", product.id)}>
+                  <Card
+                    className={
+                      "card-compact h-80 border shadow-xl hover:bg-base-200"
+                    }
+                  >
+                    <Card.Image
+                      srcSet={product.images[0]}
+                      alt={product.name}
+                      className="aspect-square object-contain"
+                    />
+                    <Card.Body>
+                      <Card.Title>{product.name}</Card.Title>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-xs font-bold text-primary sm:text-base">
+                          {CurrencyFormater(product.price)}
+                        </span>
+                        <span className="badge badge-accent p-2 text-xs font-semibold sm:text-base">
+                          {product.category.name}
+                        </span>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </>
 
         {/* Explore by Category */}
         <>
@@ -180,77 +215,12 @@ export default function Welcome({ products, testimonials }) {
           </div>
         </>
 
-        {/* Featured Product */}
-        <>
-          <div className="mb-10 flex justify-center">
-            <h2 className="text-2xl font-bold">Popular Products</h2>
-          </div>
-          <Swiper
-            spaceBetween={20}
-            className={"swiper py-4"}
-            pagination={{
-              type: "progressbar",
-            }}
-            breakpoints={{
-              400: {
-                slidesPerView: 2,
-              },
-              640: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1024: {
-                slidesPerView: 4,
-              },
-              1280: {
-                slidesPerView: 5,
-              },
-            }}
-            modules={[Pagination]}
-          >
-            {getFeaturedProducts().map((product, index) => (
-              <SwiperSlide key={index}>
-                <Link href={route("product.show", product.id)}>
-                  <Card
-                    className={
-                      "card-compact h-80 border shadow-xl hover:bg-base-200"
-                    }
-                  >
-                    <Card.Image
-                      srcSet={product.images[0]}
-                      alt={product.name}
-                      className="aspect-square object-contain"
-                    />
-                    <Card.Body>
-                      <Card.Title>{product.name}</Card.Title>
-                      <div className="mt-4 flex items-center justify-between">
-                        <span className="text-xs font-bold text-primary sm:text-base">
-                          {CurrencyFormater(product.price)}
-                        </span>
-                        <span className="badge badge-accent p-2 text-xs font-semibold sm:text-base">
-                          {product.category.name}
-                        </span>
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </>
-
-        {/* Feature Section */}
-        <FeatureSection />
-
         {/* Testimonial */}
         <>
           <div className="mb-10 flex justify-center">
             <h2 className="text-2xl font-bold">Testimonial</h2>
           </div>
           <Swiper spaceBetween={50} slidesPerView={1} className={"swiper"}>
-            <div className="swiper-wrapper">
               {testimonials.map((item, index) => (
                 <SwiperSlide
                   key={index}
@@ -292,9 +262,6 @@ export default function Welcome({ products, testimonials }) {
                   </div>
                 </SwiperSlide>
               ))}
-            </div>
-
-            <div className="swiper-pagination" />
           </Swiper>
         </>
       </Container>

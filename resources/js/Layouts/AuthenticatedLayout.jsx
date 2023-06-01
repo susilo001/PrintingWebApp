@@ -55,7 +55,7 @@ export default function Authenticated({ header, children }) {
                   href={route("design.index")}
                   active={route().current("design.index")}
                 >
-                  Design Tools
+                  Design
                 </NavLink>
               </div>
             </div>
@@ -187,7 +187,7 @@ export default function Authenticated({ header, children }) {
               href={route("design.index")}
               active={route().current("design.index")}
             >
-              Design Tools
+              Design
             </ResponsiveNavLink>
           </div>
 
