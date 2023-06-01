@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BannerCollection;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\TestimonialCollection;
+use App\Models\Banner;
 use App\Models\Product;
 use App\Models\Testimonial;
 use Inertia\Inertia;
@@ -23,6 +25,7 @@ class HomeController extends Controller
                 ->where(function ($query) {
                     $query->where('is_approved', true)->Where('is_featured', true);
                 })->get()),
+            'banners' => new BannerCollection(Banner::where('status', true)->get()),
         ]);
     }
 }

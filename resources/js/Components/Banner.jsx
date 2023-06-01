@@ -1,18 +1,21 @@
 import { Link } from "@inertiajs/react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import {usePage} from '@inertiajs/react'
 export default function Banner() {
+  const {banners} = usePage().props
+
   return (
     <Swiper
       modules={[Navigation, Pagination]}
       navigation
       pagination={{ clickable: true }}
-      className="swiper mt-20 w-full lg:h-[32rem] h-[20rem]"
+      className="swiper mt-20 w-full"
     >
-      {carousel.map((item, index) => (
+      {banners.map((item, index) => (
         <SwiperSlide key={index}>
           <Link href={item.url}>
-            <img src={item.img} alt={item.alt} className="w-full" />
+            <img srcSet={item.image} alt={item.description} className="object-cover lg:h-[32rem] h-[20rem] w-full" />
           </Link>
         </SwiperSlide>
       ))}
@@ -20,25 +23,3 @@ export default function Banner() {
   );
 }
 
-const carousel = [
-  {
-    img: "https://picsum.photos/1000",
-    alt: "This Alternative Descriptions",
-    url: '#'
-  },
-  {
-    img: "https://picsum.photos/1000",
-    alt: "This Alternative Descriptions",
-    url: '#'
-  },
-  {
-    img: "https://picsum.photos/1000",
-    alt: "This Alternative Descriptions",
-    url: '#'
-  },
-  {
-    img: "https://picsum.photos/1000",
-    alt: "This Alternative Descriptions",
-    url: '#'
-  },
-];

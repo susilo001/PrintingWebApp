@@ -40,7 +40,7 @@ class UserResource extends Resource
                     ->password()
                     ->maxLength(255)
                     ->required(fn ($component, $get, $livewire, $model, $record, $set, $state) => $record === null)
-                    ->dehydrateStateUsing(fn ($state) => ! empty($state) ? Hash::make($state) : '')
+                    ->dehydrateStateUsing(fn ($state) => !empty($state) ? Hash::make($state) : '')
                     ->label(strval(__('filament-authentication::filament-authentication.field.user.password'))),
                 TextInput::make('passwordConfirmation')
                     ->password()
@@ -81,6 +81,7 @@ class UserResource extends Resource
                     ])
                     ->label(strval(__('filament-authentication::filament-authentication.field.user.verified_at'))),
                 TagsColumn::make('roles.name')
+                    ->sortable()
                     ->label(strval(__('filament-authentication::filament-authentication.field.user.roles'))),
                 TextColumn::make('created_at')
                     ->dateTime('Y-m-d H:i:s')
