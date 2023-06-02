@@ -1,9 +1,8 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {usePage} from '@inertiajs/react'
 export default function Banner() {
-  const {banners} = usePage().props
+  const { banners } = usePage().props;
 
   return (
     <Swiper
@@ -15,11 +14,14 @@ export default function Banner() {
       {banners.map((item, index) => (
         <SwiperSlide key={index}>
           <Link href={item.url}>
-            <img srcSet={item.image} alt={item.description} className="object-cover lg:h-[32rem] h-[20rem] w-full" />
+            <img
+              srcSet={item.image}
+              alt={item.description}
+              className="h-[20rem] w-full object-cover lg:h-[32rem]"
+            />
           </Link>
         </SwiperSlide>
       ))}
     </Swiper>
   );
 }
-

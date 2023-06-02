@@ -19,7 +19,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Welcome', [
+        return Inertia::render('Index', [
             'products' => new ProductCollection(Product::with(['category'])->get()),
             'testimonials' => new TestimonialCollection(Testimonial::with(['user', 'product', 'order'])
                 ->where(function ($query) {

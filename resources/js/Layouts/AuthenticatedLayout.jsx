@@ -272,7 +272,7 @@ export default function Authenticated({ header, children }) {
         </div>
       )}
 
-      <main>{children}</main>
+      <main className="container mx-auto my-12 max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">{children}</main>
       <footer className="mt-auto bg-neutral-focus p-10 text-base-100">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
