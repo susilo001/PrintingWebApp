@@ -84,7 +84,7 @@ export default function Order({ orders }) {
             <div key={item.id} className="border-y p-8">
               <div className="flex flex-col items-center sm:flex-row sm:items-start sm:space-x-4">
                 <img
-                  src={item.image}
+                  srcSet={item.image}
                   className="aspect-square h-52 w-52 rounded-lg bg-base-200 object-contain"
                   alt={item.name}
                 />

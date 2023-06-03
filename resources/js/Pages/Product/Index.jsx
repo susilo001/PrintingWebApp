@@ -5,28 +5,11 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormater from "@/utils/CurrencyFormater";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function Products({ products }) {
+export default function Products({ products, categories }) {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    getCategoryProducts();
-  }, []);
-
-  const getCategoryProducts = () => {
-    const uniqueCategories = new Map();
-    products.forEach(({ category }) => {
-      const { id, name, slug } = category;
-      if (!uniqueCategories.has(id)) {
-        uniqueCategories.set(id, { id, name, slug });
-      }
-    });
-    const categoryName = Array.from(uniqueCategories.values());
-    setCategories(categoryName);
-  };
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -39,7 +22,7 @@ export default function Products({ products }) {
             { name: search },
             { only: ["products"], preserveState: true, replace: true }
           ),
-        1000
+        3000
       );
     }
     router.get(route("product.index"));

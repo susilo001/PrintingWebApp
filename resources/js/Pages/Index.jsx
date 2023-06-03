@@ -198,7 +198,7 @@ export default function Index({ products, testimonials }) {
         <div className="mb-10 flex justify-center">
           <h2 className="text-2xl font-bold">Testimonial</h2>
         </div>
-        <Swiper spaceBetween={50} slidesPerView={1} className={"swiper"} modules={[Pagination]} pagination={{ clickable: true }}>
+        <Swiper spaceBetween={50} slidesPerView={1} modules={[Pagination]} pagination={{ clickable: true }}>
           {testimonials.map((item, index) => (
             <SwiperSlide key={index} className="swiper-slide !bg-transparent">
               <div className="mx-auto p-4 text-center md:w-8/12 lg:w-7/12">

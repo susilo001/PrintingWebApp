@@ -20,9 +20,6 @@ class OrderItemResource extends JsonResource
             'desc' => $this->description,
             'variants' => $this->variants,
             'image' => $this->getMedia('designs')->map(function ($image) {
-                return $image->getFullUrl();
-            }),
-            'test' => $this->getMedia('designs')->map(function ($image) {
                 return $image->getSrcset();
             }),
             'price' => $this->price,
