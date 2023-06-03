@@ -19,14 +19,6 @@ class VariantSeeder extends Seeder
 
         foreach ($products as $product) {
             Variant::factory()->count(6)->forEachSequence(
-                ['name' => 'Size', 'options' => [
-                    ['value' => 'S'],
-                    ['value' => 'M'],
-                    ['value' => 'L'],
-                    ['value' => 'XL'],
-                    ['value' => 'XXL'],
-                    ['value' => 'XXXL'],
-                ]],
                 ['name' => 'Color', 'options' => [
                     ['value' => 'Black'],
                     ['value' => 'White'],
@@ -42,15 +34,7 @@ class VariantSeeder extends Seeder
                     ['value' => 'Silk'],
                     ['value' => 'Wool'],
                     ['value' => 'Leather'],
-                ]],
-                ['name' => 'Style', 'options' => [
-                    ['value' => 'Solid'],
-                    ['value' => 'Striped'],
-                    ['value' => 'Printed'],
-                    ['value' => 'Plaid'],
-                    ['value' => 'Checked'],
-                    ['value' => 'Floral'],
-                ]],
+                ]],               
                 ['name' => 'Pattern', 'options' => [
                     ['value' => 'Casual'],
                     ['value' => 'Formal'],

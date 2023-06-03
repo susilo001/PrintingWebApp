@@ -20,8 +20,8 @@ class OrderItemFactory extends Factory
     public function definition()
     {
         $variants = [
-            ['name' => 'margin', 'value' => '10px'],
-            ['name' => 'padding', 'value' => '10px'],
+            ['name' => 'material', 'value' => 'paper'],
+            ['name' => 'finishing', 'value' => 'glossy'],
             ['name' => 'color', 'value' => 'red'],
             ['name' => 'paper', 'value' => 'A4'],
         ];
@@ -31,18 +31,21 @@ class OrderItemFactory extends Factory
             'product_id' => Product::factory(),
             'name' => $this->faker->name,
             'description' => fake()->realText(200),
-            'qty' => $this->faker->numberBetween(1, 10000),
-            'price' => $this->faker->numberBetween(1, 10000),
             'variants' => $variants,
-            'discount' => $this->faker->numberBetween(1, 10000),
-            'tax' => $this->faker->numberBetween(1, 10000),
+            'qty' => $this->faker->numberBetween(1000, 10000),
+            'price' => $this->faker->numberBetween(1000, 10000),
+            'discount' => $this->faker->numberBetween(1000, 10000),
+            'tax' => $this->faker->numberBetween(1000, 10000),
         ];
     }
 
     public function configure()
     {
         return $this->afterMaking(function (OrderItem $orderItem) {
-            $orderItem->addMedia(storage_path('app/public/asset/products/sticker.png'))->preservingOriginal()->toMediaCollection('designs');
+            $orderItem->addMedia(storage_path('app/public/asset/products/'. fake()->randomElement(['sticker.png','name-card.png','poster.png'])))
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('designs');
         });
     }
 }

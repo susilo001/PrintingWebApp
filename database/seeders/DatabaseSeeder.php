@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             OrderItemSeeder::class,
             PaymentDetailSeeder::class,
             TestimonialSeeder::class,
+            BannerSeeder::class,
         ]);
     }
 }
