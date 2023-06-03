@@ -1,5 +1,8 @@
 import {
-  CheckIcon,  PencilSquareIcon,  ClockIcon, HeartIcon
+  CheckIcon,
+  ClockIcon,
+  HeartIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 
 export default function FeatureSection() {
@@ -21,8 +24,11 @@ export default function FeatureSection() {
       <div className="mt-10 max-w-lg sm:mx-auto md:max-w-none">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
-            <div key={index} className="relative flex gap-6 border items-center p-4 rounded-md">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-white sm:shrink-0">
+            <div
+              key={index}
+              className="relative flex items-center gap-6 rounded-md border p-4"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-base-100 sm:shrink-0">
                 <feature.icon className="h-8 w-8" aria-hidden="true" />
               </div>
               <p className="font-semibold leading-8">{feature.name}</p>
@@ -37,14 +43,14 @@ export default function FeatureSection() {
 const features = [
   {
     name: "High-Quality Printing",
-    icon: CheckIcon ,
+    icon: CheckIcon,
   },
-  
+
   {
     name: "Custom Design Services",
     icon: PencilSquareIcon,
   },
-  
+
   {
     name: "24/7 Online Ordering",
     icon: ClockIcon,
@@ -54,4 +60,3 @@ const features = [
     icon: HeartIcon,
   },
 ];
-

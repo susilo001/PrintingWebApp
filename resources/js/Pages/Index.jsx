@@ -75,7 +75,7 @@ export default function Index({ products, testimonials }) {
           }}
           breakpoints={{
             400: {
-              slidesPerView: 2,
+              slidesPerView: 1,
             },
             640: {
               slidesPerView: 2,
@@ -86,25 +86,14 @@ export default function Index({ products, testimonials }) {
             1024: {
               slidesPerView: 4,
             },
-            1280: {
-              slidesPerView: 5,
-            },
           }}
           modules={[Pagination]}
         >
           {getFeaturedProducts().map((product, index) => (
             <SwiperSlide key={index}>
               <Link href={route("product.show", product.id)}>
-                <Card
-                  className={
-                    "card-compact h-80 border shadow-xl hover:bg-base-200"
-                  }
-                >
-                  <Card.Image
-                    srcSet={product.images[0]}
-                    alt={product.name}
-                    className="aspect-square object-contain"
-                  />
+                <Card className={"h-80"}>
+                  <Card.Image srcSet={product.images[0]} alt={product.name} />
                   <Card.Body>
                     <Card.Title>{product.name}</Card.Title>
                     <div className="flex items-center justify-between">
@@ -128,23 +117,23 @@ export default function Index({ products, testimonials }) {
         <div className="mb-10 flex justify-center">
           <h2 className="text-2xl font-bold">Explore by Category</h2>
         </div>
-        <div className="flex flex-col space-y-8 sm:space-y-0 md:flex-row md:space-x-8">
-          <div className="mb-8 flex flex-col md:mb-0">
+        <div className="flex flex-col space-y-8 sm:space-y-0 md:space-x-8 lg:flex-row">
+          <div className="mb-8 flex flex-col lg:mb-0">
             <div className="flex-none">
               <div className="flex h-fit justify-center">
                 <input
                   type="text"
                   placeholder="Search Here"
-                  className="input-bordered input w-full"
+                  className="input-bordered input lg:w-full"
                   onChange={handleSearch}
                 />
               </div>
             </div>
-            <div className="my-4 grow sm:border-r sm:border-primary-focus">
-              <div className="flex h-full flex-row flex-wrap items-center justify-center space-x-4 md:flex-col md:items-start md:justify-start md:space-x-0">
+            <div className="my-4 grow lg:border-r lg:border-primary-focus">
+              <div className="flex h-full flex-row flex-wrap items-center justify-center space-x-4 lg:flex-col lg:items-start lg:justify-start lg:space-x-0">
                 {getProductCategoryName().map((category) => (
                   <Button
-                    className="btn-ghost sm:btn-wide md:justify-start"
+                    className="btn-ghost lg:btn-wide lg:justify-start"
                     type="button"
                     key={category.id}
                     onClick={() => getProductsByCategory(category.id)}
@@ -155,7 +144,7 @@ export default function Index({ products, testimonials }) {
               </div>
             </div>
             <div className="flex-none">
-              <div className="flex justify-center md:justify-start">
+              <div className="flex justify-center lg:justify-start">
                 <Link
                   href={route("product.index")}
                   className="btn-primary btn-wide btn h-fit gap-2"
@@ -176,30 +165,25 @@ export default function Index({ products, testimonials }) {
               </div>
             )}
             <div
-              className="grid grid-cols-2 gap-4 overflow-hidden overflow-y-auto pb-2 pr-4 sm:scroll-smooth lg:grid-cols-3"
+              className="grid gap-4 overflow-hidden overflow-y-auto pb-2 sm:pr-4 sm:grid-cols-2 sm:scroll-smooth xl:grid-cols-3"
               style={{
-                height: "810px",
+                height: "910px",
               }}
             >
               {Products.map((product, index) => (
                 <Link href={route("product.show", product.id)} key={index}>
-                  <Card className="card-compact h-64 border shadow-lg hover:bg-base-200">
-                    <Card.Image
-                      srcSet={product.images[0]}
-                      className={"aspect-square object-contain"}
-                      alt={product.name}
-                    />
+                  <Card className="h-72">
+                    <Card.Image srcSet={product.images[0]} alt={product.name} />
                     <Card.Body>
-                      <Card.Title
-                        className={
-                          "flex items-center justify-between hover:font-bold "
-                        }
-                      >
-                        <span>{product.name}</span>
+                      <Card.Title>{product.name}</Card.Title>
+                      <Card.Actions className="flex items-center justify-between">
                         <span className="font-bold text-primary">
                           {CurrencyFormater(product.price)}
                         </span>
-                      </Card.Title>
+                        <span className="badge badge-accent p-2 text-xs font-semibold">
+                          {product.category.name}
+                        </span>
+                      </Card.Actions>
                     </Card.Body>
                   </Card>
                 </Link>
@@ -214,16 +198,16 @@ export default function Index({ products, testimonials }) {
         <div className="mb-10 flex justify-center">
           <h2 className="text-2xl font-bold">Testimonial</h2>
         </div>
-        <Swiper spaceBetween={50} slidesPerView={1} className={"swiper"}>
+        <Swiper spaceBetween={50} slidesPerView={1} className={"swiper"} modules={[Pagination]} pagination={{ clickable: true }}>
           {testimonials.map((item, index) => (
             <SwiperSlide key={index} className="swiper-slide !bg-transparent">
               <div className="mx-auto p-4 text-center md:w-8/12 lg:w-7/12">
                 <div className="flex space-x-8">
                   <div className="w-full">
                     <img
-                      className="rounded-xl"
-                      src="https://picsum.photos/200"
-                      alt="company logo"
+                      className="rounded-xl aspect-square object-contain bg-base-200"
+                      srcSet={item.product.images[0]}
+                      alt={item.product.name}
                       loading="lazy"
                     />
                   </div>

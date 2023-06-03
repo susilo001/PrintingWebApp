@@ -1,5 +1,3 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
@@ -17,11 +15,20 @@ module.exports = {
     base: true,
     utils: true,
     logs: true,
-    themes: ["cmyk"],
+    themes: [
+      {
+        cmyk: {
+          ...require("daisyui/src/theming/themes")["[data-theme=cmyk]"],
+          primary: "#0096D5",
+          secondary: "#FF3C38",
+          accent: "#FFD639",
+        },
+      },
+    ],
   },
   theme: {
     fontFamily: {
-      'open-sans': ['Open Sans', 'sans-serif'],
+      "open-sans": ["Open Sans", "sans-serif"],
     },
   },
 };

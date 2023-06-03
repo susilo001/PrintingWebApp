@@ -116,7 +116,7 @@ export default function Authenticated({ header, children }) {
                   </Link>
                   <Link
                     href={route("register")}
-                    className=" btn-primary btn-sm btn"
+                    className="btn-primary btn-sm btn text-white"
                     as="button"
                   >
                     Register

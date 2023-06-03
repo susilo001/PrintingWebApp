@@ -9,7 +9,7 @@ export default function Banner() {
       modules={[Navigation, Pagination]}
       navigation
       pagination={{ clickable: true }}
-      className="swiper mt-20 w-full"
+      className="swiper mt-10 w-full"
     >
       {banners.map((item, index) => (
         <SwiperSlide key={index}>
@@ -17,6 +17,7 @@ export default function Banner() {
             <img
               srcSet={item.image}
               alt={item.description}
+              loading="lazy"
               className="h-[20rem] w-full object-cover lg:h-[32rem]"
             />
           </Link>

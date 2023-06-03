@@ -130,26 +130,18 @@ export default function Products({ products }) {
             key={product.id}
             href={route("product.show", product.id)}
           >
-            <Card
-              className={
-                "card-compact h-72 w-64 border shadow-xl hover:bg-base-200"
-              }
-            >
-              <Card.Image
-                className={"aspect-square object-contain"}
-                alt={product.name}
-                srcSet={product.images[0]}
-              />
+            <Card className={"h-72"}>
+              <Card.Image alt={product.name} srcSet={product.images[0]} />
               <Card.Body>
                 <Card.Title>{product.name}</Card.Title>
-                <div className="flex justify-between">
+                <Card.Actions className="flex items-center justify-between">
                   <span className="font-bold text-primary">
                     {CurrencyFormater(product.price)}
                   </span>
                   <span className="badge badge-accent p-2 text-xs font-semibold">
                     {product.category.name}
                   </span>
-                </div>
+                </Card.Actions>
               </Card.Body>
             </Card>
           </Link>
