@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'price' => $this->prices[0]['price'],
             'description' => $this->description,
             'images' => $this->getMedia('products')->map(function ($image) {
-                return $image->getFullUrl();
+                return $image->getSrcset();
             }),
             'weight' => $this->weight,
             'discount' => new DiscountResource($this->whenLoaded('discount')),

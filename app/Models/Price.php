@@ -16,7 +16,6 @@ class Price extends Model
      */
     protected $fillable = [
         'product_id',
-        'name',
         'price',
         'min_order',
         'max_order',

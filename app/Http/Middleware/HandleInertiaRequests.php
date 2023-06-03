@@ -31,14 +31,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-
-
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
             ],
             'cartCount' => function () {
                 $cart = Cart::where('user_id', auth()->id())->first();
+
                 return $cart ? $cart->cartItems->count() : 0;
             },
             'flash' => [

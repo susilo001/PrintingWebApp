@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Models\Cart;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CartResource;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreCartRequest;
+use App\Http\Requests\UpdateCartRequest;
+use App\Http\Resources\CartResource;
+use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\Product;
+use App\Services\CartService;
 use App\Services\Payment\PaymentService;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
     protected $paymentService;
 
-    public function __construct(PaymentService $paymentService)
+    protected $cartService;
+
+    public function __construct()
     {
-        $this->paymentService = $paymentService;
+        $this->paymentService = new PaymentService();
+        $this->cartService = new CartService();
     }
 
     /**
@@ -39,29 +42,7 @@ class CartController extends Controller
     {
         $request->validated();
 
-        if (Cart::where('user_id', auth()->id())->first()) {
-            $cart = Cart::where('user_id', auth()->id())->first();
-        } else {
-            $cart = Cart::create([
-                'user_id' => auth()->user()->id,
-            ]);
-        }
-
-        $product = Product::findOrfail($request->product_id);
-
-        $cartItem = $cart->cartItems()->create([
-            'product_id' => $request->product_id,
-            'qty' => $request->quantity,
-            'name' => $product->name,
-            'description' => $request->description,
-            'variants' => json_decode($request->variants),
-            'discount' => $product->discount->active ? $product->discount->discount_percentage : 0,
-            'tax' => $product->tax,
-        ]);
-
-        if ($request->hasFile('design') && $request->file('design')->isValid()) {
-            $cartItem->addMediaFromRequest('design')->toMediaCollection('cart');
-        }
+        $this->cartService->addToCart($request);
 
         return redirect()->back()->with([
             'title' => 'Success',
@@ -75,9 +56,9 @@ class CartController extends Controller
      *
      * @param  string  $rowId
      */
-    public function update(Request $request, CartItem $cartItem): RedirectResponse
+    public function update(UpdateCartRequest $request, CartItem $cartItem): RedirectResponse
     {
-        $cartItem->update($request->all());
+        $cartItem->update($request->validated());
 
         if ($request->hasFile('design') && $request->file('design')->isValid()) {
             $cartItem->addMediaFromRequest($request->design)->toMediaCollection('cart');

@@ -1,7 +1,8 @@
+import Button from "@/Components/Button";
 import Card from "@/Components/Card";
 import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/lib/CurrencyFormater";
+import CurrencyFormater from "@/utils/CurrencyFormater";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
@@ -21,7 +22,7 @@ export default function Products({ products, categories }) {
             { name: search },
             { only: ["products"], preserveState: true, replace: true }
           ),
-        1000
+        3000
       );
     }
     router.get(route("product.index"));
@@ -65,8 +66,8 @@ export default function Products({ products, categories }) {
               </select>
             </div>
             <div className="sm:hidden">
-              <button
-                className="btn-ghost btn-circle btn"
+              <Button
+                className="btn-ghost btn-circle"
                 onClick={() => setIsOpen((previousState) => !previousState)}
               >
                 {isOpen ? (
@@ -74,7 +75,7 @@ export default function Products({ products, categories }) {
                 ) : (
                   <FunnelIcon className="h-5 w-5 text-gray-500" />
                 )}
-              </button>
+              </Button>
             </div>
           </div>
           <div className={(isOpen ? "block" : "hidden") + " mt-4 sm:hidden"}>
@@ -99,43 +100,35 @@ export default function Products({ products, categories }) {
       }
     >
       <Head title="Products Page" />
-      <div className="mx-auto my-10 flex max-w-7xl justify-center">
-        {products.length === 0 && (
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-warning">
-              No Products Found
-            </h1>
-            <p className="text-gray-500">Try searching for something else</p>
-          </div>
-        )}
-        <div className="grid justify-center gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <Link
-              className="link-hover link w-fit"
-              key={product.id}
-              href={route("product.show", product.id)}
-            >
-              <Card className={"w-64 h-72 border shadow-xl hover:bg-base-200 card-compact"}>
-                <Card.Image
-                  className={"aspect-square object-contain"}
-                  src={product.images[0]}
-                  alt={product.name}
-                />
-                <Card.Body>
-                  <Card.Title>{product.name}</Card.Title>
-                  <div className="flex justify-between">
-                    <span className="font-bold text-primary">
-                      {CurrencyFormater(product.price)}
-                    </span>
-                    <span className="badge-accent badge badge-sm p-2 font-bold">
-                      {product.category.name}
-                    </span>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Link>
-          ))}
+      {products.length === 0 && (
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-warning">No Products Found</h1>
+          <p className="text-gray-500">Try searching for something else</p>
         </div>
+      )}
+      <div className="grid place-items-center gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {products.map((product) => (
+          <Link
+            className="link-hover link w-fit"
+            key={product.id}
+            href={route("product.show", product.id)}
+          >
+            <Card className={"h-72"}>
+              <Card.Image alt={product.name} srcSet={product.images[0]} />
+              <Card.Body>
+                <Card.Title>{product.name}</Card.Title>
+                <Card.Actions className="flex items-center justify-between">
+                  <span className="font-bold text-primary">
+                    {CurrencyFormater(product.price)}
+                  </span>
+                  <span className="badge badge-accent p-2 text-xs font-semibold">
+                    {product.category.name}
+                  </span>
+                </Card.Actions>
+              </Card.Body>
+            </Card>
+          </Link>
+        ))}
       </div>
     </AuthenticatedLayout>
   );

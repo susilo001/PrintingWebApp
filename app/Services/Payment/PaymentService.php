@@ -3,20 +3,26 @@
 namespace App\Services\Payment;
 
 use App\Models\Cart;
-use App\Services\Payment\Midtrans;
 
 class PaymentService extends Midtrans
 {
+    protected $cart;
+
+    public function __construct()
+    {
+        $this->cart = Cart::class;
+    }
+
     public function requestPayment(): string
     {
-        $cart = Cart::where('user_id', auth()->id())->first();
-        $cartDiscount = $cart->getDiscount();
-        $cartTax = $cart->getTax();
-        $cartTotal = $cart->getTotal();
+        $userCart = $this->cart::where('user_id', auth()->user()->id)->first();
+        $cartDiscount = $userCart->getDiscount();
+        $cartTax = $userCart->getTax();
+        $cartTotal = $userCart->getTotal();
 
         $transaction = [
             'transaction_details' => [
-                'order_id' => now()->timestamp,
+                'order_id' => 'OTC'.'-'.now()->timestamp.'-'.substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5),
                 'gross_amount' => (int) $cartTotal,
             ],
 
@@ -47,7 +53,7 @@ class PaymentService extends Midtrans
                 ],
             ],
 
-            'item_details' => $cart->cartItems->map(function ($item) {
+            'item_details' => $userCart->cartItems->map(function ($item) {
                 return [
                     'id' => $item->product->id,
                     'name' => $item->product->name,

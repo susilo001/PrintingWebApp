@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { Link } from "@inertiajs/react";
 import { createContext, Fragment, useContext, useState } from "react";
+import Button from "./Button";
 
 const DropDownContext = createContext();
 
@@ -23,10 +24,9 @@ const Trigger = ({ children }) => {
 
   return (
     <>
-      <button className="btn-ghost btn-circle btn" onClick={toggleOpen}>
-        {children}
-      </button>
-
+    <Button className='btn-ghost btn-circle' onClick={toggleOpen}>
+    {children}
+    </Button>
       {open && (
         <button className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
       )}

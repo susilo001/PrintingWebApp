@@ -27,134 +27,6 @@ class ProductSeeder extends Seeder
                 'slug' => 'name-card',
                 'images' => [
                     'asset/products/name-card.png',
-                ],
-            ],
-            [
-                'category_id' => $stationery->id,
-                'name' => 'Undangan',
-                'slug' => 'undangan',
-                'images' => [
-                    'asset/products/invitation.png',
-                ],
-            ],
-            [
-                'category_id' => $calendar->id,
-                'name' => 'Kalender',
-                'slug' => 'kalender',
-                'images' => [
-                    'asset/products/calendar.png',
-                ],
-            ],
-            [
-                'category_id' => $stationery->id,
-                'name' => 'A3',
-                'slug' => 'a3',
-                'images' => [
-                    'asset/products/flayer.png',
-                ],
-            ],
-            [
-                'category_id' => $stationery->id,
-                'name' => 'A4',
-                'slug' => 'a4',
-                'images' => [
-                    'asset/products/flayer.png',
-                ],
-            ],
-            [
-                'category_id' => $packages->id,
-                'name' => 'Kotak Makanan Bento',
-                'slug' => 'kotak-makanan-bento',
-                'images' => [
-                    'asset/products/box-1.png',
-                    'asset/products/box-2.png',
-                    'asset/products/box-3.png',
-                    'asset/products/box-4.png',
-                ],
-            ],
-            [
-                'category_id' => $packages->id,
-                'name' => 'Box Makanan',
-                'slug' => 'box-makanan',
-                'images' => [
-                    'asset/products/food-box-packages-1.png',
-                    'asset/products/food-box-packages-2.png',
-                    'asset/products/food-box-packages-3.png',
-                ],
-            ],
-            [
-                'category_id' => $packages->id,
-                'name' => 'Rounded Box Makanan',
-                'slug' => 'rounded-box-makanan',
-                'images' => [
-                    'asset/products/rounded-bento-packages-1.png',
-                    'asset/products/rounded-bento-packages-2.png',
-                    'asset/products/rounded-bento-packages-3.png',
-                ],
-            ],
-            [
-                'category_id' => $packages->id,
-                'name' => 'Box Cartoon Makanan',
-                'slug' => 'box-cartoon-makanan',
-                'images' => [
-                    'asset/products/cartoon-box-packages-1.png',
-                    'asset/products/cartoon-box-packages-2.png',
-                    'asset/products/cartoon-box-packages-3.png',
-                    'asset/products/cartoon-box-packages-4.png',
-                ],
-            ],
-            [
-                'category_id' => $packages->id,
-                'name' => 'Honeycomb Box Makanan',
-                'slug' => 'honeycomb-box-makanan',
-                'images' => [
-                    'asset/products/honey-comb-packages-1.png',
-                    'asset/products/honey-comb-packages-2.png',
-                    'asset/products/honey-comb-packages-3.png',
-                    'asset/products/honey-comb-packages-4.png',
-                ],
-            ],
-            [
-                'category_id' => $books->id,
-                'name' => 'Cover Buku',
-                'slug' => 'cover-buku',
-                'images' => [
-                    'asset/products/book-cover-1.png',
-                    'asset/products/book-cover-2.png',
-                    'asset/products/book-cover-3.png',
-                ],
-            ],
-            [
-                'category_id' => $stationery->id,
-                'name' => 'Poster',
-                'slug' => 'poster',
-                'images' => [
-                    'asset/products/poster.png',
-                ],
-            ],
-            [
-                'category_id' => $stationery->id,
-                'name' => 'Brochure',
-                'slug' => 'brochure',
-                'images' => [
-                    'asset/products/brochure.png',
-                ],
-            ],
-            [
-                'category_id' => $stationery->id,
-                'name' => 'Sticker',
-                'slug' => 'sticker',
-                'images' => [
-                    'asset/products/sticker.png',
-                ],
-            ],
-            // Duplicate
-            [
-                'category_id' => $stationery->id,
-                'name' => 'Name Card',
-                'slug' => 'name-card',
-                'images' => [
-                    'asset/products/name-card.png',
                     'asset/products/name-card.png',
                 ],
             ],
@@ -177,24 +49,24 @@ class ProductSeeder extends Seeder
             ],
             [
                 'category_id' => $stationery->id,
-                'name' => 'A3',
-                'slug' => 'a3',
+                'name' => 'Stationery A3',
+                'slug' => 'statinery-a3',
                 'images' => [
                     'asset/products/flayer.png',
                 ],
             ],
             [
                 'category_id' => $stationery->id,
-                'name' => 'A4',
-                'slug' => 'a4',
+                'name' => 'Stationery A4',
+                'slug' => 'Stationery-a4',
                 'images' => [
                     'asset/products/flayer.png',
                 ],
             ],
             [
                 'category_id' => $packages->id,
-                'name' => 'Kotak Makanan Bento',
-                'slug' => 'kotak-makanan-bento',
+                'name' => 'Kotak Bento',
+                'slug' => 'kotak-bento',
                 'images' => [
                     'asset/products/box-1.png',
                     'asset/products/box-2.png',
@@ -214,8 +86,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'category_id' => $packages->id,
-                'name' => 'Rounded Box Makanan',
-                'slug' => 'rounded-box-makanan',
+                'name' => 'Rounded Box',
+                'slug' => 'rounded-box',
                 'images' => [
                     'asset/products/rounded-bento-packages-1.png',
                     'asset/products/rounded-bento-packages-2.png',
@@ -224,8 +96,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'category_id' => $packages->id,
-                'name' => 'Box Cartoon Makanan',
-                'slug' => 'box-cartoon-makanan',
+                'name' => 'Box Cartoon',
+                'slug' => 'box-cartoon',
                 'images' => [
                     'asset/products/cartoon-box-packages-1.png',
                     'asset/products/cartoon-box-packages-2.png',
@@ -235,8 +107,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 'category_id' => $packages->id,
-                'name' => 'Honeycomb Box Makanan',
-                'slug' => 'honeycomb-box-makanan',
+                'name' => 'Honeycomb Box',
+                'slug' => 'honeycomb-box',
                 'images' => [
                     'asset/products/honey-comb-packages-1.png',
                     'asset/products/honey-comb-packages-2.png',
@@ -289,8 +161,11 @@ class ProductSeeder extends Seeder
 
             $item->save();
             foreach ($product['images'] as $image) {
-                $path = storage_path('app/public/' . $image);
-                $item->addMedia($path)->preservingOriginal()->toMediaCollection('products');
+                $path = storage_path('app/public/'.$image);
+                $item->addMedia($path)
+                    ->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->toMediaCollection('products');
             }
         }
     }

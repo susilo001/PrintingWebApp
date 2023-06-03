@@ -2,7 +2,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import { ShoppingBagIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -16,24 +16,6 @@ export default function Authenticated({ header, children }) {
   const { cartCount } = usePage().props;
   const { errors } = usePage().props;
 
-  const showSurveyModal = async () => {
-    await Swal.fire({
-      title: "Survey",
-      text: "Please fill this survey",
-      icon: "info",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Proceed",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.open(
-          "https://docs.google.com/forms/d/e/1FAIpQLSdFaRPZVIbostG6cYGgAbweL9mwxkm-OQ2bYarYk1ezjpfoaA/viewform?usp=sf_link",
-          "_blank"
-        );
-      }
-    });
-  };
-
   const showFlashMessage = async () => {
     await Swal.fire({
       title: flash.title ? flash.title : "",
@@ -45,9 +27,7 @@ export default function Authenticated({ header, children }) {
     });
   };
 
-  if (flash.message) {
-    flash.title === "Survey" ? showSurveyModal() : showFlashMessage();
-  }
+  flash.message ? showFlashMessage() : null;
 
   return (
     <div className="relative flex min-h-screen flex-col">
@@ -75,7 +55,7 @@ export default function Authenticated({ header, children }) {
                   href={route("design.index")}
                   active={route().current("design.index")}
                 >
-                  Design Tools
+                  Design
                 </NavLink>
               </div>
             </div>
@@ -136,7 +116,7 @@ export default function Authenticated({ header, children }) {
                   </Link>
                   <Link
                     href={route("register")}
-                    className=" btn-primary btn-sm btn"
+                    className="btn-primary btn-sm btn text-white"
                     as="button"
                   >
                     Register
@@ -207,7 +187,7 @@ export default function Authenticated({ header, children }) {
               href={route("design.index")}
               active={route().current("design.index")}
             >
-              Design Tools
+              Design
             </ResponsiveNavLink>
           </div>
 
@@ -279,18 +259,21 @@ export default function Authenticated({ header, children }) {
         </header>
       )}
 
-      {errors.message && (
-        <div className="alert alert-error mx-auto mt-20 max-w-7xl shadow-lg">
-          <ul className="list-inside list-disc">
-            {Object.values(errors).map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
+      {Object.keys(errors).length !== 0 && (
+        <div className="alert alert-error mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex-1">
+            <XCircleIcon className="h-6 w-6" />
+            <ul className="list-inside">
+              {Object.values(errors).map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
 
-      <main>{children}</main>
-      <footer className="bg-neutral-focus p-10 text-base-100">
+      <main className="container mx-auto my-12 max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">{children}</main>
+      <footer className="mt-auto bg-neutral-focus p-10 text-base-100">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
             <ApplicationLogo className="block h-10 w-auto fill-current" />

@@ -4,7 +4,6 @@ import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
-import { useState } from "react";
 
 registerPlugin(
   FilePondPluginImageExifOrientation,
@@ -13,15 +12,21 @@ registerPlugin(
   FilePondPluginFileEncode
 );
 
-export default function Filepond({ name, allowMultiple, maxFiles, onChange }) {
-  const [files, setFiles] = useState([]);
-
+export default function Filepond({
+  name,
+  allowMultiple,
+  maxFiles,
+  onChange,
+  files,
+  onUpdateFiles,
+}) {
   return (
     <FilePond
       name={name}
       files={files}
+      storeAsFile={true}
       onChange={onChange}
-      onupdatefiles={setFiles}
+      onupdatefiles={onUpdateFiles}
       allowMultiple={allowMultiple}
       maxFiles={maxFiles}
     />

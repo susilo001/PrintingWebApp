@@ -41,7 +41,7 @@ class OrderTest extends TestCase
      */
     public function testOrderTestimonial(): void
     {
-        $this->post('order/' . $this->order->id . '/testimonial', [
+        $this->post('order/'.$this->order->id.'/testimonial', [
             'testimonial' => 'This is a test testimonial',
             'product_id' => $this->order->orderItems->first()->product_id,
             'rating' => 5,

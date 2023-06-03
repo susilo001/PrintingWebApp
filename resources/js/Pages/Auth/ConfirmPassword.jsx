@@ -2,6 +2,7 @@ import Input from "@/Components/Input";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useEffect } from "react";
+import Button from "@/Components/Button";
 
 export default function ConfirmPassword() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -48,12 +49,12 @@ export default function ConfirmPassword() {
         </div>
 
         <div className="mt-4 flex items-center justify-end">
-          <button
-            className="btn-outline btn-ghost btn ml-4"
+          <Button
+            className="btn-outline btn-ghost ml-4"
             disabled={processing}
           >
             Confirm
-          </button>
+          </Button>
         </div>
       </form>
     </GuestLayout>

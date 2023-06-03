@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use App\Models\Cart;
-use App\Models\Price;
-use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Discount;
+use App\Models\Price;
+use App\Models\Product;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CalculateCartValueTest extends TestCase
 {

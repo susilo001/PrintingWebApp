@@ -2,6 +2,7 @@ import Input from "@/Components/Input";
 import Modal from "@/Components/Modal";
 import { useForm } from "@inertiajs/react";
 import { useRef, useState } from "react";
+import Button from "@/Components/Button";
 
 export default function DeleteUserForm({ className }) {
   const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -51,9 +52,9 @@ export default function DeleteUserForm({ className }) {
         </p>
       </header>
 
-      <button className="btn-error btn" onClick={confirmUserDeletion}>
+      <Button className="btn-error" onClick={confirmUserDeletion}>
         Delete Account
-      </button>
+      </Button>
 
       <Modal show={confirmingUserDeletion} onClose={closeModal}>
         <form onSubmit={deleteUser} className="p-6">
@@ -83,13 +84,13 @@ export default function DeleteUserForm({ className }) {
           </div>
 
           <div className="mt-6 flex justify-end">
-            <button className="btn-outline btn-ghost btn" onClick={closeModal}>
+            <Button className="btn-outline btn-ghost" onClick={closeModal}>
               Cancel
-            </button>
+            </Button>
 
-            <button className="btn-error btn ml-3" disabled={processing}>
+            <Button className="btn-error ml-3" disabled={processing}>
               Delete Account
-            </button>
+            </Button>
           </div>
         </form>
       </Modal>

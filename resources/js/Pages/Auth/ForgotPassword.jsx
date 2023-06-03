@@ -1,6 +1,7 @@
 import Input from "@/Components/Input";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, useForm } from "@inertiajs/react";
+import Button from "@/Components/Button";
 
 export default function ForgotPassword({ status }) {
   const { data, setData, post, processing, errors } = useForm({
@@ -45,9 +46,9 @@ export default function ForgotPassword({ status }) {
         />
 
         <div className="mt-4 flex items-center justify-end">
-          <button className="btn-ghost btn ml-4" disabled={processing}>
+          <Button className="btn-ghost ml-4" disabled={processing}>
             Email Password Reset Link
-          </button>
+          </Button>
         </div>
       </form>
     </GuestLayout>
