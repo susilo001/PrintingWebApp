@@ -97,19 +97,19 @@ export default function Cart({ cart }) {
         </div>
       ) : (
         <div className="grid grid-flow-row-dense gap-y-4 lg:grid-cols-3 lg:gap-x-8">
-          <div className="mx-auto lg:col-span-2">
+          <div className="w-full lg:col-span-2">
             {cart.cartItems.map((item) => (
               <div
                 key={item.id}
                 className="mb-8 rounded-lg border p-4 shadow-lg sm:p-8"
               >
-                <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:items-start sm:space-x-6 sm:space-y-0">
+                <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:items-start sm:justify-start sm:space-x-6 sm:space-y-0">
                   <img
                     srcSet={item.design}
                     className="aspect-square h-52 w-52 rounded-xl bg-base-200 object-cover"
                     alt={item.name}
                   />
-                  <div className="space-y-4">
+                  <div className="w-full grow space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-bold">{item.name}</h3>
                       <input
@@ -178,7 +178,7 @@ export default function Cart({ cart }) {
               </div>
               <div className="space-y-4">
                 <Button
-                  className="btn-primary btn-block gap-2"
+                  className="btn-primary btn-block gap-2 text-white"
                   onClick={() => handleSnapPayment()}
                 >
                   Bayar
