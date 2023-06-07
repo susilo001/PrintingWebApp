@@ -32,7 +32,7 @@ class CartController extends Controller
     public function index(): \Inertia\Response
     {
         return Inertia::render('Cart', [
-            'cart' => new CartResource(Cart::with('cartItems')->where('user_id', auth()->id())->first()),
+            'cart' => new CartResource(Cart::with('cartItems.media')->where('user_id', auth()->id())->first()),
         ]);
     }
 
@@ -96,7 +96,7 @@ class CartController extends Controller
     public function shipment(Cart $cart)
     {
         return Inertia::render('Checkout', [
-            'cart' => new CartResource($cart->getUserCart()),
+            'cart' => new CartResource(Cart::with('cartItems.media')->where('user_id', auth()->id())->first()),
         ]);
     }
 

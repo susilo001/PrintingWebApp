@@ -21,8 +21,8 @@ class CartItemResource extends JsonResource
             'price' => $this->product->getPriceByOrderQuantity($this->qty),
             'weight' => $this->weight,
             'description' => $this->description,
-            'design' => $this->getFirstMedia('cart')->getSrcset(),
             'variants' => $this->variants,
+            'design' => $this->getFirstMedia('cart')->getSrcset(),
             'product' => new ProductResource($this->whenLoaded('product')),
             'cart' => new CartResource($this->whenLoaded('cart')),
         ];

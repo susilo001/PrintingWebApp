@@ -26,7 +26,7 @@ class OrderItemResource extends JsonResource
             'qty' => $this->qty,
             'discount' => $this->discount,
             'tax' => $this->tax,
-            'product' => new ProductResource($this->product),
+            'product' => new ProductResource($this->whenLoaded('product')),
         ];
     }
 }

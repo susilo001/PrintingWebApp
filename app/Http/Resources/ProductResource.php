@@ -19,7 +19,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'prices' => PriceResource::collection($this->whenLoaded('prices')),
-            'price' => $this->prices[0]['price'],
+            'price' => $this->getFirstPrice(),
             'description' => $this->description,
             'images' => $this->getMedia('products')->map(function ($image) {
                 return $image->getSrcset();

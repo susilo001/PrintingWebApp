@@ -18,8 +18,8 @@ class ProductController extends Controller
     public function index(ProductFilter $filter): \Inertia\Response
     {
         return Inertia::render('Product/Index', [
-            'products' => new ProductCollection(Product::filter($filter)->with(['category'])->get()),
-            'categories' => new CategoryCollection(Category::all()),
+            'products' => new ProductCollection(Product::filter($filter)->with(['category:id,name', 'media'])->get()),
+            'categories' => new CategoryCollection(Category::all('id', 'name')),
         ]);
     }
 
@@ -29,7 +29,7 @@ class ProductController extends Controller
     public function show(Product $product): \Inertia\Response
     {
         return Inertia::render('Product/Show', [
-            'product' => new ProductResource($product->load(['variants', 'prices', 'category'])),
+            'product' => new ProductResource($product->load(['variants', 'prices', 'category', 'media'])),
         ]);
     }
 }

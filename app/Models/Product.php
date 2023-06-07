@@ -88,6 +88,12 @@ class Product extends Model implements HasMedia
         return $this->hasMany(Variant::class);
     }
 
+    public function getFirstPrice()
+    {
+        $firstPrice = $this->prices()->orderBy('price')->value('price');
+        return $firstPrice;
+    }
+
     /**
      * get product price by order quantity
      */
@@ -100,7 +106,7 @@ class Product extends Model implements HasMedia
 
             return $price->price;
         } catch (\Exception $e) {
-            return throw new \Exception('The minimum order is '.$prices->min('min_order').' pcs');
+            return throw new \Exception('The minimum order is ' . $prices->min('min_order') . ' pcs');
         }
     }
 }
