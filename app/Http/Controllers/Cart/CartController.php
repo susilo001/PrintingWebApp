@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Cart;
 
-use App\Models\Cart;
-use Inertia\Inertia;
-use App\Models\CartItem;
-use Illuminate\Http\Request;
-use App\Services\CartService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CheckoutRequest;
-use App\Http\Resources\CartResource;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
+use App\Http\Resources\CartResource;
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Services\CartService;
 use App\Services\Payment\PaymentService;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
@@ -91,7 +90,7 @@ class CartController extends Controller
 
     /**
      * Shipment page
-     * 
+     *
      * @return \Inertia\Response
      */
     public function shipment(Cart $cart)

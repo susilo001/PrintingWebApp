@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\Product;
-use App\Services\OrderService;
 use App\Services\Payment\PaymentService;
 
 class CartService
@@ -31,7 +30,7 @@ class CartService
         $userCart = $this->checkCart();
         $product = Product::findOrfail($request->product_id);
 
-        if (!$product) {
+        if (! $product) {
             throw new \Exception('Product not found');
         }
 

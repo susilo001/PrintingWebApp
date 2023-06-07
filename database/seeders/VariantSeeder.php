@@ -34,7 +34,7 @@ class VariantSeeder extends Seeder
                     ['value' => 'Silk'],
                     ['value' => 'Wool'],
                     ['value' => 'Leather'],
-                ]],               
+                ]],
                 ['name' => 'Pattern', 'options' => [
                     ['value' => 'Casual'],
                     ['value' => 'Formal'],

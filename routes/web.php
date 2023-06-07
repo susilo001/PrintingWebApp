@@ -4,13 +4,11 @@ use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Design\DesignController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Order\OrderController;
-use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,4 +62,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

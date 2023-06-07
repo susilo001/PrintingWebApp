@@ -13,7 +13,7 @@ class PaymentController extends Controller
         $paymentService->notification($request->validated());
 
         return response()->json([
-            'message' => 'Payment notification has been processed'
+            'message' => 'Payment notification has been processed',
         ]);
     }
 }

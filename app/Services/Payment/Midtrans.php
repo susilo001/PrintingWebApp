@@ -3,8 +3,8 @@
 namespace App\Services\Payment;
 
 use Midtrans\Config;
-use Midtrans\Snap;
 use Midtrans\Notification;
+use Midtrans\Snap;
 
 abstract class Midtrans
 {

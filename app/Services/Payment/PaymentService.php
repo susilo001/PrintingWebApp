@@ -5,8 +5,6 @@ namespace App\Services\Payment;
 use App\Models\Cart;
 use App\Models\Order;
 
-use function GuzzleHttp\Promise\each;
-
 class PaymentService extends Midtrans
 {
     protected $cart;

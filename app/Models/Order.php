@@ -26,7 +26,6 @@ class Order extends Model
         'status',
     ];
 
-
     /**
      * Belongs to user
      */

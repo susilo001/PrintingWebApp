@@ -2,7 +2,6 @@
 
 namespace App\Filament\Pages;
 
-
 use Filament\Pages\Page;
 
 class Settings extends Page

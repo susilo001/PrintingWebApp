@@ -11,7 +11,7 @@ class StatsOverview extends BaseWidget
     protected function getCards(): array
     {
         return [
-            Card::make('Revenue', '$' . number_format(Order::sum('total_amount'), 0))
+            Card::make('Revenue', '$'.number_format(Order::sum('total_amount'), 0))
                 ->description('Total revenue')
                 ->descriptionIcon('heroicon-s-currency-dollar')
                 ->chart([5, 10, 5, 15, 10, 15, 5])
