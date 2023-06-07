@@ -20,7 +20,6 @@ class OrderService
         $userCart = $this->cart->getUserCart();
 
         $order = Order::create([
-            'id' => (int) $request->order_id,
             'user_id' => auth()->user()->id,
             'status' => 'pending',
             'subtotal' => $userCart->getSubtotal(),
@@ -29,12 +28,14 @@ class OrderService
             'total_amount' => $userCart->getTotal(),
         ]);
 
-        $order->paymentDetail()->create([
-            'status' => $request->status,
-            'gross_amount' => (int) $request->gross_amount,
-            'payment_type' => $request->payment_type,
-            'transaction_id' => $request->transaction_id,
-            'transaction_time' => $request->transaction_time,
+        $order->shipping()->create([
+            'first_name' => $request['shipping_first_name'],
+            'last_name' => $request['shipping_last_name'],
+            'email' => $request['shipping_email'],
+            'phone' => $request['shipping_phone'],
+            'address' => $request['shipping_address'],
+            'city' => $request['shipping_city'],
+            'postal_code' => $request['shipping_postal_code'],
         ]);
 
         foreach ($userCart->cartItems as $item) {

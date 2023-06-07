@@ -20,30 +20,25 @@ const Midtrans = {
     window.snap.show();
   },
 
+  snapLoadingHide() {
+    window.snap.hide();
+  },
+
   snapPay(snapToken) {
     window.snap.pay(snapToken, {
+      onSuccess: function (result) {
+        Swal.fire({ title: "Success", text: result.status_message, icon: "success" });
+      },
+      onPending: function (result) {
+        Swal.fire({ title: "Success", text: result.status_message, icon: "success" });
+      },
       onError: function (result) {
-        Swal.fire({
-          title: "Error",
-          text: result.status_message,
-          icon: "error",
-          confirmButtonText: "Ok",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.get(route("cart.index"));
-          }
-        });
+        Swal.fire({ title: "Error", text: result.status_message, icon: "error" });
+        router.get(route("cart.index"));
       },
       onClose: function () {
-        Swal.fire({
-          title: "Payment Cancelled",
-          text: "You have cancelled the payment",
-          icon: "error",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.get(route("cart.index"));
-          }
-        });
+        Swal.fire({ title: "Payment Cancelled", text: "You have cancelled the payment", icon: "error" });
+        router.get(route("cart.index"));
       },
     });
   },

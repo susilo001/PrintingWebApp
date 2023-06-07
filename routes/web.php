@@ -10,6 +10,7 @@ use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,10 +33,6 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/product/{product}', 'show')->name('product.show');
 });
 
-Route::controller(PaymentController::class)->group(function () {
-    Route::post('/payment/notification', 'store')->name('payment.store');
-});
-
 /**
  * Authenticated Route
  */
@@ -50,7 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
     Route::match(['put', 'patch'], '/cart/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
-    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/cart/shipment', [CartController::class, 'shipment'])->name('cart.shipment');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
     Route::get('/order', [OrderController::class, 'index'])->name('order.index');
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
@@ -66,4 +64,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

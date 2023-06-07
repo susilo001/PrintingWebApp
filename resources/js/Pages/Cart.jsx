@@ -1,22 +1,15 @@
 import Button from "@/Components/Button";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import Midtrans from "@/lib/midtrans";
 import CurrencyFormater from "@/utils/CurrencyFormater";
 import {
-  CreditCardIcon,
   ExclamationTriangleIcon,
   ShoppingCartIcon,
   TrashIcon,
-  WalletIcon,
 } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
-import { useEffect } from "react";
 import Swal from "sweetalert2";
 
 export default function Cart({ cart }) {
-  useEffect(() => {
-    Midtrans.load();
-  }, []);
 
   const handleChangeQty = async (id, qty) => {
     try {
@@ -27,30 +20,8 @@ export default function Cart({ cart }) {
         preserveState: true,
       });
     } catch (error) {
-      // Handle the error appropriately (e.g., show an error message)
-      console.error(error);
+      Swal.fire({ icon: "error", title: "Oops...", text: error.message });
     }
-  };
-
-  const handleSnapPayment = () => {
-    Swal.fire({
-      title: "Checkout Keranjang Belanja",
-      text: "Apakah anda yakin ingin melanjutkan pembayaran?",
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, Lanjutkan",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Midtrans.snapLoading();
-        router.visit(route("cart.checkout"), {
-          method: "get",
-          onSuccess: (page) => {
-            Midtrans.snapPay(page.props.token);
-          },
-        });
-      }
-    });
   };
 
   const handleDelete = (id) => {
@@ -177,14 +148,7 @@ export default function Cart({ cart }) {
                 </div>
               </div>
               <div className="space-y-4">
-                <Button
-                  className="btn-primary btn-block gap-2 text-white"
-                  onClick={() => handleSnapPayment()}
-                >
-                  Bayar
-                  <CreditCardIcon className="h-6 w-6" />
-                  <WalletIcon className="h-6 w-6" />
-                </Button>
+                <Link href={route("cart.shipment")} className="btn-primary btn btn-block gap-2 text-white" as="button">Checkout</Link>
               </div>
             </div>
           </div>

@@ -260,15 +260,12 @@ export default function Authenticated({ header, children }) {
       )}
 
       {Object.keys(errors).length !== 0 && (
-        <div className="alert alert-error mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex-1">
-            <XCircleIcon className="h-6 w-6" />
-            <ul className="list-inside">
-              {Object.values(errors).map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </div>
+        <div className="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8 space-y-2 w-full">
+          {Object.values(errors).map((error, index) => (
+            <div key={index} className="alert alert-error">
+              <XCircleIcon className="h-6 w-6" /> <span>{error}</span>
+            </div>
+          ))}
         </div>
       )}
 

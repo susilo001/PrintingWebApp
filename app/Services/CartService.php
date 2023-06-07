@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Services\OrderService;
+use App\Services\Payment\PaymentService;
 
 class CartService
 {
@@ -29,7 +31,7 @@ class CartService
         $userCart = $this->checkCart();
         $product = Product::findOrfail($request->product_id);
 
-        if (! $product) {
+        if (!$product) {
             throw new \Exception('Product not found');
         }
 
@@ -57,5 +59,17 @@ class CartService
     public function checkIfOrderQtyIsLessThanMinimumOrderQty($product, $qty): bool
     {
         return $qty < $product->minimum_order_quantity;
+    }
+
+    public function checkout($request)
+    {
+        $orderService = new OrderService;
+        $paymentService = new PaymentService;
+
+        $order = $orderService->createOrder($request);
+
+        $snapToken = $paymentService->requestPayment($order);
+
+        return $snapToken;
     }
 }
