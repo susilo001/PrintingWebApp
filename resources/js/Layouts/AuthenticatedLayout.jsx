@@ -2,32 +2,17 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { ShoppingBagIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { ShoppingBagIcon, XCircleIcon, CheckCircleIcon, InformationCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
-import Swal from "sweetalert2";
 
 export default function Authenticated({ header, children }) {
-  const [showingNavigationDropdown, setShowingNavigationDropdown] =
-    useState(false);
+  const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
   const { flash } = usePage().props;
   const { auth } = usePage().props;
   const { cartCount } = usePage().props;
   const { errors } = usePage().props;
-
-  const showFlashMessage = async () => {
-    await Swal.fire({
-      title: flash.title ? flash.title : "",
-      text: flash.message ? flash.message : "",
-      icon: flash.status ? flash.status : "",
-      showCloseButton: true,
-      showConfirmButton: true,
-      timer: 3000,
-    });
-  };
-
-  flash.message ? showFlashMessage() : null;
 
   return (
     <div className="relative flex min-h-screen flex-col">
@@ -257,6 +242,45 @@ export default function Authenticated({ header, children }) {
             {header}
           </div>
         </header>
+      )}
+
+      {flash.status && (
+        <div className="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8 space-y-2 w-full">
+          {flash.status === "success" && (
+            <div className='alert alert-success'>
+              <div className="flex space-x-4">
+                <div><CheckCircleIcon className="h-6 w-6" /></div>
+                <p>{flash.message}</p>
+              </div>
+            </div>
+          )}
+          {flash.status === "error" && (
+            <div className="alert alert-error">
+              <div className="flex space-x-4">
+                <div> <XCircleIcon className="h-6 w-6" /></div>
+                <p>{flash.message}</p>
+              </div>
+            </div>
+          )}
+
+          {flash.status === "warning" && (
+            <div className="alert alert-warning">
+              <div className="flex space-x-4">
+                <ExclamationTriangleIcon className="h-6 w-6" />
+                <p>{flash.message}</p>
+              </div>
+            </div>
+          )}
+
+          {flash.status === "info" && (
+            <div className="alert alert-info">
+              <div className="flex space-x-4">
+                <InformationCircleIcon className="h-6 w-6" />
+                <p>{flash.message}</p>
+              </div>
+            </div>
+          )}
+        </div>
       )}
 
       {Object.keys(errors).length !== 0 && (

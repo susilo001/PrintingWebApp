@@ -8,14 +8,7 @@ export default function DeleteUserForm({ className }) {
   const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
   const passwordInput = useRef();
 
-  const {
-    data,
-    setData,
-    delete: destroy,
-    processing,
-    reset,
-    errors,
-  } = useForm({
+  const { data, setData, delete: destroy, processing, reset, errors, } = useForm({
     password: "",
   });
 
@@ -52,7 +45,7 @@ export default function DeleteUserForm({ className }) {
         </p>
       </header>
 
-      <Button className="btn-error" onClick={confirmUserDeletion}>
+      <Button className="btn-error text-white" onClick={confirmUserDeletion}>
         Delete Account
       </Button>
 
@@ -88,7 +81,7 @@ export default function DeleteUserForm({ className }) {
               Cancel
             </Button>
 
-            <Button className="btn-error ml-3" disabled={processing}>
+            <Button className="btn-error text-white ml-3" disabled={processing}>
               Delete Account
             </Button>
           </div>

@@ -57,9 +57,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['put', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/user/{user}/address', [AddressController::class, 'store'])->name('address.store');
+    Route::get('/address/{address}', [AddressController::class, 'edit'])->name('address.edit');
+    Route::post('/address', [AddressController::class, 'store'])->name('address.store');
     Route::match(['put', 'patch'], '/address/{address}', [AddressController::class, 'update'])->name('address.update');
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

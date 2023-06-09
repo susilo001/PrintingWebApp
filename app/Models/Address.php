@@ -16,10 +16,23 @@ class Address extends Model
      */
     protected $fillable = [
         'user_id',
-        'street_name',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'address',
         'city',
-        'province',
-        'zip_code',
+        'postal_code',
+        'is_active'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     /**
