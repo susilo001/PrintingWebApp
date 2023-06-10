@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
+use App\Services\OrderService;
 use App\Services\Payment\PaymentService;
 
 class CartService
@@ -30,7 +32,7 @@ class CartService
         $userCart = $this->checkCart();
         $product = Product::findOrfail($request->product_id);
 
-        if (! $product) {
+        if (!$product) {
             throw new \Exception('Product not found');
         }
 
@@ -60,12 +62,12 @@ class CartService
         return $qty < $product->minimum_order_quantity;
     }
 
-    public function checkout($request)
+    public function checkout(): string
     {
-        $orderService = new OrderService;
         $paymentService = new PaymentService;
+        $orderService = new OrderService;
 
-        $order = $orderService->createOrder($request);
+        $order = $orderService->createOrder();
 
         $snapToken = $paymentService->requestPayment($order);
 

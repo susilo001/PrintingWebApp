@@ -1,35 +1,25 @@
 import Button from "@/Components/Button";
 import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, router } from "@inertiajs/react";
+import { Head, router, Link } from "@inertiajs/react";
 import {
   CreditCardIcon,
   TrashIcon,
   WalletIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import CurrencyFormater from "@/utils/CurrencyFormater";
 import Midtrans from "@/lib/midtrans";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 
-export default function Checkout({ cart }) {
-  const { data, setData, post, processing, errors } = useForm({
-    billing_email: "",
-    shipping_first_name: "",
-    shipping_last_name: "",
-    shipping_email: "",
-    shipping_address: "",
-    shipping_city: "",
-    shipping_postal_code: "",
-    shipping_phone: "",
-  });
+export default function Checkout({ cart, addresses }) {
 
   useEffect(() => {
     Midtrans.load();
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     Swal.fire({
       title: "Checkout Keranjang Belanja",
       text: "Apakah anda yakin ingin melanjutkan pembayaran?",
@@ -39,10 +29,9 @@ export default function Checkout({ cart }) {
       confirmButtonText: "Ya, Lanjutkan",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Midtrans.snapLoading();
-        post(route("cart.checkout"), {
-          preserveScroll: true,
-          preserveState: true,
+        Midtrans.snapLoading();
+        router.visit(route("cart.checkout"), {
+          method: 'get',
           onSuccess: (page) => {
             Midtrans.snapPay(page.props.token);
           },
@@ -87,102 +76,51 @@ export default function Checkout({ cart }) {
       header={<h1 className="text-2xl font-bold">Checkout</h1>}
     >
       <Head title="Checkout" />
-      <form onSubmit={handleSubmit}>
-        <div className="grid gap-4 md:grid-cols-2 bg-base-200 p-8 rounded-lg shadow-lg">
-          <section className="space-y-8">
-            <div className="border-b pb-4 border-base-300">
-              <h3 className="text-lg font-bold">Contact Information</h3>
-              <Input
-                label="Email"
-                name="billing_email"
-                type="email"
-                placeholder="e.g email@gmail.com"
-                value={data.billing_email}
-                handleChange={(e) => setData("billing_email", e.target.value)}
-                errors={errors.billing_email}
-                className="input-bordered"
-              />
+      {cart.cartItems.length === 0 ? (
+        <div className="flex h-96 items-center justify-center rounded-lg border border-error">
+          <div className="text-center">
+            <div className="flex items-center space-x-2">
+              <h2 className="text-2xl font-bold">Keranjang Belanja Kosong</h2>
+              <ExclamationTriangleIcon className="h-8 w-8 text-error" />
             </div>
+            <Link
+              href={route("product.index")}
+              className="btn-error btn mt-4"
+              as="button"
+            >
+              Belanja Sekarang
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 p-8 rounded-lg">
+          <section className="space-y-8">
             <div>
               <h3 className="text-lg font-bold">Shipping Information</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  label="First Name"
-                  name="shipping_first_name"
-                  type="text"
-                  value={data.shipping_first_name}
-                  handleChange={(e) => setData("shipping_first_name", e.target.value)}
-                  errors={errors.shipping_first_name}
-                  placeholder="e.g Bambang Ganteng"
-                  className="input-bordered"
-                />
-                <Input
-                  label="Last Name"
-                  name="shipping_last_name"
-                  type="text"
-                  value={data.shipping_last_name}
-                  handleChange={(e) => setData("shipping_last_name", e.target.value)}
-                  errors={errors.shipping_last_name}
-                  placeholder="e.g Bambang Ganteng"
-                  className="input-bordered"
-                />
-              </div>
-              <Input
-                label="Email"
-                name="shipping_email"
-                type="email"
-                value={data.shipping_email}
-                handleChange={(e) => setData("shipping_email", e.target.value)}
-                errors={errors.shipping_email}
-                placeholder="e.g test@test.com"
-                className="input-bordered"
-              />
-              <Input
-                label="Address"
-                name="shipping_address"
-                type="text"
-                value={data.shipping_address}
-                handleChange={(e) => setData("shipping_address", e.target.value)}
-                errors={errors.shipping_address}
-                placeholder="e.g Jln. Jalan"
-                className="input-bordered"
-              />
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  label="City"
-                  name="shipping_city"
-                  type="text"
-                  value={data.shipping_city}
-                  handleChange={(e) => setData("shipping_city", e.target.value)}
-                  errors={errors.shipping_city}
-                  placeholder="e.g Yogyakarta"
-                  className="input-bordered"
-                />
-                <Input
-                  label="Postal Code"
-                  name="postal_code"
-                  type="text"
-                  value={data.shipping_postal_code}
-                  handleChange={(e) => setData("shipping_postal_code", e.target.value)}
-                  errors={errors.shipping_postal_code}
-                  placeholder="e.g 110102"
-                  className="input-bordered"
-                />
-              </div>
-              <Input
-                label="Phone"
-                name="shipping_phone"
-                type="text"
-                value={data.shipping_phone}
-                handleChange={(e) => setData("shipping_phone", e.target.value)}
-                errors={errors.shipping_phone}
-                placeholder="e.g 0812345678"
-                className="input-bordered"
-              />
+              <p>Pilih alamat pengiriman anda yang anda akan digunakan</p>
+            </div>
+            <div className="space-y-4">
+              {addresses.map((address) => (
+                <div className={`rounded-lg border space-y-4 w-full shadow-lg ${address.is_active ? 'border-primary' : ''}`} key={address.id}>
+                  <div className="flex items-start justify-between border-b p-8 space-x-4">
+                    <div className="flex-grow">
+                      <h4 className="font-bold">{address.first_name} {address.last_name}</h4>
+                      <p>{address.phone}</p>
+                      <p>{address.address}</p>
+                      <p>{address.city} {address.postal_code}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
           <section className="space-y-4">
-            <h3 className="text-lg font-bold">Order Summary</h3>
+            <div className="flex items-start justify-between space-x-4">
+              <div className="flex-grow">
+                <h3 className="text-lg font-bold">Order Summary</h3>
+              </div>
+            </div>
+
             <div className="rounded-lg border space-y-4 w-full bg-base-100 shadow-lg">
               {cart.cartItems.map((item) => (
                 <div className="flex items-start justify-between border-b p-8 space-x-4" key={item.id}>
@@ -235,7 +173,7 @@ export default function Checkout({ cart }) {
               <div className="p-8">
                 <Button
                   type="submit"
-                  disabled={processing}
+                  onClick={handleSubmit}
                   className="btn-primary btn-block text-white gap-2"
                 >
                   Pilih Pembayaran
@@ -246,7 +184,8 @@ export default function Checkout({ cart }) {
             </div>
           </section>
         </div>
-      </form>
+
+      )}
 
     </AuthenticatedLayout>
   );

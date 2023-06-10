@@ -26,37 +26,38 @@ class Cart extends Model
     public function getSubtotal()
     {
         return $this->cartItems->sum(function ($item) {
-            $itemTotal = $item->qty * $item->product->getPriceByOrderQuantity($item->qty);
-
-            return $itemTotal;
+            $price = $item->product->getPriceByOrderQuantity($item->qty);
+            return $item->qty * $price;
         });
     }
 
     public function getDiscount()
     {
-        return $this->cartItems->sum(function ($item) {
-            if ($item->product->discount->active === true) {
-                return $item->qty * $item->product->getPriceByOrderQuantity($item->qty) * $item->product->discount->discount_percentage / 100;
-            }
+        $subtotal = $this->getSubtotal();
 
-            return 0;
+        return $this->cartItems->sum(function ($item) use ($subtotal) {
+            $discountPercentage = $item->product->discount->active ? $item->product->discount->discount_percentage : 0;
+            return round($subtotal * $discountPercentage / 100);
         });
     }
 
     public function getTax()
     {
-        return $this->cartItems->sum(function ($item) {
-            return $item->qty * $item->product->getPriceByOrderQuantity($item->qty) * $item->product->tax / 100;
+        $subtotal = $this->getSubtotal();
+
+        return $this->cartItems->sum(function ($item) use ($subtotal) {
+            $taxPercentage = $item->product->tax ?? 0;
+            return round($subtotal * $taxPercentage / 100);
         });
     }
 
     public function getTotal()
     {
-        return $this->getSubtotal() - $this->getDiscount() + $this->getTax();
+        return round($this->getSubtotal() - $this->getDiscount() + $this->getTax());
     }
 
     public function getUserCart()
     {
-        return $this->where('user_id', auth()->id())->first();
+        return $this->with('cartItems')->where('user_id', auth()->id())->firstOrFail();
     }
 }

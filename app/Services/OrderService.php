@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -15,7 +16,7 @@ class OrderService
         $this->cart = new Cart;
     }
 
-    public function createOrder($request)
+    public function createOrder()
     {
         $userCart = $this->cart->getUserCart();
 
@@ -28,15 +29,9 @@ class OrderService
             'total_amount' => $userCart->getTotal(),
         ]);
 
-        $order->shipping()->create([
-            'first_name' => $request['shipping_first_name'],
-            'last_name' => $request['shipping_last_name'],
-            'email' => $request['shipping_email'],
-            'phone' => $request['shipping_phone'],
-            'address' => $request['shipping_address'],
-            'city' => $request['shipping_city'],
-            'postal_code' => $request['shipping_postal_code'],
-        ]);
+        $shippingAddress = Address::where('user_id', auth()->user()->id)->where('is_active', true)->first();
+
+        $order->shipping()->create($shippingAddress->toArray());
 
         foreach ($userCart->cartItems as $item) {
             $orderItem = OrderItem::create([
@@ -53,7 +48,7 @@ class OrderService
 
             $cartItemMedia = $item->getMedia('cart')->first();
 
-            $cartItemMedia->move($orderItem, 'designs');
+            $cartItemMedia->copy($orderItem, 'designs');
         }
 
         $userCart->cartItems()->delete();

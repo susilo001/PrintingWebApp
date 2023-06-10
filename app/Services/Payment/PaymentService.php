@@ -2,18 +2,12 @@
 
 namespace App\Services\Payment;
 
-use App\Models\Cart;
 use App\Models\Order;
+use App\Services\OrderService;
+use App\Services\Payment\Midtrans;
 
 class PaymentService extends Midtrans
 {
-    protected $cart;
-
-    public function __construct()
-    {
-        $this->cart = Cart::class;
-    }
-
     public function requestPayment(Order $order): string
     {
         $transaction = [
@@ -27,19 +21,10 @@ class PaymentService extends Midtrans
             ],
 
             'customer_details' => [
-                'first_name' => $order->user->name,
-                'last_name' => $order->user->name,
-                'email' => $order->user->email,
-                'phone' => $order->user->phone_nummber,
-                'billing_address' => [
-                    'first_name' => $order->user->name,
-                    'last_name' => $order->user->name,
-                    'email' => $order->user->email,
-                    'phone' => $order->user->phone_number,
-                    'address' => auth()->user()->addresses[0]['street_name'],
-                    'city' => auth()->user()->addresses[0]['city'],
-                    'postal_code' => auth()->user()->addresses[0]['zip_code'],
-                ],
+                'first_name' => auth()->user()->name,
+                'last_name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+                'phone' => auth()->user()->phone_number,
                 'shipping_address' => [
                     'first_name' => $order->shipping->first_name,
                     'last_name' => $order->shipping->last_name,
@@ -52,7 +37,7 @@ class PaymentService extends Midtrans
                 ],
             ],
 
-            'item_details' => $order->orderItems()->get()->map(function ($item) {
+            'item_details' => $order->orderItems->map(function ($item) {
                 return [
                     'id' => $item->product->id,
                     'name' => $item->product->name,
@@ -60,7 +45,6 @@ class PaymentService extends Midtrans
                     'quantity' => $item->qty,
                 ];
             })->toArray(),
-
         ];
 
         $additionalFee = [
@@ -88,7 +72,7 @@ class PaymentService extends Midtrans
     {
         $data = $this->handleNotification($request);
 
-        $order = Order::find($data['order']);
+        $order = Order::findOrfail($data['order']);
 
         $order->update([
             'status' => $data['order_status'],

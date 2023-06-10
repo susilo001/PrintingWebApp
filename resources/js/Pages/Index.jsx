@@ -1,4 +1,4 @@
-import Bannner from "@/Components/Banner";
+import Banner from "@/Components/Banner";
 import Button from "@/Components/Button";
 import Card from "@/Components/Card";
 import FeatureSection from "@/Components/FeatureSection";
@@ -24,15 +24,13 @@ export default function Index({ products, testimonials }) {
     const data = products.map((product) => product.category);
 
     const unique = [...new Set(data.map((item) => item.id))];
-    const categories = unique.map((id) => {
+    return unique.map((id) => {
       return {
         id,
         name: data.find((item) => item.id === id).name,
         slug: data.find((item) => item.id === id).slug,
       };
     });
-
-    return categories;
   };
 
   const getProductsByCategory = (id) => {
@@ -57,7 +55,7 @@ export default function Index({ products, testimonials }) {
     <AuthenticatedLayout>
       <Head title="Offset & Digital Printing" />
       {/* Banner Section */}
-      <Bannner />
+      <Banner />
 
       {/* Feature Section */}
       <FeatureSection />

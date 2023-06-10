@@ -2,9 +2,10 @@
 
 namespace App\Services\Payment;
 
+use Midtrans\Snap;
 use Midtrans\Config;
 use Midtrans\Notification;
-use Midtrans\Snap;
+
 
 abstract class Midtrans
 {
@@ -26,6 +27,30 @@ abstract class Midtrans
         return Snap::getSnapToken($transaction);
     }
 
+    private function mapOrderStatus($status, $fraud, $type)
+    {
+        switch ($status) {
+            case 'capture':
+                if ($type == 'credit_card') {
+                    return ($fraud == 'challenge') ? 'pending' : 'paid';
+                }
+                break;
+
+            case 'settlement':
+                return 'paid';
+
+            case 'pending':
+                return 'pending';
+
+            case 'deny':
+            case 'expire':
+            case 'cancel':
+                return 'failure';
+        }
+
+        return '';
+    }
+
     public function handleNotification($request)
     {
         $this->configure();
@@ -40,29 +65,7 @@ abstract class Midtrans
         $order = $notification->order_id;
         $amount = $notification->gross_amount;
 
-        $orderStatus = '';
-
-        switch ($status) {
-            case 'capture':
-                if ($type == 'credit_card') {
-                    $orderStatus = ($fraud == 'challenge') ? 'pending' : 'success';
-                }
-                break;
-
-            case 'settlement':
-                $orderStatus = 'success';
-                break;
-
-            case 'pending':
-                $orderStatus = 'pending';
-                break;
-
-            case 'deny':
-            case 'expire':
-            case 'cancel':
-                $orderStatus = 'failure';
-                break;
-        }
+        $orderStatus = $this->mapOrderStatus($status, $fraud, $type);
 
         return [
             'status' => $status,

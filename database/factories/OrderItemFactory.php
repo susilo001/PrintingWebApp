@@ -42,9 +42,8 @@ class OrderItemFactory extends Factory
     public function configure()
     {
         return $this->afterMaking(function (OrderItem $orderItem) {
-            $orderItem->addMedia(storage_path('app/public/asset/products/'.fake()->randomElement(['sticker.png', 'name-card.png', 'poster.png', 'invitation.png'])))
+            $orderItem->addMedia(storage_path('app/public/asset/products/' . fake()->randomElement(['sticker.png', 'name-card.png', 'poster.png', 'invitation.png'])))
                 ->preservingOriginal()
-                ->withResponsiveImages()
                 ->toMediaCollection('designs');
         });
     }

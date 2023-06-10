@@ -11,6 +11,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Services\CartService;
 use App\Services\Payment\PaymentService;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 
@@ -93,22 +94,24 @@ class CartController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function shipment(Cart $cart)
+    public function shipment(Request $request)
     {
         return Inertia::render('Checkout', [
             'cart' => new CartResource(Cart::with('cartItems.media')->where('user_id', auth()->id())->first()),
+            'addresses' => $request->user()->addresses()->get(),
         ]);
     }
 
     /**
      * Checkout the cart content
      */
-    public function checkout(CheckoutRequest $request, Cart $cart): \Inertia\Response
+    public function checkout(Request $request, Cart $cart): \Inertia\Response
     {
-        $snapToken = $this->cartService->checkout($request->validated());
+        $snapToken = $this->cartService->checkout();
 
         return Inertia::render('Checkout', [
             'cart' => new CartResource($cart->getUserCart()),
+            'addresses' => $request->user()->addresses()->get(),
             'token' => $snapToken,
         ]);
     }
