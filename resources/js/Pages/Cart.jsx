@@ -1,6 +1,6 @@
 import Button from "@/Components/Button";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/utils/CurrencyFormater";
+import Currency from '@/utils/Currency'
 import {
   ExclamationTriangleIcon,
   ShoppingCartIcon,
@@ -100,7 +100,7 @@ export default function Cart({ cart }) {
                       </Button>
                     </div>
                     <span className="font-bold text-primary">
-                      {CurrencyFormater(item.price)}
+                      {Currency.getCurrencyFormat(item.price)}
                     </span>
                     <p className="break-words">{item.description}</p>
                     <ul className="flex items-center space-x-2">
@@ -125,25 +125,25 @@ export default function Cart({ cart }) {
                 <div className="flex justify-between border-b border-base-content pb-4">
                   <div>Subtotal</div>
                   <span className="font-bold">
-                    {CurrencyFormater(cart.subtotal)}
+                    {Currency.getCurrencyFormat(cart.subtotal)}
                   </span>
                 </div>
                 <div className="flex justify-between border-b border-base-content pb-4">
                   <div>Discount</div>
                   <span className="font-bold">
-                    {CurrencyFormater(cart.discount)}
+                    {Currency.getCurrencyFormat(cart.discount)}
                   </span>
                 </div>
                 <div className="flex justify-between border-b border-base-content pb-4">
                   <div>Tax</div>
                   <span className="font-bold">
-                    {CurrencyFormater(cart.tax)}
+                    {Currency.getCurrencyFormat(cart.tax)}
                   </span>
                 </div>
                 <div className="flex justify-between border-b border-base-content pb-4">
                   <div>Total</div>
                   <span className="font-bold">
-                    {CurrencyFormater(cart.total)}
+                    {Currency.getCurrencyFormat(cart.total)}
                   </span>
                 </div>
               </div>

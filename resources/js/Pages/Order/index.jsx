@@ -1,6 +1,6 @@
 import Button from "@/Components/Button";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/utils/CurrencyFormater";
+import Currency from "@/utils/Currency";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 
@@ -55,7 +55,7 @@ export default function Order({ orders }) {
             </div>
             <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
               <span className="font-bold">Total amount</span>
-              <span>{CurrencyFormater(order.total)}</span>
+              <span>{Currency.getCurrencyFormat(order.total)}</span>
             </div>
             <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
               <span className="font-bold">Status</span>
@@ -81,7 +81,7 @@ export default function Order({ orders }) {
                   <div className="flex items-center justify-between">
                     <h2 className="text-lg font-semibold">{item.product.name}</h2>
                     <span className="text-lg font-semibold">
-                      {CurrencyFormater(item.price)}
+                      {Currency.getCurrencyFormat(item.price)}
                     </span>
                   </div>
                   <p className="break-words text-justify">{item.desc}</p>

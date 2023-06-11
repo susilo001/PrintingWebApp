@@ -3,7 +3,6 @@ import Button from "@/Components/Button";
 import Card from "@/Components/Card";
 import FeatureSection from "@/Components/FeatureSection";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/utils/CurrencyFormater";
 import {
   ArrowRightIcon,
   ExclamationTriangleIcon,
@@ -12,6 +11,7 @@ import { Head, Link } from "@inertiajs/react";
 import { useState } from "react";
 import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Currency from "@/utils/Currency";
 
 export default function Index({ products, testimonials }) {
   const [Products, setProducts] = useState(products);
@@ -96,7 +96,7 @@ export default function Index({ products, testimonials }) {
                     <Card.Title>{product.name}</Card.Title>
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-primary">
-                        {CurrencyFormater(product.price)}
+                        {Currency.getPrice(product.prices)}
                       </span>
                       <span className="badge badge-accent p-2 text-xs font-semibold">
                         {product.category.name}
@@ -176,7 +176,7 @@ export default function Index({ products, testimonials }) {
                       <Card.Title>{product.name}</Card.Title>
                       <Card.Actions className="flex items-center justify-between">
                         <span className="font-bold text-primary">
-                          {CurrencyFormater(product.price)}
+                          {Currency.getPrice(product.prices)}
                         </span>
                         <span className="badge badge-accent p-2 text-xs font-semibold">
                           {product.category.name}

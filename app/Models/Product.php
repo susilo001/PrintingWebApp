@@ -88,12 +88,6 @@ class Product extends Model implements HasMedia
         return $this->hasMany(Variant::class);
     }
 
-    public function getFirstPrice()
-    {
-        $firstPrice = $this->prices()->orderBy('price')->value('price');
-        return $firstPrice;
-    }
-
     /**
      * get product price by order quantity
      */

@@ -8,10 +8,10 @@ import {
   WalletIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import CurrencyFormater from "@/utils/CurrencyFormater";
 import Midtrans from "@/lib/midtrans";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import Currency from "@/utils/Currency";
 
 export default function Checkout({ cart, addresses }) {
 
@@ -138,7 +138,7 @@ export default function Checkout({ cart, addresses }) {
                         <li key={index}>{variant.name} : {variant.value}</li>
                       ))}
                     </ul>
-                    <span className="text-sm">{CurrencyFormater(item.price)}</span>
+                    <span className="text-sm">{Currency.getCurrencyFormat(item.price)}</span>
                   </div>
                   <div className="flex-none">
                     <div className="flex flex-col items-end">
@@ -154,20 +154,20 @@ export default function Checkout({ cart, addresses }) {
                 <div className="space-y-4 border-b pb-4">
                   <div className="flex justify-between">
                     <span className="font-semibold">Subtotal</span>
-                    <span className="font-semibold">{CurrencyFormater(cart.subtotal)}</span>
+                    <span className="font-semibold">{Currency.getCurrencyFormat(cart.subtotal)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="font-semibold">Discount</span>
-                    <span className="font-semibold">{CurrencyFormater(cart.discount)}</span>
+                    <span className="font-semibold">{Currency.getCurrencyFormat(cart.discount)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="font-semibold">Taxes</span>
-                    <span className="font-semibold">{CurrencyFormater(cart.tax)}</span>
+                    <span className="font-semibold">{Currency.getCurrencyFormat(cart.tax)}</span>
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-semibold">Total</span>
-                  <span className="font-semibold">{CurrencyFormater(cart.total)}</span>
+                  <span className="font-semibold">{Currency.getCurrencyFormat(cart.total)}</span>
                 </div>
               </div>
               <div className="p-8">

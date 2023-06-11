@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index(ProductFilter $filter): \Inertia\Response
     {
         return Inertia::render('Product/Index', [
-            'products' => new ProductCollection(Product::filter($filter)->with(['category:id,name', 'media'])->get()),
+            'products' => new ProductCollection(Product::filter($filter)->with(['category:id,name', 'media', 'prices'])->get()),
             'categories' => new CategoryCollection(Category::all('id', 'name')),
         ]);
     }

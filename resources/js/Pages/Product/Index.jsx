@@ -2,7 +2,7 @@ import Button from "@/Components/Button";
 import Card from "@/Components/Card";
 import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/utils/CurrencyFormater";
+import Currency from "@/utils/Currency";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
@@ -119,7 +119,7 @@ export default function Products({ products, categories }) {
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Actions className="flex items-center justify-between">
                   <span className="font-bold text-primary">
-                    {CurrencyFormater(product.price)}
+                    {Currency.getPrice(product.prices)}
                   </span>
                   <span className="badge badge-accent p-2 text-xs font-semibold">
                     {product.category.name}

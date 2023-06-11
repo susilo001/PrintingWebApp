@@ -4,7 +4,7 @@ import ImageGallery from "@/Components/ImageGallery";
 import Input from "@/Components/Input";
 import TextArea from "@/Components/TextArea";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/utils/CurrencyFormater";
+import Currency from '@/utils/Currency';
 import {
   ChevronRightIcon,
   ShoppingBagIcon,
@@ -147,7 +147,7 @@ export default function Product({ product }) {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight">
-              {CurrencyFormater(product.prices[0].price)}
+              {Currency.getPrice(product.prices)}
               <span className="badge badge-secondary ml-2">
                 / Starting Price
               </span>
@@ -267,7 +267,7 @@ export default function Product({ product }) {
                 <tbody>
                   {product.prices.map((price) => (
                     <tr key={price.id}>
-                      <td>{CurrencyFormater(price.price)}</td>
+                      <td>{Currency.getCurrencyFormat(price.price)}</td>
                       <td>{price.min_order}</td>
                       <td>{price.max_order}</td>
                     </tr>
