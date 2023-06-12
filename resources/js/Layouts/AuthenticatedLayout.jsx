@@ -1,8 +1,10 @@
+import Alert from "@/Components/Alert";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { ShoppingBagIcon, XCircleIcon, CheckCircleIcon, InformationCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import SocialMediaLink from "@/Components/SocialMediaLink";
+import { ShoppingBagIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -244,45 +246,10 @@ export default function Authenticated({ header, children }) {
         </header>
       )}
 
-      {flash.status && (
-        <div className="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8 space-y-2 w-full">
-          {flash.status === "success" && (
-            <div className='alert alert-success'>
-              <div className="flex space-x-4">
-                <div><CheckCircleIcon className="h-6 w-6" /></div>
-                <p>{flash.message}</p>
-              </div>
-            </div>
-          )}
-          {flash.status === "error" && (
-            <div className="alert alert-error">
-              <div className="flex space-x-4">
-                <div> <XCircleIcon className="h-6 w-6" /></div>
-                <p>{flash.message}</p>
-              </div>
-            </div>
-          )}
+      {/* Alert  */}
+      <Alert status={flash.status} message={flash.message} />
 
-          {flash.status === "warning" && (
-            <div className="alert alert-warning">
-              <div className="flex space-x-4">
-                <ExclamationTriangleIcon className="h-6 w-6" />
-                <p>{flash.message}</p>
-              </div>
-            </div>
-          )}
-
-          {flash.status === "info" && (
-            <div className="alert alert-info">
-              <div className="flex space-x-4">
-                <InformationCircleIcon className="h-6 w-6" />
-                <p>{flash.message}</p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
+      {/* Validation Errors */}
       {Object.keys(errors).length !== 0 && (
         <div className="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8 space-y-2 w-full">
           {Object.values(errors).map((error, index) => (
@@ -293,8 +260,8 @@ export default function Authenticated({ header, children }) {
         </div>
       )}
 
-      <main className="container mx-auto my-12 max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">{children}</main>
-      <footer className="mt-auto bg-neutral-focus p-10 text-base-100">
+      <main className="container m-auto my-12 max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">{children}</main>
+      <footer className="mt-auto p-10 border-t shadow-xl bg-base-300">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
             <ApplicationLogo className="block h-10 w-auto fill-current" />
@@ -303,6 +270,7 @@ export default function Authenticated({ header, children }) {
               <br />
               Percetakan & Digital Printing
             </p>
+            <SocialMediaLink />
           </div>
           <div>
             <span className="footer-title">Services</span>
@@ -315,16 +283,12 @@ export default function Authenticated({ header, children }) {
           </div>
           <div>
             <span className="footer-title">Company</span>
-            <a className="link-hover link">About us</a>
-            <a className="link-hover link">Contact</a>
-            <a className="link-hover link">Jobs</a>
-            <a className="link-hover link">Press kit</a>
-          </div>
-          <div>
-            <span className="footer-title">Contact Us</span>
-            <a className="link-hover link">Terms of use</a>
-            <a className="link-hover link">Privacy policy</a>
-            <a className="link-hover link">Cookie policy</a>
+            <Link href={route("page.about")} className="link-hover link">
+              About Us
+            </Link>
+            <Link href={route("page.contact")} className="link-hover link">
+              Contact Us
+            </Link>
           </div>
         </div>
       </footer>
