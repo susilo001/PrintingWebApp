@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Currency from "@/utils/Currency";
+import SocialMediaLink from "@/Components/SocialMediaLink";
 
 export default function Index({ products, testimonials }) {
   const [Products, setProducts] = useState(products);
@@ -52,8 +53,18 @@ export default function Index({ products, testimonials }) {
     setProducts(filteredProducts);
   };
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout
+      header={
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-bold">Orbit Trust</h1>
+            <p>Offset & Digital Printing Services</p>
+          </div>
+          <SocialMediaLink />
+        </div>
+      }>
       <Head title="Offset & Digital Printing" />
+
       {/* Banner Section */}
       <Banner />
 
