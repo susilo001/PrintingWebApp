@@ -8,6 +8,7 @@ import { CheckIcon } from "@heroicons/react/24/outline";
 
 export default function CreateShippingAddress({ className }) {
     const [open, setOpen] = useState(false);
+    const cities = usePage().props.cities;
     const addresses = usePage().props.addresses;
 
     const { data, setData, post, errors, processing } = useForm({
@@ -16,7 +17,10 @@ export default function CreateShippingAddress({ className }) {
         email: '',
         phone: '',
         address: '',
-        city: '',
+        city_id: '',
+        city_name: '',
+        province_id: '',
+        province: '',
         postal_code: '',
     });
 
@@ -36,10 +40,14 @@ export default function CreateShippingAddress({ className }) {
         setOpen(false);
     }
 
+    const selectedCity = (e) => {
+        const city = JSON.parse(e.target.value);
+        setData({ ...data, ...city });
+    }
+
     const selectedAddress = (id) => {
         router.patch(route('address.update', id), { id: id, is_active: true });
     }
-
 
     return (
         <section className={className}>
@@ -59,7 +67,7 @@ export default function CreateShippingAddress({ className }) {
                         <h3 className="text-lg font-medium">{address.first_name} {address.last_name}</h3>
                         <span className="text-sm">{address.email}</span>
                         <span className="text-sm">{address.phone}</span>
-                        <p className="text-sm">{address.address} {address.city} {address.postal_code}</p>
+                        <p className="text-sm">{address.address}, {address.city_name}, {address.province}, {address.postal_code}</p>
                         <div className="space-x-4">
                             <Link className="text-primary" href={route('address.update', address.id)}>Edit</Link>
                             <Link className="text-error" type="button" as="button" method="delete" href={route('address.destroy', address.id)}>Delete</Link>
@@ -76,7 +84,8 @@ export default function CreateShippingAddress({ className }) {
             ))}
 
             <Modal title="Add New Address" show={open} onClose={closeModal}>
-                <form onSubmit={submit} className="p-4">
+                <form onSubmit={submit} className="p-8">
+                    <h3 className="text-lg font-medium">Shipping Information</h3>
                     <div className="grid grid-cols-2 gap-2">
                         <Input
                             id="first_name"
@@ -124,17 +133,31 @@ export default function CreateShippingAddress({ className }) {
                         errors={errors.phone}
                     />
                     <TextArea label="Address" id="address" value={data.address} handleChange={(e) => setData("address", e.target.value)} required className="input-bordered" errors={errors.address} />
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-3 gap-2">
+
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text">City</span>
+                            </label>
+                            <select onChange={selectedCity} className="select select-bordered">
+                                <option value="">Select City</option>
+                                {cities.map((city) => (
+                                    <option key={city.city_id} value={JSON.stringify(city)}>{city.city_name}</option>
+                                ))}
+                            </select>
+                        </div>
+
                         <Input
-                            id="city"
-                            label="City"
-                            value={data.city}
-                            handleChange={(e) => setData("city", e.target.value)}
+                            id="province"
+                            label="Province"
+                            value={data.province}
+                            handleChange={(e) => setData("province", e.target.value)}
                             required
                             isFocused
-                            autoComplete="city"
+                            disabled
+                            autoComplete="province"
                             className="input-bordered"
-                            errors={errors.city}
+                            errors={errors.province}
                         />
                         <Input
                             id="postal_code"
@@ -143,6 +166,7 @@ export default function CreateShippingAddress({ className }) {
                             handleChange={(e) => setData("postal_code", e.target.value)}
                             required
                             isFocused
+                            disabled
                             autoComplete="postal_code"
                             className="input-bordered"
                             errors={errors.postal_code}

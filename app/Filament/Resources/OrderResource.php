@@ -32,18 +32,20 @@ class OrderResource extends Resource
         return $form
             ->schema([
                 Section::make('Order Information')->schema([
-                    TextInput::make('user_id')
-                        ->disabled()
-                        ->required(),
-                    Select::make('status')
-                        ->preload()
-                        ->options([
-                            'pending' => 'Pending',
-                            'processing' => 'Processing',
-                            'completed' => 'Completed',
-                            'cancelled' => 'Cancelled',
-                        ])
-                        ->required(),
+                    Grid::make()->schema([
+                        TextInput::make('user_id')
+                            ->disabled()
+                            ->required(),
+                        Select::make('status')
+                            ->preload()
+                            ->options([
+                                'pending' => 'Pending',
+                                'processing' => 'Processing',
+                                'completed' => 'Completed',
+                                'cancelled' => 'Cancelled',
+                            ])
+                            ->required(),
+                    ]),
                     Card::make()->columns(1)->schema([
                         Grid::make()->schema([
                             TextInput::make('subtotal')
@@ -71,6 +73,8 @@ class OrderResource extends Resource
                                     ->required(),
                                 TextInput::make('name')
                                     ->required(),
+                            ]),
+                            Grid::make()->schema([
                                 Textarea::make('description')
                                     ->required(),
                                 SpatieMediaLibraryFileUpload::make('designs')
@@ -78,7 +82,10 @@ class OrderResource extends Resource
                                     ->enableDownload(true)
                                     ->collection('designs')
                                     ->responsiveImages(),
+                            ]),
+                            Grid::make(4)->schema([
                                 TextInput::make('qty')
+                                    ->label('Quantity')
                                     ->numeric()
                                     ->required(),
                                 TextInput::make('discount')
@@ -104,15 +111,9 @@ class OrderResource extends Resource
                     ->searchable()
                     ->sortable(),
                 BadgeColumn::make('status')
-                    ->colors([
-                        'primary' => static fn ($state): bool => $state === 'order placed',
-                        'secondary' => static fn ($state): bool => $state === 'pending',
-                        'warning' => static fn ($state): bool => $state === 'processing',
-                        'success' => static fn ($state): bool => $state === 'completed',
-                        'danger' => static fn ($state): bool => $state === 'cancelled',
-                    ])
                     ->sortable(),
                 TextColumn::make('user.name')
+                    ->label('Customer')
                     ->searchable(),
                 TextColumn::make('subtotal')
                     ->money('IDR', true),
@@ -123,8 +124,9 @@ class OrderResource extends Resource
                 TextColumn::make('total_amount')
                     ->money('IDR', true),
                 TextColumn::make('created_at')
-                    ->sortable()
-                    ->dateTime('d/m/Y'),
+                    ->label('Order Date')
+                    ->dateTime('d/m/Y: H:i:s')
+                    ->sortable(),
             ])
             ->filters([
                 //

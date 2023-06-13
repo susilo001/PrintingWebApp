@@ -20,7 +20,10 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('address');
-            $table->string('city');
+            $table->string('city_id');
+            $table->string('city_name');
+            $table->string('province_id');
+            $table->string('province');
             $table->string('postal_code');
             $table->boolean('is_active')->default(false);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();

@@ -13,6 +13,7 @@ export default forwardRef(function Input({
   required,
   errors,
   defaultValue,
+  disabled
 }, ref) {
   const input = ref || useRef();
 
@@ -35,6 +36,7 @@ export default forwardRef(function Input({
         placeholder={placeholder}
         onChange={(e) => handleChange(e)}
         value={value}
+        disabled={disabled}
         autoComplete="true"
         required={required}
         defaultValue={defaultValue}

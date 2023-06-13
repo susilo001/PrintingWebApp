@@ -28,4 +28,22 @@ class HomeController extends Controller
             'banners' => new BannerCollection(Banner::with(['media'])->where('status', true)->get()),
         ]);
     }
+
+    /** 
+     * Render about page
+     * @return \Inertia\Response
+     */
+    public function about()
+    {
+        return Inertia::render('About');
+    }
+
+    /** 
+     * Render contact page
+     * @return \Inertia\Response
+     */
+    public function contact()
+    {
+        return Inertia::render('Contact');
+    }
 }

@@ -30,7 +30,6 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
     'midtrans' => [
         'merchant_id' => env('MIDTRANS_MERCHANT_ID', 'G1234567'),
         'client_key' => env('MIDTRANS_CLIENT_KEY', 'SB-Mid-client-2Q9ZQ2Q2Q2Q2Q2Q2Q2Q2Q2Q2'),
@@ -39,5 +38,9 @@ return [
         'is_sanitized' => env('MIDTRANS_IS_SANITIZED', true),
         'is_3ds' => env('MIDTRANS_IS_3DS', true),
     ],
-
+    'rajaongkir' => [
+        'api_key' => env('RAJAONGKIR_API_KEY', ''),
+        'account_type' => env('RAJAONGKIR_ACCOUNT_TYPE', 'starter'),
+        'base_url' => env('RAJAONGKIR_BASE_URL', 'https://api.rajaongkir.com/starter'),
+    ]
 ];

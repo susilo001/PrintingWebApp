@@ -21,7 +21,10 @@ class Address extends Model
         'email',
         'phone',
         'address',
-        'city',
+        'city_id',
+        'city_name',
+        'province_id',
+        'province',
         'postal_code',
         'is_active'
     ];

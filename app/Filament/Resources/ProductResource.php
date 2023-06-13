@@ -40,7 +40,7 @@ class ProductResource extends Resource
                     Grid::make()->schema([
                         TextInput::make('name')
                             ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
-                                if (! $get('is_slug_changed_manually') && filled($state)) {
+                                if (!$get('is_slug_changed_manually') && filled($state)) {
                                     $set('slug', Str::slug($state));
                                 }
                             })
@@ -55,10 +55,10 @@ class ProductResource extends Resource
                             ->disabled()
                             ->maxLength(255),
                     ]),
+                    Toggle::make('featured')
+                        ->required(),
                     Textarea::make('description')
                         ->required(),
-                ]),
-                Card::make()->columns(1)->schema([
                     Grid::make()->schema([
                         Select::make('category_id')
                             ->label('Category')
@@ -79,62 +79,50 @@ class ProductResource extends Resource
                             ->type('number')
                             ->required(),
                     ]),
-                    Toggle::make('featured')
-                        ->required(),
-                ]),
-                Card::make()->columns(1)->schema([
-                    SpatieMediaLibraryFileUpload::make('images')
-                        ->image()
-                        ->collection('products')
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080')
-                        ->multiple()
-                        ->maxFiles(4)
-                        ->responsiveImages()
-                        ->acceptedFileTypes(['image/*'])
-                        ->required(),
-                ]),
-
-                Section::make('Prices')->columns(1)->schema([
-                    Repeater::make('prices')
-                        ->relationship()
-                        ->schema([
-                            Grid::make(4)->schema([
-                                TextInput::make('name')
-                                    ->required(),
+                    Grid::make(2)->schema([
+                        Repeater::make('prices')
+                            ->relationship()
+                            ->schema([
                                 TextInput::make('price')
                                     ->numeric()
                                     ->type('number')
                                     ->required(),
-                                TextInput::make('min_order')
-                                    ->numeric()
-                                    ->type('number')
-                                    ->required(),
-                                TextInput::make('max_order')
-                                    ->numeric()
-                                    ->type('number')
-                                    ->required(),
-                            ]),
-                        ])->createItemButtonLabel('Add New Price'),
-
-                ]),
-                Section::make('Variant')->columns(1)->schema([
+                                Grid::make(2)->schema([
+                                    TextInput::make('min_order')
+                                        ->numeric()
+                                        ->type('number')
+                                        ->required(),
+                                    TextInput::make('max_order')
+                                        ->numeric()
+                                        ->type('number')
+                                        ->required(),
+                                ]),
+                            ])->createItemButtonLabel('Add New Price'),
+                        SpatieMediaLibraryFileUpload::make('images')
+                            ->image()
+                            ->collection('products')
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('1920')
+                            ->imageResizeTargetHeight('1080')
+                            ->multiple()
+                            ->maxFiles(4)
+                            ->responsiveImages()
+                            ->acceptedFileTypes(['image/*'])
+                            ->required(),
+                    ]),
                     Repeater::make('variants')
                         ->relationship()
                         ->schema([
-                            Grid::make(1)->schema([
-                                TextInput::make('name')
+                            TextInput::make('name')
+                                ->label('Variant Name')
+                                ->required(),
+                            Repeater::make('options')->schema([
+                                TextInput::make('value')
                                     ->required(),
-                                Repeater::make('options')->schema([
-                                    TextInput::make('value')
-                                        ->required(),
-                                ])->createItemButtonLabel('Add New Option'),
-                            ]),
+                            ])->createItemButtonLabel('Add New Option'),
                         ])->createItemButtonLabel('Add New Variant'),
                 ]),
-
             ]);
     }
 

@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Route;
  * Public Route
  */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('page.about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('page.contact');
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index')->name('product.index');

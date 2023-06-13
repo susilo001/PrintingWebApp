@@ -30,7 +30,6 @@ class AddressController extends Controller
      */
     public function store(StoreAddressRequest $request)
     {
-
         $request->user()->addresses()->create($request->validated());
 
         return redirect('/profile')->with([
