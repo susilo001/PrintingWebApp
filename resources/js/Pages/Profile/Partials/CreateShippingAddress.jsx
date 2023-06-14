@@ -69,7 +69,7 @@ export default function CreateShippingAddress({ className }) {
                         <span className="text-sm">{address.phone}</span>
                         <p className="text-sm">{address.address}, {address.city_name}, {address.province}, {address.postal_code}</p>
                         <div className="space-x-4">
-                            <Link className="text-primary" href={route('address.update', address.id)}>Edit</Link>
+                            <Link className="text-primary" href={route('address.edit', address.id)}>Edit</Link>
                             <Link className="text-error" type="button" as="button" method="delete" href={route('address.destroy', address.id)}>Delete</Link>
                         </div>
                     </div>
@@ -173,7 +173,7 @@ export default function CreateShippingAddress({ className }) {
                         />
                     </div>
                     <div className="flex items-center gap-4">
-                        <Button className="btn-sm btn-primary" disabled={processing} type='submit'>Save</Button>
+                        <Button className="btn-sm btn-success" disabled={processing} type='submit'>Save</Button>
                         <Button className="btn-error btn-sm" disabled={processing} onClick={closeModal}>Cancel</Button>
                     </div>
                 </form>

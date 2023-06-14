@@ -16,12 +16,17 @@ return new class extends Migration
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained();
+            $table->string('tracking_number')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
             $table->string('phone');
             $table->text('address');
-            $table->string('city');
+            $table->string('city_id');
+            $table->string('city_name');
+            $table->string('province_id');
+            $table->string('province');
+            $table->json('courier');
             $table->string('postal_code');
             $table->timestamps();
         });

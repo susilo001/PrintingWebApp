@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['put', 'patch'], '/cart/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::get('/cart/shipment', [CartController::class, 'shipment'])->name('cart.shipment');
-    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
     Route::get('/order', [OrderController::class, 'index'])->name('order.index');
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['put', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/address/{address}', [AddressController::class, 'edit'])->name('address.edit');
+    Route::get('/address/{address}/edit', [AddressController::class, 'edit'])->name('address.edit');
     Route::post('/address', [AddressController::class, 'store'])->name('address.store');
     Route::match(['put', 'patch'], '/address/{address}', [AddressController::class, 'update'])->name('address.update');
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');

@@ -32,10 +32,6 @@ class CartService
         $userCart = $this->checkCart();
         $product = Product::findOrfail($request->product_id);
 
-        if (!$product) {
-            throw new \Exception('Product not found');
-        }
-
         if ($this->checkIfOrderQtyIsLessThanMinimumOrderQty($product, $request->quantity)) {
             throw new \Exception('Order quantity is less than minimum order quantity');
         }
@@ -62,12 +58,14 @@ class CartService
         return $qty < $product->minimum_order_quantity;
     }
 
-    public function checkout(): string
+
+
+    public function checkout($request): string
     {
         $paymentService = new PaymentService;
         $orderService = new OrderService;
 
-        $order = $orderService->createOrder();
+        $order = $orderService->createOrder($request);
 
         $snapToken = $paymentService->requestPayment($order);
 

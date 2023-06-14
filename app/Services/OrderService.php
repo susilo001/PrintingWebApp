@@ -16,12 +16,14 @@ class OrderService
         $this->cart = new Cart;
     }
 
-    public function createOrder()
+    public function createOrder($data)
     {
+        $userId = auth()->user()->id;
         $userCart = $this->cart->getUserCart();
+        $shippingAddress = Address::where('user_id', $userId)->where('is_active', true)->firstOrFail();
 
         $order = Order::create([
-            'user_id' => auth()->user()->id,
+            'user_id' => $userId,
             'status' => 'pending',
             'subtotal' => $userCart->getSubtotal(),
             'discount' => $userCart->getDiscount(),
@@ -29,9 +31,10 @@ class OrderService
             'total_amount' => $userCart->getTotal(),
         ]);
 
-        $shippingAddress = Address::where('user_id', auth()->user()->id)->where('is_active', true)->first();
+        $shippingData = $shippingAddress->toArray();
+        $shippingData['courier'] = json_encode($data['courier']);
 
-        $order->shipping()->create($shippingAddress->toArray());
+        $order->shipping()->create($shippingData);
 
         foreach ($userCart->cartItems as $item) {
             $orderItem = OrderItem::create([

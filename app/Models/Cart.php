@@ -60,4 +60,11 @@ class Cart extends Model
     {
         return $this->with('cartItems')->where('user_id', auth()->id())->firstOrFail();
     }
+
+    public function getWeight()
+    {
+        return $this->cartItems->sum(function ($item) {
+            return $item->qty * $item->product->weight;
+        });
+    }
 }

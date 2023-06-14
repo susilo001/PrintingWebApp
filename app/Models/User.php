@@ -79,4 +79,20 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasOne(Cart::class);
     }
+
+    /**
+     * get the user active address if there no active address throw exception 
+     *
+     * @return \App\Models\Address
+     */
+    public function getActiveAddress()
+    {
+        $address = $this->addresses()->where('is_active', true)->first();
+
+        if (!$address) {
+            throw new \Exception('No active address found');
+        }
+
+        return $address;
+    }
 }

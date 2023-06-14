@@ -4,6 +4,8 @@ namespace App\Services;
 
 class RajaOngkirService
 {
+    protected $origin = 501; // Diambil dari id kota DI Yogyakarta di RajaOngkir
+
     protected function request($endpoint, $method = 'GET', $body = [])
     {
         $client = new \GuzzleHttp\Client();
@@ -28,13 +30,13 @@ class RajaOngkirService
         return $this->request('/city');
     }
 
-    public function cost()
+    public function cost($payload)
     {
         return $this->request('/cost', 'POST', [
-            'origin' => request()->origin,
-            'destination' => request()->destination,
-            'weight' => request()->weight,
-            'courier' => request()->courier
+            'origin' => $this->origin,
+            'destination' => $payload['destination'],
+            'weight' => $payload['weight'],
+            'courier' => $payload['courier'],
         ]);
     }
 }

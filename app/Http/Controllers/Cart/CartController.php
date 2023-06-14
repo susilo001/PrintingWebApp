@@ -7,10 +7,12 @@ use App\Http\Requests\CheckoutRequest;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Http\Resources\CartResource;
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Services\CartService;
 use App\Services\Payment\PaymentService;
+use App\Services\RajaOngkirService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -94,11 +96,42 @@ class CartController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function shipment(Request $request)
+    public function shipment(Request $request, RajaOngkirService $rajaOngkirService)
     {
+        $user = $request->user();
+        $cart = Cart::with('cartItems.product', 'cartItems.media')->where('user_id', $user->id)->first();
+        $address = $user->getActiveAddress();
+
+        $destination = $address->city_id;
+        $weight = $cart->getWeight();
+
+        $jne = [
+            'destination' => $destination,
+            'weight' => $weight,
+            'courier' => 'jne',
+        ];
+
+        $tiki = [
+            'destination' => $destination,
+            'weight' => $weight,
+            'courier' => 'tiki',
+        ];
+
+        $pos = [
+            'destination' => $destination,
+            'weight' => $weight,
+            'courier' => 'pos',
+        ];
+
+        $jneCourier = $rajaOngkirService->cost($jne);
+        $tikiCourier = $rajaOngkirService->cost($tiki);
+        $posCourier = $rajaOngkirService->cost($pos);
+        $couriers = array_merge($jneCourier['rajaongkir']['results'], $tikiCourier['rajaongkir']['results'], $posCourier['rajaongkir']['results']);
+
         return Inertia::render('Checkout', [
-            'cart' => new CartResource(Cart::with('cartItems.media')->where('user_id', auth()->id())->first()),
-            'addresses' => $request->user()->addresses()->get(),
+            'cart' => new CartResource($cart),
+            'address' => $address,
+            'couriers' => $couriers,
         ]);
     }
 
@@ -107,7 +140,7 @@ class CartController extends Controller
      */
     public function checkout(Request $request, Cart $cart): \Inertia\Response
     {
-        $snapToken = $this->cartService->checkout();
+        $snapToken = $this->cartService->checkout($request->all());
 
         return Inertia::render('Checkout', [
             'cart' => new CartResource($cart->getUserCart()),

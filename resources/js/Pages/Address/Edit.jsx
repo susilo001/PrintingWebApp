@@ -11,7 +11,8 @@ export default function Edit({ address }) {
         email: address.email,
         phone: address.phone,
         address: address.address,
-        city: address.city,
+        city: address.city_name,
+        province: address.province,
         postal_code: address.postal_code,
     });
 
@@ -22,8 +23,11 @@ export default function Edit({ address }) {
 
     return (
         <AuthenticatedLayout
-            header={<h2 className="text-xl font-semibold leading-tight">Edit Address</h2>}
-        >
+            header={
+                <h2 className="text-xl font-semibold leading-tight">
+                    Edit Address
+                </h2>
+            }>
             <Head title="Edit Address" />
 
             <div className="border p-4 shadow sm:rounded-lg sm:p-8">
@@ -68,7 +72,7 @@ export default function Edit({ address }) {
                             errors={errors.phone}
                         />
                         <TextArea label="Address" name="address" value={data.address} handleChange={(e) => setData("address", e.target.value)} className="input-bordered" errors={errors.address} />
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
                             <Input
                                 className="input-bordered"
                                 label="City"
@@ -80,6 +84,15 @@ export default function Edit({ address }) {
                             />
                             <Input
                                 className="input-bordered"
+                                label="Province"
+                                name="province"
+                                type="text"
+                                value={data.province}
+                                handleChange={(e) => setData("province", e.target.value)}
+                                errors={errors.province}
+                            />
+                            <Input
+                                className="input-bordered"
                                 label="Postal Code"
                                 name="postal_code"
                                 type="text"
@@ -88,7 +101,7 @@ export default function Edit({ address }) {
                                 errors={errors.postal_code}
                             />
                         </div>
-                        <Button className="btn-primary text-white" type='submit' disable={processing}>
+                        <Button className="btn-primary text-white" type='submit' disable={processing.toString()}>
                             Update Address
                         </Button>
                     </form>

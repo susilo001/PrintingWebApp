@@ -21,8 +21,21 @@ class Shipping extends Model
         'email',
         'phone',
         'address',
-        'city',
+        'city_id',
+        'city_name',
+        'province_id',
+        'province',
+        'courier',
         'postal_code',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'courier' => 'array',
     ];
 
     /**
