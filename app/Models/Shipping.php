@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Address extends Model
+class Shipping extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Address extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
+        'order_id',
         'first_name',
         'last_name',
         'email',
@@ -25,8 +25,8 @@ class Address extends Model
         'city_name',
         'province_id',
         'province',
+        'courier',
         'postal_code',
-        'is_active'
     ];
 
     /**
@@ -35,16 +35,14 @@ class Address extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'is_active' => 'boolean',
+        'courier' => 'array',
     ];
 
     /**
-     * Belongs to user
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Belongs to order
      */
-    public function user()
+    public function order()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Order::class);
     }
 }

@@ -2,28 +2,22 @@
 
 namespace App\Services\Payment;
 
-use App\Models\Cart;
+use App\Models\Order;
+use App\Services\OrderService;
+use App\Services\Payment\Midtrans;
 
 class PaymentService extends Midtrans
 {
-    protected $cart;
-
-    public function __construct()
+    public function requestPayment(Order $order): string
     {
-        $this->cart = Cart::class;
-    }
-
-    public function requestPayment(): string
-    {
-        $userCart = $this->cart::where('user_id', auth()->user()->id)->first();
-        $cartDiscount = $userCart->getDiscount();
-        $cartTax = $userCart->getTax();
-        $cartTotal = $userCart->getTotal();
-
         $transaction = [
             'transaction_details' => [
-                'order_id' => 'OTC'.'-'.now()->timestamp.'-'.substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5),
-                'gross_amount' => (int) $cartTotal,
+                'order_id' => $order->id,
+                'gross_amount' => $order->total_amount,
+            ],
+
+            'callbacks' => [
+                'finish' => 'http://orbit.test/order',
             ],
 
             'customer_details' => [
@@ -31,33 +25,23 @@ class PaymentService extends Midtrans
                 'last_name' => auth()->user()->name,
                 'email' => auth()->user()->email,
                 'phone' => auth()->user()->phone_number,
-                'billing_address' => [
-                    'first_name' => 'Budi',
-                    'last_name' => 'Susanto',
-                    'email' => 'budisusanto@example.com',
-                    'phone' => '08123456789',
-                    'address' => 'Sudirman No.12',
-                    'city' => 'Jakarta',
-                    'postal_code' => '12190',
-                    'country_code' => 'IDN',
-                ],
                 'shipping_address' => [
-                    'first_name' => 'Budi',
-                    'last_name' => 'Susanto',
-                    'email' => 'budisusanto@example.com',
-                    'phone' => '08123456789',
-                    'address' => 'Sudirman No.12',
-                    'city' => 'Jakarta',
-                    'postal_code' => '12190',
+                    'first_name' => $order->shipping->first_name,
+                    'last_name' => $order->shipping->last_name,
+                    'email' => $order->shipping->email,
+                    'phone' => $order->shipping->phone,
+                    'address' => $order->shipping->address,
+                    'city' => $order->shipping->city,
+                    'postal_code' => $order->shipping->postal_code,
                     'country_code' => 'IDN',
                 ],
             ],
 
-            'item_details' => $userCart->cartItems->map(function ($item) {
+            'item_details' => $order->orderItems->map(function ($item) {
                 return [
                     'id' => $item->product->id,
                     'name' => $item->product->name,
-                    'price' => (int) $item->product->getPriceByOrderQuantity($item->qty),
+                    'price' => $item->price,
                     'quantity' => $item->qty,
                 ];
             })->toArray(),
@@ -67,13 +51,13 @@ class PaymentService extends Midtrans
             [
                 'id' => 'D01',
                 'name' => 'Discount',
-                'price' => (int) -$cartDiscount,
+                'price' => -$order->discount,
                 'quantity' => 1,
             ],
             [
                 'id' => 'T01',
                 'name' => 'Tax',
-                'price' => (int) $cartTax,
+                'price' => $order->tax,
                 'quantity' => 1,
             ],
 
@@ -82,5 +66,26 @@ class PaymentService extends Midtrans
         $transaction['item_details'] = array_merge($transaction['item_details'], $additionalFee);
 
         return $this->getSnapToken($transaction);
+    }
+
+    public function notification($request)
+    {
+        $data = $this->handleNotification($request);
+
+        $order = Order::findOrfail($data['order']);
+
+        $order->update([
+            'status' => $data['order_status'],
+        ]);
+
+        $order->paymentDetail()->create([
+            'status' => $data['status'],
+            'payment_type' => $data['type'],
+            'gross_amount' => $data['amount'],
+            'transaction_id' => $data['transaction_id'],
+            'transaction_time' => $data['transaction_time'],
+        ]);
+
+        return $order;
     }
 }

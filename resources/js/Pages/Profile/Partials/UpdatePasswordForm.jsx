@@ -88,7 +88,7 @@ export default function UpdatePasswordForm({ className }) {
         </div>
 
         <div className="flex items-center gap-4">
-          <Button className="btn-outline btn-ghost" disabled={processing}>
+          <Button className="btn-primary text-white btn-sm" disabled={processing}>
             Save
           </Button>
 

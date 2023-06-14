@@ -1,9 +1,8 @@
-import Bannner from "@/Components/Banner";
+import Banner from "@/Components/Banner";
 import Button from "@/Components/Button";
 import Card from "@/Components/Card";
 import FeatureSection from "@/Components/FeatureSection";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/utils/CurrencyFormater";
 import {
   ArrowRightIcon,
   ExclamationTriangleIcon,
@@ -12,6 +11,8 @@ import { Head, Link } from "@inertiajs/react";
 import { useState } from "react";
 import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Currency from "@/utils/Currency";
+import SocialMediaLink from "@/Components/SocialMediaLink";
 
 export default function Index({ products, testimonials }) {
   const [Products, setProducts] = useState(products);
@@ -24,15 +25,13 @@ export default function Index({ products, testimonials }) {
     const data = products.map((product) => product.category);
 
     const unique = [...new Set(data.map((item) => item.id))];
-    const categories = unique.map((id) => {
+    return unique.map((id) => {
       return {
         id,
         name: data.find((item) => item.id === id).name,
         slug: data.find((item) => item.id === id).slug,
       };
     });
-
-    return categories;
   };
 
   const getProductsByCategory = (id) => {
@@ -54,10 +53,20 @@ export default function Index({ products, testimonials }) {
     setProducts(filteredProducts);
   };
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout
+      header={
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-bold">Orbit Trust</h1>
+            <p>Offset & Digital Printing Services</p>
+          </div>
+          <SocialMediaLink />
+        </div>
+      }>
       <Head title="Offset & Digital Printing" />
+
       {/* Banner Section */}
-      <Bannner />
+      <Banner />
 
       {/* Feature Section */}
       <FeatureSection />
@@ -98,7 +107,7 @@ export default function Index({ products, testimonials }) {
                     <Card.Title>{product.name}</Card.Title>
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-primary">
-                        {CurrencyFormater(product.price)}
+                        {Currency.getPrice(product.prices)}
                       </span>
                       <span className="badge badge-accent p-2 text-xs font-semibold">
                         {product.category.name}
@@ -178,7 +187,7 @@ export default function Index({ products, testimonials }) {
                       <Card.Title>{product.name}</Card.Title>
                       <Card.Actions className="flex items-center justify-between">
                         <span className="font-bold text-primary">
-                          {CurrencyFormater(product.price)}
+                          {Currency.getPrice(product.prices)}
                         </span>
                         <span className="badge badge-accent p-2 text-xs font-semibold">
                           {product.category.name}
@@ -195,12 +204,12 @@ export default function Index({ products, testimonials }) {
 
       {/* Testimonial */}
       <>
-        <div className="mb-10 flex justify-center">
+        <div className="flex justify-center">
           <h2 className="text-2xl font-bold">Testimonial</h2>
         </div>
         <Swiper spaceBetween={50} slidesPerView={1} modules={[Pagination]} pagination={{ clickable: true }}>
           {testimonials.map((item, index) => (
-            <SwiperSlide key={index} className="swiper-slide !bg-transparent">
+            <SwiperSlide key={index} className="swiper-slide !bg-transparent mb-8">
               <div className="mx-auto p-4 text-center md:w-8/12 lg:w-7/12">
                 <div className="flex space-x-8">
                   <div className="w-full">

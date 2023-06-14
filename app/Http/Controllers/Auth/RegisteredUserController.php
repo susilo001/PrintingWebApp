@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
         ]);
 
         Cart::create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $user->assignRole('customer');

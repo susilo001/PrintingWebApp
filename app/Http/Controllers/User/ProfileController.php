@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\RajaOngkir;
+use App\Services\RajaOngkirService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,11 +19,15 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, RajaOngkirService $rajaOngkirService): Response
     {
+        $cities = $rajaOngkirService->getCities();
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'addresses' => $request->user()->addresses()->orderBy('id')->get(),
+            'cities' => $cities['rajaongkir']['results'],
         ]);
     }
 

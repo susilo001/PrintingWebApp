@@ -100,7 +100,7 @@ class Product extends Model implements HasMedia
 
             return $price->price;
         } catch (\Exception $e) {
-            return throw new \Exception('The minimum order is '.$prices->min('min_order').' pcs');
+            return throw new \Exception('The minimum order is ' . $prices->min('min_order') . ' pcs');
         }
     }
 }

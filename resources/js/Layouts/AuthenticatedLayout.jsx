@@ -1,33 +1,20 @@
+import Alert from "@/Components/Alert";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import SocialMediaLink from "@/Components/SocialMediaLink";
 import { ShoppingBagIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
-import Swal from "sweetalert2";
 
 export default function Authenticated({ header, children }) {
-  const [showingNavigationDropdown, setShowingNavigationDropdown] =
-    useState(false);
+  const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
   const { flash } = usePage().props;
   const { auth } = usePage().props;
   const { cartCount } = usePage().props;
   const { errors } = usePage().props;
-
-  const showFlashMessage = async () => {
-    await Swal.fire({
-      title: flash.title ? flash.title : "",
-      text: flash.message ? flash.message : "",
-      icon: flash.status ? flash.status : "",
-      showCloseButton: true,
-      showConfirmButton: true,
-      timer: 3000,
-    });
-  };
-
-  flash.message ? showFlashMessage() : null;
 
   return (
     <div className="relative flex min-h-screen flex-col">
@@ -259,21 +246,22 @@ export default function Authenticated({ header, children }) {
         </header>
       )}
 
+      {/* Alert  */}
+      <Alert status={flash.status} message={flash.message} />
+
+      {/* Validation Errors */}
       {Object.keys(errors).length !== 0 && (
-        <div className="alert alert-error mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex-1">
-            <XCircleIcon className="h-6 w-6" />
-            <ul className="list-inside">
-              {Object.values(errors).map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </div>
+        <div className="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8 space-y-2 w-full">
+          {Object.values(errors).map((error, index) => (
+            <div key={index} className="alert alert-error">
+              <XCircleIcon className="h-6 w-6" /> <span>{error}</span>
+            </div>
+          ))}
         </div>
       )}
 
-      <main className="container mx-auto my-12 max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">{children}</main>
-      <footer className="mt-auto bg-neutral-focus p-10 text-base-100">
+      <main className="container m-auto my-12 max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">{children}</main>
+      <footer className="mt-auto p-10 border-t shadow-xl bg-base-300">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
             <ApplicationLogo className="block h-10 w-auto fill-current" />
@@ -282,6 +270,7 @@ export default function Authenticated({ header, children }) {
               <br />
               Percetakan & Digital Printing
             </p>
+            <SocialMediaLink />
           </div>
           <div>
             <span className="footer-title">Services</span>
@@ -294,16 +283,12 @@ export default function Authenticated({ header, children }) {
           </div>
           <div>
             <span className="footer-title">Company</span>
-            <a className="link-hover link">About us</a>
-            <a className="link-hover link">Contact</a>
-            <a className="link-hover link">Jobs</a>
-            <a className="link-hover link">Press kit</a>
-          </div>
-          <div>
-            <span className="footer-title">Contact Us</span>
-            <a className="link-hover link">Terms of use</a>
-            <a className="link-hover link">Privacy policy</a>
-            <a className="link-hover link">Cookie policy</a>
+            <Link href={route("page.about")} className="link-hover link">
+              About Us
+            </Link>
+            <Link href={route("page.contact")} className="link-hover link">
+              Contact Us
+            </Link>
           </div>
         </div>
       </footer>

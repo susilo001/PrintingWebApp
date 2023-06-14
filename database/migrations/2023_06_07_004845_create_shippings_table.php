@@ -13,20 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('addresses', function (Blueprint $table) {
+        Schema::create('shippings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->constrained();
+            $table->string('tracking_number')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
             $table->string('phone');
-            $table->string('address');
+            $table->text('address');
             $table->string('city_id');
             $table->string('city_name');
             $table->string('province_id');
             $table->string('province');
+            $table->json('courier');
             $table->string('postal_code');
-            $table->boolean('is_active')->default(false);
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -38,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('shippings');
     }
 };

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Design\DesignController;
+use App\Http\Controllers\Payment\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('design', [DesignController::class, 'index']);
 
 Route::get('category', CategoryController::class);
+
+Route::post('/payment/notification', [PaymentController::class, 'store']);

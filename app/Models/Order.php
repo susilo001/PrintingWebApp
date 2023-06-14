@@ -18,7 +18,6 @@ class Order extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'user_id',
         'subtotal',
         'discount',
@@ -57,5 +56,13 @@ class Order extends Model
     public function testimonial(): HasOne
     {
         return $this->hasOne(Testimonial::class);
+    }
+
+    /**
+     * Has one shipping
+     */
+    public function shipping(): HasOne
+    {
+        return $this->hasOne(Shipping::class);
     }
 }

@@ -2,28 +2,41 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 use App\Models\Address;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAddressRequest;
 
 class AddressController extends Controller
 {
+
+    /**
+     * Display address form. 
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Address $address)
+    {
+        return Inertia::render('Address/Edit', [
+            'address' => $address
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAddressRequest $request)
     {
-        Address::create([
-            'user_id' => $request->user()->id,
-            'street_name' => $request->street_name,
-            'city' => $request->city,
-            'province' => $request->province,
-            'zip_code' => $request->zip_code,
-        ]);
+        $request->user()->addresses()->create($request->validated());
 
-        return redirect('/profile')->with('message', 'Address added successfully');
+        return redirect('/profile')->with([
+            'title' => 'Success',
+            'message' => 'Address added successfully',
+            'status' => 'success',
+        ]);
     }
 
     /**
@@ -33,15 +46,25 @@ class AddressController extends Controller
      */
     public function update(Request $request, Address $address)
     {
-        $address->update([
-            'user_id' => $request->user()->id,
-            'street_name' => $request->street_name,
-            'city' => $request->city,
-            'province' => $request->province,
-            'zip_code' => $request->zip_code,
-        ]);
+        if ($request->is_active === true) {
+            $request->user()->addresses()->where('is_active', true)->update(['is_active' => false]);
 
-        return redirect('/profile')->with('message', 'Address updated successfully');
+            $address->update(['is_active' => true]);
+
+            return redirect('/profile')->with([
+                'title' => 'Success',
+                'message' => 'Your default address has been updated',
+                'status' => 'success',
+            ]);
+        }
+
+        $address->update($request->all());
+
+        return redirect('/profile')->with([
+            'title' => 'Success',
+            'message' => 'Address updated successfully',
+            'status' => 'success',
+        ]);
     }
 
     /**
@@ -53,6 +76,10 @@ class AddressController extends Controller
     {
         $address->delete();
 
-        return redirect('/profile')->with('message', 'Address deleted successfully');
+        return redirect('/profile')->with([
+            'title' => 'Success',
+            'message' => 'Address deleted successfully',
+            'status' => 'success',
+        ]);
     }
 }

@@ -19,10 +19,16 @@ class AddressFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'street_name' => fake()->streetAddress(),
-            'city' => fake()->city(),
-            'province' => fake()->text(),
-            'zip_code' => fake()->postcode(),
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->email,
+            'phone' => $this->faker->phoneNumber,
+            'address' => $this->faker->streetAddress,
+            'city_id' => $this->faker->randomNumber(1, 500),
+            'city_name' => $this->faker->city,
+            'province_id' => $this->faker->randomNumber(1, 500),
+            'province' => $this->faker->city,
+            'postal_code' => $this->faker->postcode,
         ];
     }
 }

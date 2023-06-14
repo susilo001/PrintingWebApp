@@ -1,6 +1,6 @@
 import Button from "@/Components/Button";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import CurrencyFormater from "@/utils/CurrencyFormater";
+import Currency from "@/utils/Currency";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 
@@ -55,29 +55,18 @@ export default function Order({ orders }) {
             </div>
             <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
               <span className="font-bold">Total amount</span>
-              <span>{CurrencyFormater(order.total)}</span>
+              <span>{Currency.getCurrencyFormat(order.total)}</span>
             </div>
             <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
               <span className="font-bold">Status</span>
-              {order.status === "completed" && (
-                <span className="font-bold text-primary">{order.status}</span>
-              )}
-              {order.status === "pending" && (
-                <span className="font-bold text-warning">{order.status}</span>
-              )}
-              {order.status === "Proccessing" && (
-                <span className="font-bold text-secondary">{order.status}</span>
-              )}
-              {order.status === "canceled" && (
-                <span className="font-bold text-error">{order.status}</span>
-              )}
+              <span>{order.status}</span>
             </div>
             <Button
-              className="btn-ghost btn-outline btn-md gap-2 font-bold"
+              className="btn-ghost btn-outline btn-sm gap-2 font-bold normal-case"
               onClick={() => handleRequestInvoice(order.id)}
             >
-              <span>Invoice</span>
               <ReceiptPercentIcon className="h-5 w-5" />
+              <span>Invoice</span>
             </Button>
           </div>
           {order.items.map((item) => (
@@ -85,21 +74,21 @@ export default function Order({ orders }) {
               <div className="flex flex-col items-center sm:flex-row sm:items-start sm:space-x-4">
                 <img
                   srcSet={item.image}
-                  className="aspect-square h-52 w-52 rounded-lg bg-base-200 object-contain"
+                  className="aspect-square h-32 w-32 rounded-lg bg-base-200 object-contain"
                   alt={item.name}
                 />
                 <div className="my-4 flex-grow space-y-4 lg:my-0">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-bold">{item.product.name}</h2>
-                    <span className="text-lg font-bold">
-                      {CurrencyFormater(item.price)}
+                    <h2 className="text-lg font-semibold">{item.product.name}</h2>
+                    <span className="text-lg font-semibold">
+                      {Currency.getCurrencyFormat(item.price)}
                     </span>
                   </div>
                   <p className="break-words text-justify">{item.desc}</p>
                   <ul className="flex items-center space-x-2">
                     {item.variants.map((variant, index) => (
                       <li key={index} className="border-r-2 pr-2">
-                        <span className="font-bold">{variant.value}</span>
+                        <span className="font-semibold">{variant.value}</span>
                       </li>
                     ))}
                   </ul>
@@ -108,13 +97,13 @@ export default function Order({ orders }) {
               <div className="flex items-center justify-center space-x-4 sm:justify-end">
                 <Link
                   href={route("product.show", { product: item.product })}
-                  className="link-hover link-primary link text-lg font-bold"
+                  className="link-hover link-primary link font-semibold"
                 >
                   View Product
                 </Link>
                 <Link
                   href={route("product.show", { product: item.product })}
-                  className="link-hover link-primary link text-lg font-bold"
+                  className="link-hover link-primary link font-semibold"
                 >
                   View Order
                 </Link>

@@ -22,7 +22,7 @@ class OrderController extends Controller
     public function index(): \Inertia\Response
     {
         return Inertia::render('Order/index', [
-            'orders' => new OrderCollection(Order::with('orderItems', 'paymentDetail')->where('user_id', auth()->user()->id)->get()),
+            'orders' => new OrderCollection(Order::with('orderItems.media', 'paymentDetail', 'orderItems.product:id,name')->where('user_id', auth()->user()->id)->get()),
         ]);
     }
 
@@ -103,7 +103,7 @@ class OrderController extends Controller
             ->addItems($items)
             ->logo(public_path('vendor/invoices/logo.png'))
             ->notes('Thank you for your business!')
-            ->filename('INV'.$order->id)
+            ->filename('INV' . $order->id)
             ->save('public');
 
         return redirect()->route('order.index')->with([

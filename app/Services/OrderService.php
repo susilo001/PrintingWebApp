@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -15,13 +16,14 @@ class OrderService
         $this->cart = new Cart;
     }
 
-    public function createOrder($request)
+    public function createOrder($data)
     {
+        $userId = auth()->user()->id;
         $userCart = $this->cart->getUserCart();
+        $shippingAddress = Address::where('user_id', $userId)->where('is_active', true)->firstOrFail();
 
         $order = Order::create([
-            'id' => (int) $request->order_id,
-            'user_id' => auth()->user()->id,
+            'user_id' => $userId,
             'status' => 'pending',
             'subtotal' => $userCart->getSubtotal(),
             'discount' => $userCart->getDiscount(),
@@ -29,13 +31,10 @@ class OrderService
             'total_amount' => $userCart->getTotal(),
         ]);
 
-        $order->paymentDetail()->create([
-            'status' => $request->status,
-            'gross_amount' => (int) $request->gross_amount,
-            'payment_type' => $request->payment_type,
-            'transaction_id' => $request->transaction_id,
-            'transaction_time' => $request->transaction_time,
-        ]);
+        $shippingData = $shippingAddress->toArray();
+        $shippingData['courier'] = json_encode($data['courier']);
+
+        $order->shipping()->create($shippingData);
 
         foreach ($userCart->cartItems as $item) {
             $orderItem = OrderItem::create([
@@ -52,7 +51,7 @@ class OrderService
 
             $cartItemMedia = $item->getMedia('cart')->first();
 
-            $cartItemMedia->move($orderItem, 'designs');
+            $cartItemMedia->copy($orderItem, 'designs');
         }
 
         $userCart->cartItems()->delete();
