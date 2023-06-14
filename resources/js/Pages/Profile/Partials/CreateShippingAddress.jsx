@@ -5,9 +5,12 @@ import Modal from "@/Components/Modal";
 import { useState } from "react";
 import TextArea from "@/Components/TextArea";
 import { CheckIcon } from "@heroicons/react/24/outline";
+import UpdateShippingAddress from "./UpdateShippingAddress";
 
 export default function CreateShippingAddress({ className }) {
     const [open, setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+    const [editAddress, setEditAddress] = useState({});
     const cities = usePage().props.cities;
     const addresses = usePage().props.addresses;
 
@@ -49,6 +52,15 @@ export default function CreateShippingAddress({ className }) {
         router.patch(route('address.update', id), { id: id, is_active: true });
     }
 
+    const openEditModal = (address) => {
+        setOpenEdit(true);
+        setEditAddress(address);
+    }
+
+    const closeEditModal = () => {
+        setOpenEdit(false);
+    }
+
     return (
         <section className={className}>
             <header className="flex w-full justify-between">
@@ -62,22 +74,22 @@ export default function CreateShippingAddress({ className }) {
             </header>
 
             {addresses.map((address) => (
-                <div key={address.id} className={`mt-6 border p-8 rounded-md grid grid-cols-2 ${address.is_active === true ? 'bg-base-200' : ''}`}>
-                    <div className="space-y-4 flex flex-col">
+                <div key={address.id} className={`mt-6 border p-8 shadow-md rounded-md grid grid-cols-2 ${address.is_active === true ? 'border-success' : ''}`}>
+                    <div className="space-y-2 flex flex-col">
                         <h3 className="text-lg font-medium">{address.first_name} {address.last_name}</h3>
                         <span className="text-sm">{address.email}</span>
                         <span className="text-sm">{address.phone}</span>
                         <p className="text-sm">{address.address}, {address.city_name}, {address.province}, {address.postal_code}</p>
                         <div className="space-x-4">
-                            <Link className="text-primary" href={route('address.edit', address.id)}>Edit</Link>
-                            <Link className="text-error" type="button" as="button" method="delete" href={route('address.destroy', address.id)}>Delete</Link>
+                            <button className="text-accent hover:text-base-300" onClick={() => openEditModal(address)}>Edit</button>
+                            <Link className="text-error hover:text-base-300" type="button" as="button" method="delete" href={route('address.destroy', address.id)}>Delete</Link>
                         </div>
                     </div>
                     <div className="space-y-4 flex justify-end items-center">
                         {address.is_active ? (
                             <CheckIcon className="w-10 h-10 text-green-500" />
                         ) : (
-                            <Button className="btn-accent btn-sm normal-case" onClick={() => selectedAddress(address.id)}>Pilih</Button>
+                            <Button className="btn-primary btn-sm normal-case" onClick={() => selectedAddress(address.id)}>Pilih</Button>
                         )}
                     </div>
                 </div>
@@ -177,6 +189,10 @@ export default function CreateShippingAddress({ className }) {
                         <Button className="btn-error btn-sm" disabled={processing} onClick={closeModal}>Cancel</Button>
                     </div>
                 </form>
+            </Modal>
+
+            <Modal title="Edit Address" show={openEdit} onClose={closeEditModal}>
+                <UpdateShippingAddress address={editAddress} cities={cities} />
             </Modal>
         </section>
     );
