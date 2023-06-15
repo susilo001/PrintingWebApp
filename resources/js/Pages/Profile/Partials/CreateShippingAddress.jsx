@@ -68,8 +68,8 @@ export default function CreateShippingAddress({ className }) {
                     <h2 className="text-lg font-medium">Shipping Information</h2>
                     <p className="mt-1 text-sm">Update your account shipping information.</p>
                 </div>
-                <Button className="btn-primary text-white" disabled={processing} onClick={openModal}>
-                    Add New Address
+                <Button className="btn-success btn-md text-white" disabled={processing} onClick={openModal}>
+                    New Address
                 </Button>
             </header>
 

@@ -32,7 +32,7 @@ class OrderService
         ]);
 
         $shippingData = $shippingAddress->toArray();
-        $shippingData['courier'] = json_encode($data['courier']);
+        $shippingData['courier'] = array($data['courier']);
 
         $order->shipping()->create($shippingData);
 
@@ -40,7 +40,6 @@ class OrderService
             $orderItem = OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $item->product_id,
-                'name' => $item->name,
                 'description' => $item->description,
                 'qty' => $item->qty,
                 'price' => $item->product->getPriceByOrderQuantity($item->qty),
@@ -54,7 +53,7 @@ class OrderService
             $cartItemMedia->copy($orderItem, 'designs');
         }
 
-        $userCart->cartItems()->delete();
+        // $userCart->cartItems()->delete();
 
         return $order;
     }

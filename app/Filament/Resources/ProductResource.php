@@ -10,6 +10,7 @@ use Closure;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -57,7 +58,7 @@ class ProductResource extends Resource
                     ]),
                     Toggle::make('featured')
                         ->required(),
-                    Textarea::make('description')
+                    RichEditor::make('description')
                         ->required(),
                     Grid::make()->schema([
                         Select::make('category_id')
@@ -79,15 +80,27 @@ class ProductResource extends Resource
                             ->type('number')
                             ->required(),
                     ]),
-                    Grid::make(2)->schema([
+                    SpatieMediaLibraryFileUpload::make('images')
+                        ->image()
+                        ->collection('products')
+                        ->imageResizeMode('cover')
+                        ->imageCropAspectRatio('16:9')
+                        ->imageResizeTargetWidth('1920')
+                        ->imageResizeTargetHeight('1080')
+                        ->multiple()
+                        ->maxFiles(4)
+                        ->responsiveImages()
+                        ->acceptedFileTypes(['image/*'])
+                        ->required(),
+                    Grid::make()->schema([
                         Repeater::make('prices')
                             ->relationship()
                             ->schema([
-                                TextInput::make('price')
-                                    ->numeric()
-                                    ->type('number')
-                                    ->required(),
-                                Grid::make(2)->schema([
+                                Grid::make(3)->schema([
+                                    TextInput::make('price')
+                                        ->numeric()
+                                        ->type('number')
+                                        ->required(),
                                     TextInput::make('min_order')
                                         ->numeric()
                                         ->type('number')
@@ -98,30 +111,19 @@ class ProductResource extends Resource
                                         ->required(),
                                 ]),
                             ])->createItemButtonLabel('Add New Price'),
-                        SpatieMediaLibraryFileUpload::make('images')
-                            ->image()
-                            ->collection('products')
-                            ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('1920')
-                            ->imageResizeTargetHeight('1080')
-                            ->multiple()
-                            ->maxFiles(4)
-                            ->responsiveImages()
-                            ->acceptedFileTypes(['image/*'])
-                            ->required(),
-                    ]),
-                    Repeater::make('variants')
-                        ->relationship()
-                        ->schema([
-                            TextInput::make('name')
-                                ->label('Variant Name')
-                                ->required(),
-                            Repeater::make('options')->schema([
-                                TextInput::make('value')
+                        Repeater::make('variants')
+                            ->relationship()
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Variant Name')
                                     ->required(),
-                            ])->createItemButtonLabel('Add New Option'),
-                        ])->createItemButtonLabel('Add New Variant'),
+                                Repeater::make('options')
+                                    ->schema([
+                                        TextInput::make('value')
+                                            ->required(),
+                                    ])->grid()->createItemButtonLabel('Add New Option'),
+                            ])->createItemButtonLabel('Add New Variant'),
+                    ]),
                 ]),
             ]);
     }

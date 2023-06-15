@@ -28,14 +28,13 @@ class OrderItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('product.name'),
                 Tables\Columns\TextColumn::make('qty'),
                 Tables\Columns\TextColumn::make('price')
                     ->money('IDR', true),
                 Tables\Columns\TextColumn::make('variants')->getStateUsing(function ($record) {
                     return array_map(
-                        fn ($variant) => $variant['name'].': '.$variant['value'],
+                        fn ($variant) => $variant['name'] . ': ' . $variant['value'],
                         $record->variants
                     );
                 }),
