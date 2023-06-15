@@ -59,7 +59,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['put', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/address/{address}/edit', [AddressController::class, 'edit'])->name('address.edit');
     Route::post('/address', [AddressController::class, 'store'])->name('address.store');
     Route::match(['put', 'patch'], '/address/{address}', [AddressController::class, 'update'])->name('address.update');
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');

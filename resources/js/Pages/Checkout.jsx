@@ -15,7 +15,7 @@ import Currency from "@/utils/Currency";
 import { RadioGroup } from "@headlessui/react";
 
 export default function Checkout({ cart, address, couriers }) {
-  const [delivery, setDelivery] = useState(null);
+  const [delivery, setDelivery] = useState([]);
 
   useEffect(() => {
     Midtrans.load();

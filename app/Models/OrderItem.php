@@ -19,7 +19,6 @@ class OrderItem extends Model implements HasMedia
     protected $fillable = [
         'order_id',
         'product_id',
-        'name',
         'description',
         'qty',
         'price',

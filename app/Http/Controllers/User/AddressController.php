@@ -12,18 +12,6 @@ class AddressController extends Controller
 {
 
     /**
-     * Display address form. 
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Address $address)
-    {
-        return Inertia::render('Address/Edit', [
-            'address' => $address
-        ]);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @return \Illuminate\Http\Response
