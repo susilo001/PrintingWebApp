@@ -7,6 +7,7 @@ export default function ImageGallery({ images, alt }) {
             <img
               srcSet={images[0]}
               alt={alt}
+              sizes="(max-width: 674px) 100vw, 674px"
               className="aspect-square h-96 bg-base-200 object-contain"
             />
           </div>
@@ -18,6 +19,7 @@ export default function ImageGallery({ images, alt }) {
             <img
               srcSet={images[0]}
               alt={alt}
+              sizes="(max-width: 674px) 100vw, 674px"
               className="aspect-square h-96 bg-base-200 object-contain"
             />
           </div>
@@ -25,6 +27,7 @@ export default function ImageGallery({ images, alt }) {
             <img
               srcSet={images[1]}
               alt={alt}
+              sizes="(max-width: 674px) 100vw, 674px"
               className="aspect-square h-96 bg-base-200 object-contain"
             />
           </div>
@@ -36,6 +39,7 @@ export default function ImageGallery({ images, alt }) {
             <img
               srcSet={images[0]}
               alt={alt}
+              sizes="(max-width: 674px) 100vw, 674px"
               className="aspect-square h-full bg-base-200 object-contain"
             />
           </div>
@@ -43,6 +47,7 @@ export default function ImageGallery({ images, alt }) {
             <img
               srcSet={images[1]}
               alt={alt}
+              sizes="(max-width: 674px) 100vw, 674px"
               className="aspect-square h-full bg-base-200 object-contain"
             />
           </div>
@@ -50,6 +55,7 @@ export default function ImageGallery({ images, alt }) {
             <img
               srcSet={images[2]}
               alt={alt}
+              sizes="(max-width: 674px) 100vw, 674px"
               className="aspect-square h-full bg-base-200 object-contain"
             />
           </div>
@@ -61,6 +67,7 @@ export default function ImageGallery({ images, alt }) {
             <img
               srcSet={images[0]}
               alt={alt}
+              sizes="(max-width: 674px) 100vw, 674px"
               className="h-full bg-base-200 object-contain"
             />
           </div>
@@ -69,6 +76,7 @@ export default function ImageGallery({ images, alt }) {
               <img
                 srcSet={images[1]}
                 alt={alt}
+                sizes="(max-width: 674px) 100vw, 674px"
                 className="aspect-square h-full bg-base-200 object-contain"
               />
             </div>
@@ -76,6 +84,7 @@ export default function ImageGallery({ images, alt }) {
               <img
                 srcSet={images[2]}
                 alt={alt}
+                sizes="(max-width: 674px) 100vw, 674px"
                 className="aspect-square h-full bg-base-200 object-contain"
               />
             </div>
@@ -84,6 +93,7 @@ export default function ImageGallery({ images, alt }) {
             <img
               srcSet={images[3]}
               alt={alt}
+              sizes="(max-width: 674px) 100vw, 674px"
               className="h-full bg-base-200 object-contain"
             />
           </div>

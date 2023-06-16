@@ -74,6 +74,7 @@ export default function Order({ orders }) {
               <div className="flex flex-col items-center sm:flex-row sm:items-start sm:space-x-4">
                 <img
                   srcSet={item.image}
+                  sizes="(max-width: 674px) 100vw, 674px"
                   className="aspect-square h-32 w-32 rounded-lg bg-base-200 object-contain"
                   alt={item.name}
                 />

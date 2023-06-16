@@ -77,6 +77,7 @@ export default function Cart({ cart }) {
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:items-start sm:justify-start sm:space-x-6 sm:space-y-0">
                   <img
                     srcSet={item.design}
+                    sizes="(max-width: 674px) 100vw, 674px"
                     className="aspect-square h-52 w-52 rounded-xl bg-base-200 object-cover"
                     alt={item.name}
                   />

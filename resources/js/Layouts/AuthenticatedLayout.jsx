@@ -115,6 +115,7 @@ export default function Authenticated({ header, children }) {
             <div className="-mr-2 flex items-center sm:hidden">
               <button
                 name="Dropdown Menu"
+                aria-label="Dropdown Menu"
                 onClick={() =>
                   setShowingNavigationDropdown(
                     (previousState) => !previousState
@@ -261,7 +262,7 @@ export default function Authenticated({ header, children }) {
       )}
 
       <main className="container m-auto my-12 max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">{children}</main>
-      <footer className="mt-auto p-10 border-t shadow-xl bg-base-300">
+      <footer className="mt-auto p-10 border-t shadow-xl bg-neutral text-neutral-content">
         <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <div>
             <ApplicationLogo className="block h-10 w-auto fill-current" />
@@ -283,6 +284,15 @@ export default function Authenticated({ header, children }) {
           </div>
           <div>
             <span className="footer-title">Company</span>
+            <Link href={route("page.about")} className="link-hover link">
+              About Us
+            </Link>
+            <Link href={route("page.contact")} className="link-hover link">
+              Contact Us
+            </Link>
+          </div>
+          <div>
+            <span className="footer-title">Social</span>
             <Link href={route("page.about")} className="link-hover link">
               About Us
             </Link>

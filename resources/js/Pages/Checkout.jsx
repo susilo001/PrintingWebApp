@@ -169,6 +169,7 @@ export default function Checkout({ cart, address, couriers }) {
                   <div className="flex-none">
                     <img
                       srcSet={item.design}
+                      sizes="(max-width: 674px) 100vw, 674px"
                       className="rounded-lg bg-base-200 object-cover w-24"
                       alt={item.name}
                     />

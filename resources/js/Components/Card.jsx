@@ -31,6 +31,7 @@ const Image = ({ src, alt, className, srcSet }) => {
         src={src}
         alt={alt}
         srcSet={srcSet}
+        sizes="(max-width: 674px) 100vw, 674px"
         className={`aspect-square object-contain ${className}`}
       />
     </figure>

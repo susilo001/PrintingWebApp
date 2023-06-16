@@ -73,7 +73,7 @@ const CustomToolbar = observer(({ store, auth, role }) => {
             <Navbar.Group align={Alignment.LEFT}>
                 <Navbar.Heading>
                     <Link href={route("home")} as="a">
-                        <img srcSet="../asset/logo/logo_scale,w_200.png 200w,../asset/logo/logo_scale,w_478.png 478w,../asset/logo/logo_scale,w_674.png 674w,../asset/logo/logo_scale,w_783.png 783w" alt='Orbit Logo' className='w-20' />
+                        <img srcSet="../asset/logo/logo_scale,w_200.png 200w,../asset/logo/logo_scale,w_478.png 478w,../asset/logo/logo_scale,w_674.png 674w,../asset/logo/logo_scale,w_783.png 783w" sizes="(max-width: 674px) 100vw, 674px" alt='Orbit Logo' className='w-20' />
                     </Link>
                 </Navbar.Heading>
             </Navbar.Group>
