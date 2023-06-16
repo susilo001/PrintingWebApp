@@ -1,5 +1,4 @@
-import { router } from "@inertiajs/react";
-import Swal from "sweetalert2";
+import Alert from "./sweetalert";
 
 const Midtrans = {
   load() {
@@ -27,18 +26,16 @@ const Midtrans = {
   snapPay(snapToken) {
     window.snap.pay(snapToken, {
       onSuccess: function (result) {
-        Swal.fire({ title: "Success", text: result.status_message, icon: "success" });
+        Alert("success", "Success", result.status_message);
       },
       onPending: function (result) {
-        Swal.fire({ title: "Success", text: result.status_message, icon: "success" });
+        Alert("info", "Pending", result.status_message);
       },
       onError: function (result) {
-        Swal.fire({ title: "Error", text: result.status_message, icon: "error" });
-        router.get(route("cart.index"));
+        Alert("error", "Error", result.status_message, 'cart.index', "get");
       },
       onClose: function () {
-        Swal.fire({ title: "Payment Cancelled", text: "You have cancelled the payment", icon: "error" });
-        router.get(route("cart.index"));
+        Alert("error", "Error", "You have cancelled the payment", 'cart.index', "get");
       },
     });
   },

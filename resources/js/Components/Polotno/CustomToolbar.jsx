@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { Navbar, Alignment, Button, EditableText, MenuItem } from '@blueprintjs/core';
 import { Popover2 } from "@blueprintjs/popover2";
 import { Link, router } from '@inertiajs/react';
-import Swal from 'sweetalert2';
 import axios from 'axios';
+import Alert from '@/lib/sweetalert';
 import { Select2 } from "@blueprintjs/select";
 
 const CustomToolbar = observer(({ store, auth, role }) => {
@@ -45,12 +45,7 @@ const CustomToolbar = observer(({ store, auth, role }) => {
                 image: blob,
             }, {
                 onSuccess: (page) => {
-                    Swal.fire({
-                        title: "Success!",
-                        text: page.props.flash.message,
-                        icon: "success",
-                        confirmButtonText: "Ok",
-                    });
+                    Alert('success', 'Success', page.props.flash.message);
                 },
             }
             );
