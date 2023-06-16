@@ -216,6 +216,7 @@ export default function Index({ products, testimonials }) {
                     <img
                       className="rounded-xl aspect-square object-contain bg-base-200"
                       srcSet={item.product.images[0]}
+                      sizes="(max-width: 674px) 100vw, 674px"
                       alt={item.product.name}
                       loading="lazy"
                     />

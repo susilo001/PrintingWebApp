@@ -16,6 +16,7 @@ export default function Banner() {
           <Link href={item.url}>
             <img
               srcSet={item.image}
+              sizes="(max-width: 674px) 100vw, 674px"
               alt={item.description}
               loading="lazy"
               className="h-[20rem] w-full object-cover lg:h-[32rem]"
