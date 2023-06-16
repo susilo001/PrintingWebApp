@@ -32,7 +32,7 @@ class OrderService
         ]);
 
         $shippingData = $shippingAddress->toArray();
-        $shippingData['courier'] = array($data['courier']);
+        $shippingData['courier'] = [$data['courier']];
 
         $order->shipping()->create($shippingData);
 

@@ -1,10 +1,8 @@
 import Button from "@/Components/Button";
-import Input from "@/Components/Input";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, Link } from "@inertiajs/react";
 import {
   CreditCardIcon,
-  TrashIcon,
   WalletIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
@@ -47,33 +45,6 @@ export default function Checkout({ cart, address, couriers }) {
     });
   };
 
-  const handleChangeQty = async (id, qty) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      router.put(route("cart.update", { cartItem: id, qty: qty }), {
-        only: ["cart"],
-        preserveScroll: true,
-        preserveState: true,
-      });
-    } catch (error) {
-      Swal.fire({ icon: "error", title: "Oops...", text: error.message });
-    }
-  };
-
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        router.delete(route("cart.destroy", { cartItem: id }));
-      }
-    });
-  };
-
   const handleChangeDelivery = (code, service) => {
     service.code = code;
     setDelivery(service);
@@ -101,7 +72,7 @@ export default function Checkout({ cart, address, couriers }) {
           </div>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 p-8 rounded-lg">
+        <div className="grid gap-4 md:grid-cols-2 rounded-lg">
           <section className="space-y-8">
             <div className="space-y-4">
               <div>
@@ -165,36 +136,34 @@ export default function Checkout({ cart, address, couriers }) {
 
             <div className="rounded-lg border space-y-4 w-full bg-base-100 shadow-lg">
               {cart.cartItems.map((item) => (
-                <div className="flex items-start justify-between border-b p-8 space-x-4" key={item.id}>
+                <div className="flex items-center justify-between border-b p-4 sm:p-8 space-x-4" key={item.id}>
                   <div className="flex-none">
                     <img
                       srcSet={item.design}
                       sizes="(max-width: 674px) 100vw, 674px"
-                      className="rounded-lg bg-base-200 object-cover w-24"
+                      className="rounded-lg bg-base-200 object-cover sm:w-24 w-20"
                       alt={item.name}
                     />
                   </div>
-                  <div className="grow w-full">
-                    <h4 className="font-bold">{item.name}</h4>
-                    <ul>
+                  <div className="grow space-y-4">
+                    <div className="flex items-start justify-between">
+                      <h4 className="font-bold">{item.name}</h4>
+                      <span className="text-sm font-semibold">{Currency.getCurrencyFormat(item.price)}</span>
+                    </div>
+                    <ul className="flex flex-wrap">
                       {item.variants.map((variant, index) => (
-                        <li key={index}>{variant.name} : {variant.value}</li>
+                        <li className="px-2 border-r-2" key={index}>{variant.value}</li>
                       ))}
                     </ul>
-                    <span className="text-sm">{Currency.getCurrencyFormat(item.price)}</span>
-                  </div>
-                  <div className="flex-none">
-                    <div className="flex flex-col items-end">
-                      <Button className="btn-ghost btn-circle" type='submit' onClick={() => handleDelete(item.id)}>
-                        <TrashIcon className="h-5 w-5 text-error" />
-                      </Button>
-                      <Input type="number" className="input-bordered w-20 input-sm" defaultValue={item.qty} handleChange={(e) => handleChangeQty(item.id, e.target.value)} />
-                    </div>
                   </div>
                 </div>
               ))}
               <div className="space-y-8 px-8 border-b pb-4">
                 <div className="space-y-4 border-b pb-4">
+                  <div className="flex justify-between">
+                    <span className="font-semibold">Weight</span>
+                    <span className="font-semibold">{cart.weight} g</span>
+                  </div>
                   <div className="flex justify-between">
                     <span className="font-semibold">Subtotal</span>
                     <span className="font-semibold">{Currency.getCurrencyFormat(cart.subtotal)}</span>
@@ -226,11 +195,8 @@ export default function Checkout({ cart, address, couriers }) {
               </div>
             </div>
           </section>
-        </div >
-
-      )
-      }
-
+        </div>
+      )}
     </AuthenticatedLayout >
   );
 }

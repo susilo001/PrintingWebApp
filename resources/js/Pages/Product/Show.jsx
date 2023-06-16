@@ -104,51 +104,52 @@ export default function Product({ product }) {
   return (
     <AuthenticatedLayout
       header={
-        <div className="flex items-center justify-between">
+        <div className="flex items-center">
           <div>
-            <h1 className="text-3xl font-bold">{product.name}</h1>
+            <h1 className="sm:text-3xl text-lg font-bold">{product.name}</h1>
             <p className="text-gray-500">View product details</p>
           </div>
-          <div className="flex items-center space-x-2">
-            <nav aria-label="Breadcrumb">
-              <div className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                <div className="flex items-center">
-                  <Link href={route("product.index")}>
-                    <span className="mr-2 text-sm font-medium">
-                      {product.category.name}
-                    </span>
-                  </Link>
-                  <ChevronRightIcon className="h-5 w-5" />
-                </div>
-                <span className="font-medium hover:text-gray-600">
-                  {product.name}
-                </span>
-              </div>
-            </nav>
-          </div>
+
         </div>
       }
     >
       <Head title={product.name} />
 
-      <div className="pt-6">
+      <div>
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb">
+          <div className="flex max-w-2xl items-center space-x-2 lg:max-w-7xl">
+            <div className="flex items-center">
+              <Link className="link link-hover" href={route("product.index")}>
+                <span className="mr-2 text-xs sm:text-sm font-semibold">
+                  {product.category.name}
+                </span>
+              </Link>
+              <ChevronRightIcon className="h-5 w-5" />
+            </div>
+            <span className="mr-2 text-xs sm:text-sm font-medium">
+              {product.name}
+            </span>
+          </div>
+        </nav>
+
         {/* Image gallery */}
         <ImageGallery images={product.images} alt={product.name} />
 
         {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <h2 className="text-lg font-bold tracking-tight sm:text-3xl">
               {product.name}
-            </h1>
+            </h2>
           </div>
 
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight">
+            <p className="sm:text-3xl text-lg tracking-tight">
               {Currency.getPrice(product.prices)}
-              <span className="badge badge-secondary ml-2">
+              <span className="badge badge-accent ml-2 font-medium">
                 / Starting Price
               </span>
             </p>
@@ -174,7 +175,7 @@ export default function Product({ product }) {
                 <p className="sr-only">{reviews.average} out of 5 stars</p>
                 <a
                   href={reviews.href}
-                  className="ml-3 text-sm font-medium text-secondary hover:text-secondary-focus"
+                  className="ml-3 text-sm font-medium text-primary hover:text-secondary-focus"
                 >
                   {reviews.totalCount} reviews
                 </a>
@@ -252,12 +253,12 @@ export default function Product({ product }) {
             <h3 className="sr-only">Description</h3>
 
             <div className="space-y-6">
-              <p className="text-base ">{product.description}</p>
+              <p className="text-base">{product.description}</p>
             </div>
             {/* Table Prices */}
             <div className="mt-8 overflow-x-auto border-t pt-4">
               <table className="table-zebra table w-full">
-                <thead>
+                <thead className="font-bold">
                   <tr>
                     <th>Price</th>
                     <th>Min Order</th>
@@ -267,7 +268,7 @@ export default function Product({ product }) {
                 <tbody>
                   {product.prices.map((price) => (
                     <tr key={price.id}>
-                      <td>{Currency.getCurrencyFormat(price.price)}</td>
+                      <td className="font-semibold">{Currency.getCurrencyFormat(price.price)}</td>
                       <td>{price.min_order}</td>
                       <td>{price.max_order}</td>
                     </tr>

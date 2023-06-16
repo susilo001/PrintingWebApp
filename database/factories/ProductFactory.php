@@ -28,7 +28,7 @@ class ProductFactory extends Factory
             'slug' => Str::slug($name),
             'description' => fake()->realText(400),
             'weight' => fake()->numberBetween(1, 100),
-            'tax' => fake()->numberBetween(1, 100),
+            'tax' => fake()->numberBetween(1, 10),
             'featured' => fake()->boolean(50),
         ];
     }

@@ -34,7 +34,7 @@ class OrderItemsRelationManager extends RelationManager
                     ->money('IDR', true),
                 Tables\Columns\TextColumn::make('variants')->getStateUsing(function ($record) {
                     return array_map(
-                        fn ($variant) => $variant['name'] . ': ' . $variant['value'],
+                        fn ($variant) => $variant['name'].': '.$variant['value'],
                         $record->variants
                     );
                 }),

@@ -3,7 +3,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Currency from '@/utils/Currency'
 import {
   ExclamationTriangleIcon,
-  ShoppingCartIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
@@ -41,11 +40,13 @@ export default function Cart({ cart }) {
   return (
     <AuthenticatedLayout
       header={
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold">Cart</h1>
-            <ShoppingCartIcon className="h-6 w-6" />
-          </div>
+        <div>
+          <h2 className="font-semibold text-2xl text-gray-800 leading-tight">
+            Shopping Cart
+          </h2>
+          <p>
+            Keranjang Belanja Anda ({cart.cartItems.length} item)
+          </p>
         </div>
       }
     >
@@ -78,10 +79,10 @@ export default function Cart({ cart }) {
                   <img
                     srcSet={item.design}
                     sizes="(max-width: 674px) 100vw, 674px"
-                    className="aspect-square h-52 w-52 rounded-xl bg-base-200 object-cover"
+                    className="aspect-square h-40 w-40 rounded-xl bg-base-200 object-cover"
                     alt={item.name}
                   />
-                  <div className="w-full grow space-y-4">
+                  <div className="w-full grow p-4 sm:p-0">
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-bold">{item.name}</h3>
                       <input
@@ -100,20 +101,22 @@ export default function Cart({ cart }) {
                         <TrashIcon className="h-6 w-6 text-error" />
                       </Button>
                     </div>
-                    <span className="font-bold text-primary">
+                    <span className="font-semibold">
                       {Currency.getCurrencyFormat(item.price)}
                     </span>
-                    <p className="break-words">{item.description}</p>
-                    <ul className="flex items-center space-x-2">
-                      {item.variants.map((variant, index) => (
-                        <li
-                          className="border-r-2 pr-2 font-semibold"
-                          key={index}
-                        >
-                          {variant.value}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="mt-4">
+                      <p className="break-all">{item.description}</p>
+                      <ul className="flex items-center space-x-2">
+                        {item.variants.map((variant, index) => (
+                          <li
+                            key={index}
+                            className="border-r-2 pr-2 font-semibold"
+                          >
+                            {variant.value}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -123,26 +126,26 @@ export default function Cart({ cart }) {
             <div className="space-y-4 p-8">
               <h2 className="text-xl font-bold">Order Summary</h2>
               <div className="space-y-4">
-                <div className="flex justify-between border-b border-base-content pb-4">
+                <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Subtotal</div>
-                  <span className="font-bold">
+                  <span>
                     {Currency.getCurrencyFormat(cart.subtotal)}
                   </span>
                 </div>
-                <div className="flex justify-between border-b border-base-content pb-4">
+                <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Discount</div>
-                  <span className="font-bold">
+                  <span>
                     {Currency.getCurrencyFormat(cart.discount)}
                   </span>
                 </div>
-                <div className="flex justify-between border-b border-base-content pb-4">
+                <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Tax</div>
-                  <span className="font-bold">
+                  <span>
                     {Currency.getCurrencyFormat(cart.tax)}
                   </span>
                 </div>
-                <div className="flex justify-between border-b border-base-content pb-4">
-                  <div>Total</div>
+                <div className="flex justify-between border-b border-base-300 pb-4">
+                  <div className="font-bold" >Total</div>
                   <span className="font-bold">
                     {Currency.getCurrencyFormat(cart.total)}
                   </span>

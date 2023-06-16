@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use App\Models\Cart;
-use App\Models\Order;
 use App\Models\Product;
-use App\Services\OrderService;
 use App\Services\Payment\PaymentService;
 
 class CartService
@@ -57,8 +55,6 @@ class CartService
     {
         return $qty < $product->minimum_order_quantity;
     }
-
-
 
     public function checkout($request): string
     {

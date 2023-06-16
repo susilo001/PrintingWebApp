@@ -99,7 +99,7 @@ export default function Products({ products, categories }) {
         </div>
       }
     >
-      <Head title="Products Page" />
+      <Head title="Products" />
       {products.length === 0 && (
         <div className="text-center">
           <h1 className="text-3xl font-bold text-warning">No Products Found</h1>
