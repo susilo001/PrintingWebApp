@@ -3,11 +3,16 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Currency from "@/utils/Currency";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router, usePage } from "@inertiajs/react";
+import { useEffect } from "react";
 
 export default function Order({ orders }) {
   const { flash } = usePage().props;
 
-  flash.invoice ? window.open(flash.invoice, "_blank") : null;
+  useEffect(() => {
+  if(flash.invoice){
+    window.open(flash.invoice, "_blank")
+  }
+  }, []);
 
   const handleRequestInvoice = async (id) => {
     router.get(route("order.invoice", { order: id }));
