@@ -26,7 +26,7 @@ class Address extends Model
         'province_id',
         'province',
         'postal_code',
-        'is_active'
+        'is_active',
     ];
 
     /**

@@ -27,6 +27,7 @@ class Cart extends Model
     {
         return $this->cartItems->sum(function ($item) {
             $price = $item->product->getPriceByOrderQuantity($item->qty);
+
             return $item->qty * $price;
         });
     }
@@ -37,6 +38,7 @@ class Cart extends Model
 
         return $this->cartItems->sum(function ($item) use ($subtotal) {
             $discountPercentage = $item->product->discount->active ? $item->product->discount->discount_percentage : 0;
+
             return round($subtotal * $discountPercentage / 100);
         });
     }
@@ -47,6 +49,7 @@ class Cart extends Model
 
         return $this->cartItems->sum(function ($item) use ($subtotal) {
             $taxPercentage = $item->product->tax ?? 0;
+
             return round($subtotal * $taxPercentage / 100);
         });
     }

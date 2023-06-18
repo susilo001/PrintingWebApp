@@ -18,6 +18,7 @@ class CartResource extends JsonResource
             'id' => $this->id,
             'subtotal' => $this->getSubtotal(),
             'discount' => $this->getDiscount(),
+            'weight' => $this->getWeight(),
             'tax' => $this->getTax(),
             'total' => $this->getTotal(),
             'user' => new UserResource($this->whenLoaded('user')),

@@ -11,10 +11,8 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
@@ -41,7 +39,7 @@ class ProductResource extends Resource
                     Grid::make()->schema([
                         TextInput::make('name')
                             ->afterStateUpdated(function (Closure $get, Closure $set, ?string $state) {
-                                if (!$get('is_slug_changed_manually') && filled($state)) {
+                                if (! $get('is_slug_changed_manually') && filled($state)) {
                                     $set('slug', Str::slug($state));
                                 }
                             })

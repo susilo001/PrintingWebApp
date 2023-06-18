@@ -1,27 +1,27 @@
 import Button from "@/Components/Button";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import Currency from '@/utils/Currency'
+import Currency from "@/utils/Currency";
 import {
   ExclamationTriangleIcon,
-  ShoppingCartIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import Swal from "sweetalert2";
+import { debounce } from "lodash";
 
 export default function Cart({ cart }) {
-
   const handleChangeQty = async (id, qty) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      router.put(route("cart.update", { cartItem: id, qty: qty }), {
-        only: ["cart"],
-        preserveScroll: true,
-        preserveState: true,
-      });
-    } catch (error) {
-      Swal.fire({ icon: "error", title: "Oops...", text: error.message });
-    }
+    debounce(async () => { 
+      try {
+        router.put(route("cart.update", { cartItem: id, qty: qty }), {
+          only: ["cart"],
+          preserveScroll: true,
+          preserveState: true,
+        });
+      } catch (error) {
+        Swal.fire({ icon: "error", title: "Oops...", text: error.message });
+      }
+    }, 1000)();
   };
 
   const handleDelete = (id) => {
@@ -32,20 +32,18 @@ export default function Cart({ cart }) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
     }).then((result) => {
-      if (result.isConfirmed) {
-        router.delete(route("cart.destroy", { cartItem: id }));
-      }
+      result.isConfirmed && router.delete(route("cart.destroy", { cartItem: id }));
     });
   };
 
   return (
     <AuthenticatedLayout
       header={
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold">Cart</h1>
-            <ShoppingCartIcon className="h-6 w-6" />
-          </div>
+        <div>
+          <h2 className="text-2xl font-semibold leading-tight text-gray-800">
+            Shopping Cart
+          </h2>
+          <p>Keranjang Belanja Anda ({cart.cartItems.length} item)</p>
         </div>
       }
     >
@@ -78,10 +76,10 @@ export default function Cart({ cart }) {
                   <img
                     srcSet={item.design}
                     sizes="(max-width: 674px) 100vw, 674px"
-                    className="aspect-square h-52 w-52 rounded-xl bg-base-200 object-cover"
+                    className="aspect-square h-40 w-40 rounded-xl bg-base-200 object-cover"
                     alt={item.name}
                   />
-                  <div className="w-full grow space-y-4">
+                  <div className="w-full grow p-4 sm:p-0">
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-bold">{item.name}</h3>
                       <input
@@ -100,20 +98,22 @@ export default function Cart({ cart }) {
                         <TrashIcon className="h-6 w-6 text-error" />
                       </Button>
                     </div>
-                    <span className="font-bold text-primary">
+                    <span className="font-semibold">
                       {Currency.getCurrencyFormat(item.price)}
                     </span>
-                    <p className="break-words">{item.description}</p>
-                    <ul className="flex items-center space-x-2">
-                      {item.variants.map((variant, index) => (
-                        <li
-                          className="border-r-2 pr-2 font-semibold"
-                          key={index}
-                        >
-                          {variant.value}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="mt-4">
+                      <p className="break-all">{item.description}</p>
+                      <ul className="flex items-center space-x-2">
+                        {item.variants.map((variant, index) => (
+                          <li
+                            key={index}
+                            className="border-r-2 pr-2 font-semibold"
+                          >
+                            {variant.value}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -123,33 +123,33 @@ export default function Cart({ cart }) {
             <div className="space-y-4 p-8">
               <h2 className="text-xl font-bold">Order Summary</h2>
               <div className="space-y-4">
-                <div className="flex justify-between border-b border-base-content pb-4">
+                <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Subtotal</div>
-                  <span className="font-bold">
-                    {Currency.getCurrencyFormat(cart.subtotal)}
-                  </span>
+                  <span>{Currency.getCurrencyFormat(cart.subtotal)}</span>
                 </div>
-                <div className="flex justify-between border-b border-base-content pb-4">
+                <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Discount</div>
-                  <span className="font-bold">
-                    {Currency.getCurrencyFormat(cart.discount)}
-                  </span>
+                  <span>{Currency.getCurrencyFormat(cart.discount)}</span>
                 </div>
-                <div className="flex justify-between border-b border-base-content pb-4">
+                <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Tax</div>
-                  <span className="font-bold">
-                    {Currency.getCurrencyFormat(cart.tax)}
-                  </span>
+                  <span>{Currency.getCurrencyFormat(cart.tax)}</span>
                 </div>
-                <div className="flex justify-between border-b border-base-content pb-4">
-                  <div>Total</div>
+                <div className="flex justify-between border-b border-base-300 pb-4">
+                  <div className="font-bold">Total</div>
                   <span className="font-bold">
                     {Currency.getCurrencyFormat(cart.total)}
                   </span>
                 </div>
               </div>
               <div className="space-y-4">
-                <Link href={route("cart.shipment")} className="btn-primary btn btn-block gap-2 text-white" as="button">Checkout</Link>
+                <Link
+                  href={route("cart.shipment")}
+                  className="btn-primary btn-block btn gap-2 text-white"
+                  as="button"
+                >
+                  Checkout
+                </Link>
               </div>
             </div>
           </div>
