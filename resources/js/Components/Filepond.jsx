@@ -29,6 +29,7 @@ export default function Filepond({
       onupdatefiles={onUpdateFiles}
       allowMultiple={allowMultiple}
       maxFiles={maxFiles}
+      credits={false}
     />
   );
 }

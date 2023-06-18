@@ -17,11 +17,12 @@ module.exports = {
     logs: true,
     themes: [
       {
-        cmyk: {
-          ...require("daisyui/src/theming/themes")["[data-theme=cmyk]"],
+        custom: {
           primary: "#0079FF",
           secondary: "#FF0060",
-          accent: "#F6FA70",
+          accent: "#ffb703",
+          neutral: "#023047",
+          "base-100": "#ffffff",
           info: "#7dd3fc",
           success: "#00DFA2",
           warning: "#fbbf24",
