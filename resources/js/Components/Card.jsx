@@ -1,7 +1,7 @@
 const Card = ({ children, className }) => {
   return (
     <div
-      className={`card card-compact border shadow-lg hover:bg-base-200 ${className}`}
+      className={`card-compact card border shadow-lg hover:bg-base-200 ${className}`}
     >
       {children}
     </div>
@@ -24,15 +24,17 @@ const Actions = ({ children, className }) => {
   return <div className={`card-actions ${className}`}>{children}</div>;
 };
 
-const Image = ({ src, alt, className, srcSet }) => {
+const Image = ({ src, alt, className, srcSet, width, height }) => {
   return (
-    <figure>
+    <figure className="bg-base-200">
       <img
         src={src}
         alt={alt}
         srcSet={srcSet}
         sizes="(max-width: 674px) 100vw, 674px"
-        className={`aspect-square object-contain ${className}`}
+        width={width}
+        height={height}
+        className={`aspect-square h-32 w-32 sm:h-52 sm:w-52 object-contain ${className}`}
       />
     </figure>
   );

@@ -47,7 +47,7 @@ export default function Authenticated({ header, children }) {
               </div>
             </div>
 
-            <div className="hidden sm:ml-6 sm:flex sm:items-center">
+            <div className="hidden sm:ml-12 sm:flex sm:items-center">
               {auth?.user ? (
                 <>
                   <Link
@@ -69,7 +69,7 @@ export default function Authenticated({ header, children }) {
                       <Dropdown.Trigger>
                         <div className="avatar">
                           <div className="w-10 rounded-full">
-                            <img src={auth.user.avatar} alt={auth.user.name} />
+                            <img src={auth.user.avatar} alt={auth.user.name} className="object-contain aspect-square" />
                           </div>
                         </div>
                       </Dropdown.Trigger>

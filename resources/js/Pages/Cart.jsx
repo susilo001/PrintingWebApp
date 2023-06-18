@@ -1,26 +1,27 @@
 import Button from "@/Components/Button";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import Currency from '@/utils/Currency'
+import Currency from "@/utils/Currency";
 import {
   ExclamationTriangleIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
 import Swal from "sweetalert2";
+import { debounce } from "lodash";
 
 export default function Cart({ cart }) {
-
   const handleChangeQty = async (id, qty) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      router.put(route("cart.update", { cartItem: id, qty: qty }), {
-        only: ["cart"],
-        preserveScroll: true,
-        preserveState: true,
-      });
-    } catch (error) {
-      Swal.fire({ icon: "error", title: "Oops...", text: error.message });
-    }
+    debounce(async () => { 
+      try {
+        router.put(route("cart.update", { cartItem: id, qty: qty }), {
+          only: ["cart"],
+          preserveScroll: true,
+          preserveState: true,
+        });
+      } catch (error) {
+        Swal.fire({ icon: "error", title: "Oops...", text: error.message });
+      }
+    }, 1000)();
   };
 
   const handleDelete = (id) => {
@@ -31,9 +32,7 @@ export default function Cart({ cart }) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
     }).then((result) => {
-      if (result.isConfirmed) {
-        router.delete(route("cart.destroy", { cartItem: id }));
-      }
+      result.isConfirmed && router.delete(route("cart.destroy", { cartItem: id }));
     });
   };
 
@@ -41,12 +40,10 @@ export default function Cart({ cart }) {
     <AuthenticatedLayout
       header={
         <div>
-          <h2 className="font-semibold text-2xl text-gray-800 leading-tight">
+          <h2 className="text-2xl font-semibold leading-tight text-gray-800">
             Shopping Cart
           </h2>
-          <p>
-            Keranjang Belanja Anda ({cart.cartItems.length} item)
-          </p>
+          <p>Keranjang Belanja Anda ({cart.cartItems.length} item)</p>
         </div>
       }
     >
@@ -128,31 +125,31 @@ export default function Cart({ cart }) {
               <div className="space-y-4">
                 <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Subtotal</div>
-                  <span>
-                    {Currency.getCurrencyFormat(cart.subtotal)}
-                  </span>
+                  <span>{Currency.getCurrencyFormat(cart.subtotal)}</span>
                 </div>
                 <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Discount</div>
-                  <span>
-                    {Currency.getCurrencyFormat(cart.discount)}
-                  </span>
+                  <span>{Currency.getCurrencyFormat(cart.discount)}</span>
                 </div>
                 <div className="flex justify-between border-b border-base-300 pb-4">
                   <div>Tax</div>
-                  <span>
-                    {Currency.getCurrencyFormat(cart.tax)}
-                  </span>
+                  <span>{Currency.getCurrencyFormat(cart.tax)}</span>
                 </div>
                 <div className="flex justify-between border-b border-base-300 pb-4">
-                  <div className="font-bold" >Total</div>
+                  <div className="font-bold">Total</div>
                   <span className="font-bold">
                     {Currency.getCurrencyFormat(cart.total)}
                   </span>
                 </div>
               </div>
               <div className="space-y-4">
-                <Link href={route("cart.shipment")} className="btn-primary btn btn-block gap-2 text-white" as="button">Checkout</Link>
+                <Link
+                  href={route("cart.shipment")}
+                  className="btn-primary btn-block btn gap-2 text-white"
+                  as="button"
+                >
+                  Checkout
+                </Link>
               </div>
             </div>
           </div>

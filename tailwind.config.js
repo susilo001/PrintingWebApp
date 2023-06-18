@@ -19,11 +19,11 @@ module.exports = {
       {
         cmyk: {
           ...require("daisyui/src/theming/themes")["[data-theme=cmyk]"],
-          primary: "#0096D5",
-          secondary: "#FF3C38",
-          accent: "#FFD639",
+          primary: "#0079FF",
+          secondary: "#FF0060",
+          accent: "#F6FA70",
           info: "#7dd3fc",
-          success: "#16a34a",
+          success: "#00DFA2",
           warning: "#fbbf24",
           error: "#dc2626",
         },

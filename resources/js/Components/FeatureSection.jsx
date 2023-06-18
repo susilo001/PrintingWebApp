@@ -5,6 +5,27 @@ import {
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 
+const features = [
+  {
+    name: "High-Quality Printing",
+    icon: CheckIcon,
+  },
+
+  {
+    name: "Custom Design Services",
+    icon: PencilSquareIcon,
+  },
+
+  {
+    name: "24/7 Online Ordering",
+    icon: ClockIcon,
+  },
+  {
+    name: "Satisfaction Guarantee",
+    icon: HeartIcon,
+  },
+];
+
 export default function FeatureSection() {
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -12,7 +33,7 @@ export default function FeatureSection() {
         <h2 className="text-lg font-semibold leading-8 text-secondary">
           Benefits
         </h2>
-        <p className="mt-2 text-3xl font-bold tracking-tight  sm:text-4xl">
+        <p className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
           Offset and Digital Printing Ordering
         </p>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 ">
@@ -40,23 +61,4 @@ export default function FeatureSection() {
   );
 }
 
-const features = [
-  {
-    name: "High-Quality Printing",
-    icon: CheckIcon,
-  },
 
-  {
-    name: "Custom Design Services",
-    icon: PencilSquareIcon,
-  },
-
-  {
-    name: "24/7 Online Ordering",
-    icon: ClockIcon,
-  },
-  {
-    name: "Satisfaction Guarantee",
-    icon: HeartIcon,
-  },
-];

@@ -2,56 +2,60 @@ import Banner from "@/Components/Banner";
 import Button from "@/Components/Button";
 import Card from "@/Components/Card";
 import FeatureSection from "@/Components/FeatureSection";
+import SocialMediaLink from "@/Components/SocialMediaLink";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import Currency from "@/utils/Currency";
 import {
   ArrowRightIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import { Head, Link } from "@inertiajs/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Currency from "@/utils/Currency";
-import SocialMediaLink from "@/Components/SocialMediaLink";
+
+const swiperBreakpoints = {
+  320: { slidesPerView: 1 },
+  640: { slidesPerView: 2 },
+  768: { slidesPerView: 3 },
+  1024: { slidesPerView: 4 },
+  1280: { slidesPerView: 5 },
+};
 
 export default function Index({ products, testimonials }) {
   const [Products, setProducts] = useState(products);
 
-  const getFeaturedProducts = () => {
+  const featuredProducts = useMemo(() => {
     return products.filter((product) => product.featured === true);
-  };
+  }, [products]);
 
-  const getProductCategoryName = () => {
+  const categories = useMemo(() => {
     const data = products.map((product) => product.category);
-
     const unique = [...new Set(data.map((item) => item.id))];
     return unique.map((id) => {
+      const category = data.find((item) => item.id === id);
       return {
         id,
-        name: data.find((item) => item.id === id).name,
-        slug: data.find((item) => item.id === id).slug,
+        name: category.name,
+        slug: category.slug,
       };
     });
-  };
+  }, [products]);
 
   const getProductsByCategory = (id) => {
     const selectedCategory = products.filter(
       (product) => product.category.id === id
     );
-
     setProducts(selectedCategory);
   };
 
   const handleSearch = (e) => {
-    const filteredProducts = [];
-    products.forEach((product) => {
-      if (product.name.toLowerCase().includes(e.target.value.toLowerCase())) {
-        filteredProducts.push(product);
-      }
-    });
-
+    const filteredProducts = products.filter((product) =>
+      product.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
     setProducts(filteredProducts);
   };
+
   return (
     <AuthenticatedLayout
       header={
@@ -62,7 +66,8 @@ export default function Index({ products, testimonials }) {
           </div>
           <SocialMediaLink />
         </div>
-      }>
+      }
+    >
       <Head title="Offset & Digital Printing" />
 
       {/* Banner Section */}
@@ -82,37 +87,24 @@ export default function Index({ products, testimonials }) {
           pagination={{
             type: "progressbar",
           }}
-          breakpoints={{
-            400: {
-              slidesPerView: 1,
-            },
-            640: {
-              slidesPerView: 2,
-            },
-            768: {
-              slidesPerView: 3,
-            },
-            1024: {
-              slidesPerView: 4,
-            },
-          }}
+          breakpoints={swiperBreakpoints}
           modules={[Pagination]}
         >
-          {getFeaturedProducts().map((product, index) => (
+          {featuredProducts.map((product, index) => (
             <SwiperSlide key={index}>
               <Link href={route("product.show", product.id)}>
-                <Card className={"h-80"}>
+                <Card>
                   <Card.Image srcSet={product.images[0]} alt={product.name} />
                   <Card.Body>
                     <Card.Title>{product.name}</Card.Title>
-                    <div className="flex items-center justify-between">
+                    <Card.Actions className="flex items-center justify-between">
                       <span className="font-bold text-primary">
                         {Currency.getPrice(product.prices)}
                       </span>
                       <span className="badge badge-accent p-2 text-xs font-semibold">
                         {product.category.name}
                       </span>
-                    </div>
+                    </Card.Actions>
                   </Card.Body>
                 </Card>
               </Link>
@@ -140,7 +132,7 @@ export default function Index({ products, testimonials }) {
             </div>
             <div className="my-4 grow lg:border-r lg:border-primary-focus">
               <div className="flex h-full flex-row flex-wrap items-center justify-center space-x-4 lg:flex-col lg:items-start lg:justify-start lg:space-x-0">
-                {getProductCategoryName().map((category) => (
+                {categories.map((category) => (
                   <Button
                     className="btn-ghost lg:btn-wide lg:justify-start"
                     type="button"
@@ -173,15 +165,10 @@ export default function Index({ products, testimonials }) {
                 </h2>
               </div>
             )}
-            <div
-              className="grid gap-4 overflow-hidden overflow-y-auto pb-2 sm:pr-4 sm:grid-cols-2 sm:scroll-smooth xl:grid-cols-3"
-              style={{
-                height: "910px",
-              }}
-            >
+            <div className="grid h-screen grid-cols-2 gap-4 overflow-hidden overflow-y-auto pb-2 sm:scroll-smooth sm:pr-4 md:grid-cols-3 xl:grid-cols-4">
               {Products.map((product, index) => (
                 <Link href={route("product.show", product.id)} key={index}>
-                  <Card className="h-72">
+                  <Card>
                     <Card.Image srcSet={product.images[0]} alt={product.name} />
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>
@@ -204,17 +191,28 @@ export default function Index({ products, testimonials }) {
 
       {/* Testimonial */}
       <>
-        <div className="flex justify-center">
+        <div className="grid justify-center justify-items-center">
           <h2 className="text-2xl font-bold">Testimonial</h2>
+          <p className="text-sm font-semibold text-gray-500">
+            What our customers say about us
+          </p> 
         </div>
-        <Swiper spaceBetween={50} slidesPerView={1} modules={[Pagination]} pagination={{ clickable: true }}>
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={1}
+          modules={[Pagination]}
+          pagination={{ clickable: true }}
+        >
           {testimonials.map((item, index) => (
-            <SwiperSlide key={index} className="swiper-slide !bg-transparent mb-8">
-              <div className="mx-auto p-4 text-center md:w-8/12 lg:w-7/12">
-                <div className="flex space-x-8">
-                  <div className="w-full">
+            <SwiperSlide
+              key={index}
+              className="swiper-slide mb-8 !bg-transparent"
+            >
+              <div className="mx-auto p-4 text-center md:w-2/4">
+                <div className="flex space-x-4">
+                  <div className="hidden sm:block sm:w-full">
                     <img
-                      className="rounded-xl aspect-square object-contain bg-base-200"
+                      className="w-10/20 aspect-square rounded-xl bg-base-200 object-contain"
                       srcSet={item.product.images[0]}
                       sizes="(max-width: 674px) 100vw, 674px"
                       alt={item.product.name}
@@ -223,12 +221,13 @@ export default function Index({ products, testimonials }) {
                   </div>
                   <div className="flex flex-col justify-center space-y-4">
                     <p className="text-left">&quot;{item.testimonial}&quot;</p>
-                    <div className="flex space-x-4 pl-4">
+                    <div className="flex space-x-4">
                       <div className="avatar">
-                        <div className="h-10 w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+                        <div className="h-10 w-10 rounded-full">
                           <img
                             src="https://picsum.photos/200"
                             alt={item.user.name}
+                            className="aspect-square rounded-full bg-base-200 object-cover"
                             loading="lazy"
                           />
                         </div>

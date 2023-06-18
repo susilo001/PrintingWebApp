@@ -102,26 +102,28 @@ export default function Checkout({ cart, address, couriers }) {
               <div className="space-y-4">
                 {couriers.map((courier, index) => (
                   <div key={index} className="flex flex-col space-y-4">
-                    <RadioGroup value={courier.code} onChange={(e) => handleChangeDelivery(courier.code, e)}>
-                      <RadioGroup.Label className='font-bold uppercase mb-4'>{courier.code}</RadioGroup.Label>
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        {courier.costs.map((cost, index) => (
-                          <RadioGroup.Option key={index} value={cost}>
-                            <div className="flex flex-col rounded-lg border border-success space-y-4 w-full bg-base-100 shadow-lg p-4">
-                              <div className="flex flex-col space-y-4">
-                                <div>
-                                  <h4 className="font-bold">{cost.service}</h4>
-                                  <p>{cost.description}</p>
-                                  <p className="font-semibold">estimasi {cost.cost[0].etd} hari </p>
-                                  <p className="font-semibold">{cost.cost[0].note}</p>
-                                </div>
-                                <p className="font-semibold">{Currency.getCurrencyFormat(cost.cost[0].value)}</p>
-                              </div>
-                            </div>
-                          </RadioGroup.Option>
-                        ))}
-                      </div>
-                    </RadioGroup>
+                   {courier.costs.length !== 0 && (
+                     <RadioGroup value={courier.code} onChange={(e) => handleChangeDelivery(courier.code, e)} className='space-y-4'>
+                     <RadioGroup.Label className='font-bold uppercase'>{courier.code}</RadioGroup.Label>
+                     <div className="grid sm:grid-cols-2 gap-4">
+                       {courier.costs.map((cost, index) => (
+                         <RadioGroup.Option key={index} value={cost}>
+                           <div className="flex flex-col rounded-lg border border-success space-y-4 w-full bg-base-100 shadow-lg p-4">
+                             <div className="flex flex-col space-y-4">
+                               <div>
+                                 <h4 className="font-bold">{cost.service}</h4>
+                                 <p>{cost.description}</p>
+                                 <p className="font-semibold">estimasi {cost.cost[0].etd} hari </p>
+                                 <p className="font-semibold">{cost.cost[0].note}</p>
+                               </div>
+                               <p className="font-semibold">{Currency.getCurrencyFormat(cost.cost[0].value)}</p>
+                             </div>
+                           </div>
+                         </RadioGroup.Option>
+                       ))}
+                     </div>
+                   </RadioGroup>
+                   )}
                   </div>
                 ))}
               </div>

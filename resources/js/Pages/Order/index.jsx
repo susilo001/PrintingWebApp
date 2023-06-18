@@ -43,7 +43,7 @@ export default function Order({ orders }) {
         </div>
       )}
       {orders.map((order) => (
-        <div key={order.id} className="mt-10 rounded-xl border shadow-xl">
+        <div key={order.id} className="mb-10 rounded-xl border shadow-xl">
           <div className="flex flex-col justify-between space-y-4 p-8 lg:flex-row lg:items-center lg:space-y-0">
             <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
               <span className="font-bold">Order number</span>
