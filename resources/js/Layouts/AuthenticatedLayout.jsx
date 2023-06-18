@@ -44,6 +44,18 @@ export default function Authenticated({ header, children }) {
                 >
                   Design
                 </NavLink>
+                <NavLink
+                  href={route("page.about")}
+                  active={route().current("page.about")}
+                >
+                  About
+                </NavLink>
+                <NavLink
+                  href={route("page.contact")}
+                  active={route().current("page.contact")}
+                >
+                  Contact Us
+                </NavLink>
               </div>
             </div>
 
@@ -262,44 +274,14 @@ export default function Authenticated({ header, children }) {
       )}
 
       <main className="container m-auto my-12 max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">{children}</main>
-      <footer className="mt-auto p-10 border-t shadow-xl bg-neutral text-neutral-content">
-        <div className="footer mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-          <div>
-            <ApplicationLogo className="block h-10 w-auto fill-current" />
-            <p>
-              Orbit Trust Corps.
-              <br />
-              Percetakan & Digital Printing
-            </p>
-            <SocialMediaLink />
-          </div>
-          <div>
-            <span className="footer-title">Services</span>
-            <Link href={route("product.index")} className="link-hover link">
-              Products
-            </Link>
-            <Link href={route("design.index")} className="link-hover link">
-              Design
-            </Link>
-          </div>
-          <div>
-            <span className="footer-title">Company</span>
-            <Link href={route("page.about")} className="link-hover link">
-              About Us
-            </Link>
-            <Link href={route("page.contact")} className="link-hover link">
-              Contact Us
-            </Link>
-          </div>
-          <div>
-            <span className="footer-title">Social</span>
-            <Link href={route("page.about")} className="link-hover link">
-              About Us
-            </Link>
-            <Link href={route("page.contact")} className="link-hover link">
-              Contact Us
-            </Link>
-          </div>
+      <footer className="footer p-10 bg-neutral text-neutral-content">
+        <div>
+          <ApplicationLogo className="block h-10 w-auto fill-current" />
+          <p>ACME Industries Ltd.<br />Percetakan & Digital Printing</p>
+        </div>
+        <div>
+          <span className="footer-title">Social</span>
+          <SocialMediaLink />
         </div>
       </footer>
     </div>

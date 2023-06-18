@@ -40,9 +40,9 @@ export default function Cart({ cart }) {
     <AuthenticatedLayout
       header={
         <div>
-          <h2 className="text-2xl font-semibold leading-tight text-gray-800">
+          <h1 className="text-2xl font-bold leading-tight text-gray-800">
             Shopping Cart
-          </h2>
+          </h1>
           <p>Keranjang Belanja Anda ({cart.cartItems.length} item)</p>
         </div>
       }

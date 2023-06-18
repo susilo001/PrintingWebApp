@@ -52,7 +52,7 @@ export default function Products({ products, categories }) {
         <div>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">Products</h1>
+              <h1 className="text-2xl font-bold">Products</h1>
               <p className="text-gray-500">View all products</p>
             </div>
             <div className="hidden sm:flex sm:items-center sm:space-x-4 ">
@@ -112,15 +112,15 @@ export default function Products({ products, categories }) {
           <p className="text-gray-500">Try searching for something else</p>
         </div>
       )}
-      <div className="grid place-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid place-items-center gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {products.map((product) => (
           <Link key={product.id} href={route("product.show", product.id)}>
-            <Card className="h-72 w-72">
+            <Card className="h-60 w-60">
               <Card.Image alt={product.name} srcSet={product.images[0]} />
               <Card.Body>
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Actions className="flex items-center justify-between">
-                  <span className="font-bold text-primary">
+                  <span className="font-semibold">
                     {Currency.getPrice(product.prices)}
                   </span>
                   <span className="badge badge-accent p-2 text-xs font-semibold">
