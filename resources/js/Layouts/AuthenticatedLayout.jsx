@@ -277,7 +277,7 @@ export default function Authenticated({ header, children }) {
       <footer className="footer p-10 bg-neutral text-neutral-content">
         <div>
           <ApplicationLogo className="block h-10 w-auto fill-current" />
-          <p>ACME Industries Ltd.<br />Percetakan & Digital Printing</p>
+          <p>Orbit Trust Corp.<br />Percetakan & Digital Printing</p>
         </div>
         <div>
           <span className="footer-title">Social</span>
