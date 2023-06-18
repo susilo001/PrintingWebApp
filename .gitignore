@@ -19,3 +19,4 @@ yarn-error.log
 /.idea
 /.vscode
 /tests/reports
+resources/js/app.jsx
