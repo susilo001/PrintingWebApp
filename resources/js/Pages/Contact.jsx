@@ -19,18 +19,15 @@ export default function Contact() {
     }
 
     return (
-        <AuthenticatedLayout
-            header={
-                <h1 className="font-semibold text-xl leading-tight">
-                    Contact Us
-                </h1>
-            }>
+        <AuthenticatedLayout header={<h1 className="font-bold text-2xl leading-tight">Contact Us</h1>}>
             <Head title="Contact Us" />
 
             <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
                 <div className="mb-8 flex flex-col justify-center items-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact sales</h2>
-                    <p className="mt-2 text-lg leading-8 text-gray-600">Aute magna irure deserunt veniam aliqua magna enim voluptate.</p>
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact Us</h2>
+                    <p className="mt-2 text-lg leading-8 text-gray-600">
+                        Berikan kami masukan, saran, atau pertanyaan apa pun yang Anda miliki.
+                    </p>
                 </div>
 
                 <form onSubmit={handleSubmit}>

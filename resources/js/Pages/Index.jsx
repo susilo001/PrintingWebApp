@@ -15,11 +15,10 @@ import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const swiperBreakpoints = {
-  320: { slidesPerView: 1 },
-  640: { slidesPerView: 2 },
-  768: { slidesPerView: 3 },
-  1024: { slidesPerView: 4 },
-  1280: { slidesPerView: 5 },
+  320: { slidesPerView: 2 },
+  640: { slidesPerView: 3 },
+  768: { slidesPerView: 4 },
+  1024: { slidesPerView: 5 },
 };
 
 export default function Index({ products, testimonials }) {
@@ -98,7 +97,7 @@ export default function Index({ products, testimonials }) {
                   <Card.Body>
                     <Card.Title>{product.name}</Card.Title>
                     <Card.Actions className="flex items-center justify-between">
-                      <span className="font-bold text-primary">
+                      <span className="font-semibold">
                         {Currency.getPrice(product.prices)}
                       </span>
                       <span className="badge badge-accent p-2 text-xs font-semibold">
@@ -173,7 +172,7 @@ export default function Index({ products, testimonials }) {
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>
                       <Card.Actions className="flex items-center justify-between">
-                        <span className="font-bold text-primary">
+                        <span className="font-semibold">
                           {Currency.getPrice(product.prices)}
                         </span>
                         <span className="badge badge-accent p-2 text-xs font-semibold">

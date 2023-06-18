@@ -8,10 +8,9 @@ import Currency from '@/utils/Currency';
 import {
   ChevronRightIcon,
   ShoppingBagIcon,
-  StarIcon,
 } from "@heroicons/react/24/solid";
 import { Head, Link, router } from "@inertiajs/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -22,10 +21,6 @@ export default function Product({ product }) {
   const [variants, setVariants] = useState([]);
   const [templates, setTemplates] = useState([]);
 
-  const descriptionInput = useRef();
-  const quantityInput = useRef();
-  const designInput = useRef();
-
   const getTemplates = async () => {
     const response = await fetch("/api/design");
     const data = await response.json();
@@ -35,12 +30,6 @@ export default function Product({ product }) {
   useEffect(() => {
     getTemplates();
   }, []);
-
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
-
-  const reviews = { href: "#", average: 4, totalCount: 117 };
 
   const handleVariantChange = (name, value) => {
     const variantExist = variants.find((variant) => variant.name === name);
@@ -81,20 +70,11 @@ export default function Product({ product }) {
       if (result.isConfirmed) {
         router.post("/cart", formData, {
           onError: () => {
-            if (errors.quantity) {
-              reset("quantity");
-              quantityInput.current.focus();
-            }
-
-            if (errors.description) {
-              reset("description");
-              descriptionInput.current.focus();
-            }
-
-            if (errors.design) {
-              reset("design");
-              designInput.current.focus();
-            }
+            Swal.fire({
+              title: "Error",
+              text: "Something went wrong. Please try again.",
+              icon: "error",
+            });
           },
         });
       }
@@ -106,10 +86,9 @@ export default function Product({ product }) {
       header={
         <div className="flex items-center">
           <div>
-            <h1 className="sm:text-3xl text-lg font-bold">{product.name}</h1>
+            <h1 className="sm:text-2xl text-lg font-bold">{product.name}</h1>
             <p className="text-gray-500">View product details</p>
           </div>
-
         </div>
       }
     >
@@ -154,38 +133,11 @@ export default function Product({ product }) {
               </span>
             </p>
 
-            {/* Reviews */}
-            <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        reviews.average > rating
-                          ? "text-accent"
-                          : "text-base-content",
-                        "h-5 w-5 flex-shrink-0"
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className="sr-only">{reviews.average} out of 5 stars</p>
-                <a
-                  href={reviews.href}
-                  className="ml-3 text-sm font-medium text-primary hover:text-secondary-focus"
-                >
-                  {reviews.totalCount} reviews
-                </a>
-              </div>
-            </div>
-
-            <form className="mt-10" onSubmit={handleSubmit}>
+            <form className="mt-8" onSubmit={handleSubmit}>
               <TextArea
+                id="description"
                 name="description"
-                label={"Description"}
+                label="Description"
                 className={"textarea-bordered"}
                 required
                 value={description}
@@ -193,13 +145,14 @@ export default function Product({ product }) {
               />
 
               <Input
+                id="quantity"
                 name="qty"
-                label={"Quantity"}
+                label="Quantity"
+                className={"input-bordered w-full"}
                 required
                 value={quantity}
                 handleChange={(e) => setQuantity(e.target.value)}
                 type="number"
-                className={"input-bordered w-full"}
               />
 
               {/* Variants */}
@@ -229,7 +182,7 @@ export default function Product({ product }) {
               ))}
 
               {/* FileUpload */}
-              <div className="mt-10">
+              <div className="mt-8">
                 <FilepondComponent
                   name="design"
                   files={design}
@@ -240,7 +193,7 @@ export default function Product({ product }) {
               <Button
                 name="addToCart"
                 type="submit"
-                className="btn-primary mt-8 w-full gap-2"
+                className="btn-primary mt-8 w-full gap-2 text-white"
               >
                 Add to Cart
                 <ShoppingBagIcon className="h-6 w-6" />
@@ -258,7 +211,7 @@ export default function Product({ product }) {
             {/* Table Prices */}
             <div className="mt-8 overflow-x-auto border-t pt-4">
               <table className="table-zebra table w-full">
-                <thead className="font-bold">
+                <thead className="font-bold text-base-content">
                   <tr>
                     <th>Price</th>
                     <th>Min Order</th>
@@ -284,7 +237,7 @@ export default function Product({ product }) {
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">Design Templates</h3>
                 <Link href="/designs">
-                  <span className="text-sm font-medium text-secondary hover:text-secondary-focus">
+                  <span className="text-sm font-medium text-primary hover:text-primary-focus">
                     View all
                   </span>
                 </Link>

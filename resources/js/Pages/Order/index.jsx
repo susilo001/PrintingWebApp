@@ -23,7 +23,7 @@ export default function Order({ orders }) {
       header={
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-lg font-bold lg:text-3xl">Order History</h1>
+            <h1 className="text-lg font-bold lg:text-2xl">Order History</h1>
             <p className="text-xs text-gray-500 lg:text-sm">
               View your order history
             </p>

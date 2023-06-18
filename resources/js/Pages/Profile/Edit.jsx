@@ -17,7 +17,7 @@ export default function Edit({ mustVerifyEmail, status }) {
     <AuthenticatedLayout
       header={
         <div>
-          <h1 className="text-lg font-bold lg:text-3xl">Profile</h1>
+          <h1 className="text-lg font-bold lg:text-2xl">Profile</h1>
           <p className="text-xs text-gray-500 lg:text-sm">
             Update your profile information
           </p>
