@@ -42,5 +42,5 @@ return [
         'api_key' => env('RAJAONGKIR_API_KEY', ''),
         'account_type' => env('RAJAONGKIR_ACCOUNT_TYPE', 'starter'),
         'base_url' => env('RAJAONGKIR_BASE_URL', 'https://api.rajaongkir.com/starter'),
-    ]
+    ],
 ];

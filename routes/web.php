@@ -64,4 +64,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

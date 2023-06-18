@@ -24,7 +24,6 @@ class CartItemResource extends JsonResource
             'variants' => $this->variants,
             'design' => $this->getFirstMedia('cart')->getSrcset(),
             'product' => new ProductResource($this->whenLoaded('product')),
-            'cart' => new CartResource($this->whenLoaded('cart')),
         ];
     }
 }

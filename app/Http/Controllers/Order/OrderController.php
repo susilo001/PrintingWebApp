@@ -103,7 +103,7 @@ class OrderController extends Controller
             ->addItems($items)
             ->logo(public_path('vendor/invoices/logo.png'))
             ->notes('Thank you for your business!')
-            ->filename('INV' . $order->id)
+            ->filename('INV'.$order->id)
             ->save('public');
 
         return redirect()->route('order.index')->with([

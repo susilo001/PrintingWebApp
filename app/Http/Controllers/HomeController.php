@@ -29,8 +29,9 @@ class HomeController extends Controller
         ]);
     }
 
-    /** 
+    /**
      * Render about page
+     *
      * @return \Inertia\Response
      */
     public function about()
@@ -38,8 +39,9 @@ class HomeController extends Controller
         return Inertia::render('About');
     }
 
-    /** 
+    /**
      * Render contact page
+     *
      * @return \Inertia\Response
      */
     public function contact()

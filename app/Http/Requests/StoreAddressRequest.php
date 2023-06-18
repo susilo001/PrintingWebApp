@@ -40,7 +40,7 @@ class StoreAddressRequest extends FormRequest
 
     /**
      * Get the validation messages that apply to the request.
-     * 
+     *
      * @return array<string, mixed>
      */
     public function messages()

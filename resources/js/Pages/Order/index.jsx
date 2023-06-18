@@ -3,11 +3,16 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Currency from "@/utils/Currency";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router, usePage } from "@inertiajs/react";
+import { useEffect } from "react";
 
 export default function Order({ orders }) {
   const { flash } = usePage().props;
 
-  flash.invoice ? window.open(flash.invoice, "_blank") : null;
+  useEffect(() => {
+  if(flash.invoice){
+    window.open(flash.invoice, "_blank")
+  }
+  }, []);
 
   const handleRequestInvoice = async (id) => {
     router.get(route("order.invoice", { order: id }));
@@ -43,7 +48,7 @@ export default function Order({ orders }) {
         </div>
       )}
       {orders.map((order) => (
-        <div key={order.id} className="mt-10 rounded-xl border shadow-xl">
+        <div key={order.id} className="mb-10 rounded-xl border shadow-xl">
           <div className="flex flex-col justify-between space-y-4 p-8 lg:flex-row lg:items-center lg:space-y-0">
             <div className="flex flex-row justify-between text-xs lg:flex-col lg:text-lg">
               <span className="font-bold">Order number</span>

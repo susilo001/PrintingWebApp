@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CheckoutRequest;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Http\Resources\CartResource;
-use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Services\CartService;
 use App\Services\Payment\PaymentService;
 use App\Services\RajaOngkirService;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CartController extends Controller
@@ -35,7 +33,7 @@ class CartController extends Controller
     public function index(): \Inertia\Response
     {
         return Inertia::render('Cart', [
-            'cart' => new CartResource(Cart::with('cartItems.media')->where('user_id', auth()->id())->first()),
+            'cart' => new CartResource(Cart::with('cartItems.media', 'cartItems.product.prices', 'cartItems.product.discount')->where('user_id', auth()->id())->first()),
         ]);
     }
 
@@ -99,9 +97,11 @@ class CartController extends Controller
     public function shipment(Request $request, RajaOngkirService $rajaOngkirService)
     {
         $user = $request->user();
-        $cart = Cart::with('cartItems.product', 'cartItems.media')->where('user_id', $user->id)->first();
-        $address = $user->getActiveAddress();
+        $cart = Cart::with(['cartItems.product', 'cartItems.media'])
+            ->where('user_id', $user->id)
+            ->first();
 
+        $address = $user->getActiveAddress();
         $destination = $address->city_id;
         $weight = $cart->getWeight();
 
@@ -126,7 +126,7 @@ class CartController extends Controller
         $jneCourier = $rajaOngkirService->cost($jne);
         $tikiCourier = $rajaOngkirService->cost($tiki);
         $posCourier = $rajaOngkirService->cost($pos);
-        $couriers = array_merge($jneCourier['rajaongkir']['results'], $tikiCourier['rajaongkir']['results'], $posCourier['rajaongkir']['results']);
+        $couriers = array_merge($jneCourier, $tikiCourier, $posCourier);
 
         return Inertia::render('Checkout', [
             'cart' => new CartResource($cart),

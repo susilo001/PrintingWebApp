@@ -5,30 +5,36 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Currency from "@/utils/Currency";
 import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Head, Link, router } from "@inertiajs/react";
-import { useState } from "react";
+import { debounce } from "lodash";
+import { useCallback, useState } from "react";
 
 export default function Products({ products, categories }) {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSearch = (e) => {
-    setSearch(e.target.value);
-
-    if (search) {
-      setTimeout(
-        () =>
-          router.get(
-            route("product.index"),
-            { name: search },
-            { only: ["products"], preserveState: true, replace: true }
-          ),
-        3000
-      );
-    }
-    router.get(route("product.index"));
+    const { value } = e.target;
+    setSearch(value);
+    fecthProductByName(value);
   };
 
-  const handleCategoryChange = (e) => {
+  const fecthProductByName = useCallback(
+    debounce((value) => {
+      if (value !== "") {
+        router.get(
+          route("product.index"),
+          { name: value },
+          { only: ["products"], preserveState: true, replace: true }
+        );
+      } else {
+        router.get(route("product.index"));
+      }
+    }, 3000),
+    []
+  );
+  
+
+  const handleCategoryChange = useCallback((e) => {
     if (e.target.value) {
       router.get(
         route("product.index"),
@@ -38,7 +44,7 @@ export default function Products({ products, categories }) {
     } else {
       router.get(route("product.index"));
     }
-  };
+  }, []);
 
   return (
     <AuthenticatedLayout
@@ -99,21 +105,17 @@ export default function Products({ products, categories }) {
         </div>
       }
     >
-      <Head title="Products Page" />
+      <Head title="Products" />
       {products.length === 0 && (
         <div className="text-center">
           <h1 className="text-3xl font-bold text-warning">No Products Found</h1>
           <p className="text-gray-500">Try searching for something else</p>
         </div>
       )}
-      <div className="grid place-items-center gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid place-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
-          <Link
-            className="link-hover link w-fit"
-            key={product.id}
-            href={route("product.show", product.id)}
-          >
-            <Card className={"h-72"}>
+          <Link key={product.id} href={route("product.show", product.id)}>
+            <Card className="h-72 w-72">
               <Card.Image alt={product.name} srcSet={product.images[0]} />
               <Card.Body>
                 <Card.Title>{product.name}</Card.Title>

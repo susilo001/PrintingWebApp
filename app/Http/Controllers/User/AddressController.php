@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use Inertia\Inertia;
-use App\Models\Address;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAddressRequest;
+use App\Models\Address;
+use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      *

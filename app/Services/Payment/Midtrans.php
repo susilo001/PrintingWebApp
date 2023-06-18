@@ -2,10 +2,9 @@
 
 namespace App\Services\Payment;
 
-use Midtrans\Snap;
 use Midtrans\Config;
 use Midtrans\Notification;
-
+use Midtrans\Snap;
 
 abstract class Midtrans
 {

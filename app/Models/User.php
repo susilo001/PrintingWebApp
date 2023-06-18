@@ -81,7 +81,7 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
-     * get the user active address if there no active address throw exception 
+     * get the user active address if there no active address throw exception
      *
      * @return \App\Models\Address
      */
@@ -89,7 +89,7 @@ class User extends Authenticatable implements FilamentUser
     {
         $address = $this->addresses()->where('is_active', true)->first();
 
-        if (!$address) {
+        if (! $address) {
             throw new \Exception('No active address found');
         }
 
