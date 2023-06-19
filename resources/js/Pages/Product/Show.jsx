@@ -128,7 +128,7 @@ export default function Product({ product }) {
             <h2 className="sr-only">Product information</h2>
             <p className="sm:text-3xl text-lg tracking-tight">
               {Currency.getPrice(product.prices)}
-              <span className="badge badge-accent ml-2 font-medium">
+              <span className="badge badge-primary badge-outline ml-2 font-medium">
                 / Starting Price
               </span>
             </p>
@@ -146,7 +146,7 @@ export default function Product({ product }) {
 
               <Input
                 id="quantity"
-                name="qty"
+                name="quantity"
                 label="Quantity"
                 className={"input-bordered w-full"}
                 required
@@ -233,17 +233,15 @@ export default function Product({ product }) {
             <div className="divider-dashed divider my-4" />
 
             {/* Design Templates */}
-            <div className="mt-8 space-y-4 overflow-x-auto rounded-lg bg-base-200 p-4">
+            <div className="mt-8 space-y-4 overflow-x-auto rounded-lg">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">Design Templates</h3>
-                <Link href="/designs">
-                  <span className="text-sm font-medium text-primary hover:text-primary-focus">
-                    View all
-                  </span>
+                <Link href="/designs" className="text-sm font-medium text-primary hover:text-primary-focus">
+                  View all
                 </Link>
               </div>
               {templates.length === 0 ? (
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center bg-base-200 h-20 rounded-lg">
                   <p className="text-center">No templates available</p>
                 </div>
               ) : (

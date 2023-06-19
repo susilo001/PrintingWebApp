@@ -100,7 +100,7 @@ export default function Index({ products, testimonials }) {
                       <span className="font-semibold">
                         {Currency.getPrice(product.prices)}
                       </span>
-                      <span className="badge badge-accent p-2 text-xs font-semibold">
+                      <span className="badge badge-primary badge-outline p-2 text-xs font-semibold">
                         {product.category.name}
                       </span>
                     </Card.Actions>
@@ -147,7 +147,7 @@ export default function Index({ products, testimonials }) {
               <div className="flex justify-center lg:justify-start">
                 <Link
                   href={route("product.index")}
-                  className="btn-primary btn-wide btn h-fit gap-2"
+                  className="btn-primary btn-wide btn hover:text-primary-content h-fit gap-2 text-white"
                 >
                   Explore More
                   <ArrowRightIcon className={"h-5 w-5"} />
@@ -175,7 +175,7 @@ export default function Index({ products, testimonials }) {
                         <span className="font-semibold">
                           {Currency.getPrice(product.prices)}
                         </span>
-                        <span className="badge badge-accent p-2 text-xs font-semibold">
+                        <span className="badge badge-primary badge-outline p-2 text-xs font-semibold">
                           {product.category.name}
                         </span>
                       </Card.Actions>

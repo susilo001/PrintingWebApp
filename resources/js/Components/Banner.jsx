@@ -19,6 +19,8 @@ export default function Banner() {
               sizes="(max-width: 674px) 100vw, 674px"
               alt={item.description}
               className="object-cover w-full aspect-[18/7] rounded-lg"
+              width={674}
+              height={252}
             />
           </Link>
         </SwiperSlide>

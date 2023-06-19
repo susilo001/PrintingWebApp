@@ -30,7 +30,7 @@ export default function FeatureSection() {
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="sm:text-center">
-        <h2 className="text-lg font-semibold leading-8 text-secondary">
+        <h2 className="text-lg font-semibold leading-8 text-base-content">
           Benefits
         </h2>
         <p className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">

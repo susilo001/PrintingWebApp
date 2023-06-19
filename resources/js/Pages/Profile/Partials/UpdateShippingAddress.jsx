@@ -104,7 +104,7 @@ export default function UpdateShippingAddress({ address, cities }) {
                     errors={errors.postal_code}
                 />
             </div>
-            <Button className="btn-primary btn-sm normal-case text-white" type='submit' disable={processing.toString()}>
+            <Button className="btn-primary btn-sm normal-case text-white" type='submit' disabled={processing}>
                 Save
             </Button>
         </form>
