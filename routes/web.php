@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
     Route::get('/order', [OrderController::class, 'index'])->name('order.index');
-    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+    Route::delete('/order/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
     Route::post('/order/{order}/testimonial', [OrderController::class, 'testimonial'])->name('order.testimonial');
     Route::get('/order/{order}/invoice', [OrderController::class, 'invoice'])->name('order.invoice');
 

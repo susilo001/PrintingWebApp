@@ -9,10 +9,9 @@ use Inertia\Inertia;
 
 class DesignController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = auth()->user();
-        $role = $user->roles->first()->name;
+        $role = $request->user()->roles->first()->name;
 
         return Inertia::render('Design', [
             'role' => $role,

@@ -1,4 +1,5 @@
 import Alert from "./sweetalert";
+import { router } from "@inertiajs/react";
 
 const Midtrans = {
   load() {
@@ -23,7 +24,7 @@ const Midtrans = {
     window.snap.hide();
   },
 
-  snapPay(snapToken) {
+  snapPay(snapToken, orderId) {
     window.snap.pay(snapToken, {
       onSuccess: function (result) {
         Alert("success", "Success", result.status_message);
@@ -32,10 +33,12 @@ const Midtrans = {
         Alert("info", "Pending", result.status_message);
       },
       onError: function (result) {
-        Alert("error", "Error", result.status_message, 'cart.index', "get");
+        alert(result.status_message);
+        router.delete(route('order.destroy', orderId));
       },
       onClose: function () {
-        Alert("error", "Error", "You have cancelled the payment", 'cart.index', "get");
+        alert("Transaction Canceled");
+        router.delete(route('order.destroy', orderId));
       },
     });
   },

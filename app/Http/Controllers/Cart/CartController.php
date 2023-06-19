@@ -140,12 +140,17 @@ class CartController extends Controller
      */
     public function checkout(Request $request, Cart $cart): \Inertia\Response
     {
-        $snapToken = $this->cartService->checkout($request->all());
+        $validated = $request->validate([
+            'courier' => 'required|array',
+        ]);
+        
+        $Token = $this->cartService->checkout($validated);
 
         return Inertia::render('Checkout', [
             'cart' => new CartResource($cart->getUserCart()),
             'addresses' => $request->user()->addresses()->get(),
-            'token' => $snapToken,
+            'token' => $Token['snap_token'],
+            'order_id' => $Token['order_id'],
         ]);
     }
 }
