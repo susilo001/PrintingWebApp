@@ -39,6 +39,7 @@ export default function ForgotPassword({ status }) {
           id="password"
           type="email"
           name="email"
+          label="Email"
           value={data.email}
           className="input-bordered"
           handleChange={onHandleChange}
@@ -46,8 +47,8 @@ export default function ForgotPassword({ status }) {
         />
 
         <div className="mt-4 flex items-center justify-end">
-          <Button className="btn-ghost ml-4" disabled={processing}>
-            Email Password Reset Link
+          <Button className="btn-ghost normal-case" disabled={processing}>
+            Reset Password
           </Button>
         </div>
       </form>

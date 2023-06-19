@@ -1,6 +1,6 @@
 export default {
-  root: './resources/js/Pages',
-  output: '../',
+  root: './public',
+  output: './',
   discover: {
     fileExtensions: ['.js', '.jsx'],
   },
