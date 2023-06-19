@@ -68,7 +68,7 @@ export default function Contact() {
                     <Button
                         type='submit'
                         className='btn-primary text-white btn-block'
-                        disable={processing}
+                        disabled={processing}
                     >
                         Submit
                     </Button>

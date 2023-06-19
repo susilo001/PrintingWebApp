@@ -76,14 +76,14 @@ export default function Checkout({ cart, address, couriers }) {
           <section className="space-y-8">
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-bold">Shipping Information</h3>
+                <h2 className="text-lg font-bold">Shipping Information</h2>
                 <p>Pilih alamat pengiriman anda yang anda akan digunakan</p>
               </div>
               <div className="space-y-4">
                 <div className='flex flex-col rounded-lg border space-y-4 w-full shadow-lg border-primary px-8 py-4'>
                   <div className="flex items-start justify-between space-x-4">
                     <div className="flex-grow">
-                      <h4 className="font-bold">{address.first_name} {address.last_name}</h4>
+                      <h3 className="font-bold">{address.first_name} {address.last_name}</h3>
                       <p>{address.phone}</p>
                       <p>{address.address}, {address.city_name}, {address.province}, {address.postal_code}</p>
                     </div>
@@ -96,7 +96,7 @@ export default function Checkout({ cart, address, couriers }) {
             </div>
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-bold">Delivery Method</h3>
+                <h2 className="text-lg font-bold">Delivery Method</h2>
                 <p>Pilih metode pengiriman yang anda inginkan</p>
               </div>
               <div className="space-y-4">
@@ -111,7 +111,7 @@ export default function Checkout({ cart, address, couriers }) {
                            <div className="flex flex-col rounded-lg border border-success space-y-4 w-full bg-base-100 shadow-lg p-4">
                              <div className="flex flex-col space-y-4">
                                <div>
-                                 <h4 className="font-bold">{cost.service}</h4>
+                                 <h3 className="font-bold">{cost.service}</h3>
                                  <p>{cost.description}</p>
                                  <p className="font-semibold">estimasi {cost.cost[0].etd} hari </p>
                                  <p className="font-semibold">{cost.cost[0].note}</p>
@@ -132,7 +132,7 @@ export default function Checkout({ cart, address, couriers }) {
           <section className="space-y-4">
             <div className="flex items-start justify-between space-x-4">
               <div className="flex-grow">
-                <h3 className="text-lg font-bold">Order Summary</h3>
+                <h2 className="text-lg font-bold">Order Summary</h2>
               </div>
             </div>
 
@@ -149,7 +149,7 @@ export default function Checkout({ cart, address, couriers }) {
                   </div>
                   <div className="grow space-y-4">
                     <div className="flex items-start justify-between">
-                      <h4 className="font-bold">{item.name}</h4>
+                      <h3 className="font-bold">{item.name}</h3>
                       <span className="text-sm font-semibold">{Currency.getCurrencyFormat(item.price)}</span>
                     </div>
                     <ul className="flex flex-wrap">

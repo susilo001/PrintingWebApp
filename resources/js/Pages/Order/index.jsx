@@ -9,9 +9,9 @@ export default function Order({ orders }) {
   const { flash } = usePage().props;
 
   useEffect(() => {
-  if(flash.invoice){
-    window.open(flash.invoice, "_blank")
-  }
+    if (flash.invoice) {
+      window.open(flash.invoice, "_blank")
+    }
   }, []);
 
   const handleRequestInvoice = async (id) => {
@@ -81,7 +81,7 @@ export default function Order({ orders }) {
                   srcSet={item.image}
                   sizes="(max-width: 674px) 100vw, 674px"
                   className="aspect-square h-32 w-32 rounded-lg bg-base-200 object-contain"
-                  alt={item.name}
+                  alt={item.desc}
                 />
                 <div className="my-4 flex-grow space-y-4 lg:my-0">
                   <div className="flex items-center justify-between">

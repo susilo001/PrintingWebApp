@@ -74,6 +74,7 @@ export default function Products({ products, categories }) {
             <div className="sm:hidden">
               <Button
                 className="btn-ghost btn-circle"
+                aria-label="Open filters panel"
                 onClick={() => setIsOpen((previousState) => !previousState)}
               >
                 {isOpen ? (
@@ -108,7 +109,7 @@ export default function Products({ products, categories }) {
       <Head title="Products" />
       {products.length === 0 && (
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-warning">No Products Found</h1>
+          <h2 className="text-3xl font-bold text-warning">No Products Found</h2>
           <p className="text-gray-500">Try searching for something else</p>
         </div>
       )}
@@ -123,7 +124,7 @@ export default function Products({ products, categories }) {
                   <span className="font-semibold">
                     {Currency.getPrice(product.prices)}
                   </span>
-                  <span className="badge badge-accent p-2 text-xs font-semibold">
+                  <span className="badge badge-primary badge-outline p-2 text-xs font-semibold">
                     {product.category.name}
                   </span>
                 </Card.Actions>
