@@ -8,7 +8,7 @@ class PaymentService extends Midtrans
 {
     public function requestPayment(Order $order): string
     {
-        $orderId = 'OTC-' . $order->id . '-' . date('dmy:His');
+        $orderId = 'OTC-'.$order->id.'-'.date('dmy:His');
         $transaction = [
             'transaction_details' => [
                 'order_id' => $orderId,

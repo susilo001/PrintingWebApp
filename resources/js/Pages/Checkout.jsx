@@ -6,33 +6,20 @@ import {
   WalletIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import Midtrans from "@/lib/midtrans";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Currency from "@/utils/Currency";
 import { RadioGroup } from "@headlessui/react";
 
 export default function Checkout({ cart, address, couriers }) {
   const [delivery, setDelivery] = useState([]);
 
-  useEffect(() => {
-    Midtrans.load();
-  }, []);
-
   const handleSubmit = () => {
-    Midtrans.snapLoading();
-    router.post(route("cart.checkout"), { courier: delivery }, {
-      preserveState: (page) => Object.keys(page.props.errors).length,
-      onSuccess: (page) => {
-        const token = page.props.token;
-        const orderId = page.props.order_id;
-
-        Midtrans.snapPay(token, orderId);
-      },
-      onError: (error) => {
-        Midtrans.snapLoadingHide();
-        alert(error.message);
-      }
-    });
+    router.visit(route('cart.checkout'), {
+      method: 'post',
+      data: { courier: delivery },
+      preserveState: true,
+      preserveScroll: true,
+    })
   };
 
   const handleChangeDelivery = (code, service) => {
