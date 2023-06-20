@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Order;
 
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use App\Models\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderCollection;
-use App\Models\Order;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use LaravelDaily\Invoices\Classes\InvoiceItem;
+use LaravelDaily\Invoices\Invoice;
 use LaravelDaily\Invoices\Classes\Party;
-use LaravelDaily\Invoices\Facades\Invoice;
+use LaravelDaily\Invoices\Classes\InvoiceItem;
+
 
 class OrderController extends Controller
 {
@@ -66,7 +67,7 @@ class OrderController extends Controller
     /**
      * Show order invoice.
      */
-    public function invoice(Order $order): RedirectResponse
+    public function invoice(Order $order)
     {
         $order->load([
             'orderItems.product',
@@ -81,11 +82,11 @@ class OrderController extends Controller
         $customer = new Party([
             'name' => $order->user->name,
             'custom_fields' => [
-                'address' => $address->address .' '. $address->city .' '. $address->province .' '. $address->postal_code,
+                'address' => $address->address . ' ' . $address->city . ' ' . $address->province . ' ' . $address->postal_code,
                 'phone' => $order->user->phone_number,
             ],
         ]);
-        
+
 
         $items = $items->map(function ($item) {
             return (new InvoiceItem())
@@ -94,14 +95,16 @@ class OrderController extends Controller
                 ->quantity($item->qty);
         });
 
-        $invoice = Invoice::make('Invoice')
+        $invoice = Invoice::make()
+            ->filename('INV' . $order->id)
+            ->logo(public_path('vendor/invoices/logo.png'))
             ->status($order->paymentDetail->status)
             ->buyer($customer)
             ->addItems($items)
-            ->logo(public_path('vendor/invoices/logo.png'))
-            ->notes('Thank you for your business!')
-            ->filename('INV' . $order->id);
-            // ->save('public');
+            ->taxableAmount($order->tax)
+            ->totalDiscount($order->discount)
+            ->notes('Terima kasih atas pembelianya')
+            ->save('public');
 
         return redirect()->route('order.index')->with([
             'invoice' => $invoice->url(),
