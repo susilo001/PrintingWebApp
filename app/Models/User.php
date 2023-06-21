@@ -89,10 +89,10 @@ class User extends Authenticatable implements FilamentUser
     {
         $address = $this->addresses()->where('is_active', true)->first();
 
-        if (! $address) {
-            throw new \Exception('No active address found');
+        if ($address === null) {
+            throw new \Exception('Please add your address first', 404);
         }
-
+    
         return $address;
     }
 }

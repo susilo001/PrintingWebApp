@@ -2,13 +2,14 @@
 
 namespace App\Services\Payment;
 
+use App\Models\Cart;
 use App\Models\Order;
 
 class PaymentService extends Midtrans
 {
     public function requestPayment(Order $order): string
     {
-        $orderId = 'OTC-'.$order->id.'-'.date('dmy:His');
+        $orderId = 'OTC-' . $order->id . '-' . date('dmy:His');
         $transaction = [
             'transaction_details' => [
                 'order_id' => $orderId,
@@ -16,7 +17,7 @@ class PaymentService extends Midtrans
             ],
 
             'callbacks' => [
-                'finish' => 'http://orbit.test/order',
+                'finish' => config('app.url') . '/order',
             ],
 
             'customer_details' => [
@@ -77,6 +78,9 @@ class PaymentService extends Midtrans
 
         $order = Order::findOrfail($getOrderId);
 
+        $cart = Cart::where('user_id', $order->user()->first()->id)->first();
+        $cart->cartItems()->delete();
+        
         $order->update([
             'status' => $data['order_status'],
         ]);
