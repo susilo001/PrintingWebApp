@@ -2,8 +2,11 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\App;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -46,5 +49,53 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Prepare exception for rendering.
+     *
+     * @param  \Throwable  $e
+     * @return \Throwable
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($this->shouldRenderErrorPage($e)) {
+            return $this->renderErrorPage($e);
+        }
+
+        return parent::render($request, $e);
+    }
+
+    /**
+     * Determine if the error page should be rendered for the given exception.
+     *
+     * @param  \Throwable  $e
+     * @return bool
+     */
+    protected function shouldRenderErrorPage(Throwable $e)
+    {
+        return App::environment(['local', 'testing']) || $e instanceof HttpException;
+    }
+
+    /**
+     * Render the error page for the given exception.
+     *
+     * @param  \Throwable  $e
+     * @return \Illuminate\Http\Response
+     */
+    protected function renderErrorPage(Throwable $e)
+    {
+        $statusCode = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
+
+        if ($statusCode === 419) {
+            return back()->with([
+                'message' => 'The page expired, please try again.',
+            ]);
+        }
+
+        return Inertia::render('Error', [
+            'status' => $statusCode,
+            'message' => $e->getMessage(),
+        ])->toResponse(request())->setStatusCode($statusCode);
     }
 }
