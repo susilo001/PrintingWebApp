@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CheckoutRequest;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Http\Resources\CartResource;
@@ -138,13 +139,11 @@ class CartController extends Controller
     /**
      * Checkout the cart content
      */
-    public function checkout(Request $request, Cart $cart): \Inertia\Response
+    public function checkout(CheckoutRequest $request): RedirectResponse
     {
-        $snapToken = $this->cartService->checkout($request->all());
+        $snapToken = $this->cartService->checkout($request->validated());
 
-        return Inertia::render('Checkout', [
-            'cart' => new CartResource($cart->getUserCart()),
-            'addresses' => $request->user()->addresses()->get(),
+        return to_route('cart.shipment', '', 302)->with([
             'token' => $snapToken,
         ]);
     }

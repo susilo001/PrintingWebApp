@@ -2,18 +2,9 @@ import Button from "@/Components/Button";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Currency from "@/utils/Currency";
 import { ReceiptPercentIcon } from "@heroicons/react/24/outline";
-import { Head, Link, router, usePage } from "@inertiajs/react";
-import { useEffect } from "react";
+import { Head, Link, router} from "@inertiajs/react";
 
 export default function Order({ orders }) {
-  const { flash } = usePage().props;
-
-  useEffect(() => {
-    if (flash.invoice) {
-      window.open(flash.invoice, "_blank")
-    }
-  }, []);
-
   const handleRequestInvoice = async (id) => {
     router.get(route("order.invoice", { order: id }));
   };

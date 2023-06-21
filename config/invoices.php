@@ -40,7 +40,7 @@ return [
         /*
          * Example: 19.00
          */
-        'decimals' => 2,
+        'decimals' => 0,
         /*
          * Example: 1.99
          */
@@ -49,7 +49,7 @@ return [
          * By default empty.
          * Example: 1,999.00
          */
-        'thousands_separator' => ',',
+        'thousands_separator' => '.',
         /*
          * Supported tags {VALUE}, {SYMBOL}, {CODE}
          * Example: 1.99 €
@@ -88,7 +88,7 @@ return [
                  * Used to display additional info on Seller section in invoice
                  * attribute => value
                  */
-                'Open Hours' => 'Mon - Sat 08:30 - 17:30',
+                'Jam Buka' => 'Senin - Sabtu 08:30 - 17:30',
             ],
         ],
     ],

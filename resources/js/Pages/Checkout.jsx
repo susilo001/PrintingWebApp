@@ -6,43 +6,20 @@ import {
   WalletIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import Midtrans from "@/lib/midtrans";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+import { useState } from "react";
 import Currency from "@/utils/Currency";
 import { RadioGroup } from "@headlessui/react";
 
 export default function Checkout({ cart, address, couriers }) {
   const [delivery, setDelivery] = useState([]);
 
-  useEffect(() => {
-    Midtrans.load();
-  }, []);
-
   const handleSubmit = () => {
-    Swal.fire({
-      title: "Checkout Keranjang Belanja",
-      text: "Apakah anda yakin ingin melanjutkan pembayaran?",
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, Lanjutkan",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Midtrans.snapLoading();
-        router.visit(route("cart.checkout"), {
-          method: 'post',
-          data: { courier: delivery },
-          onSuccess: (page) => {
-            Midtrans.snapPay(page.props.token);
-          },
-          onError: (error) => {
-            Midtrans.snapLoadingHide();
-            Swal.fire({ icon: "error", title: "Oops...", text: error.message });
-          }
-        });
-      }
-    });
+    router.visit(route('cart.checkout'), {
+      method: 'post',
+      data: { courier: delivery },
+      preserveState: true,
+      preserveScroll: true,
+    })
   };
 
   const handleChangeDelivery = (code, service) => {
@@ -83,9 +60,9 @@ export default function Checkout({ cart, address, couriers }) {
                 <div className='flex flex-col rounded-lg border space-y-4 w-full shadow-lg border-primary px-8 py-4'>
                   <div className="flex items-start justify-between space-x-4">
                     <div className="flex-grow">
-                      <h3 className="font-bold">{address.first_name} {address.last_name}</h3>
-                      <p>{address.phone}</p>
-                      <p>{address.address}, {address.city_name}, {address.province}, {address.postal_code}</p>
+                      <h3 className="font-bold">{address?.first_name} {address?.last_name}</h3>
+                      <p>{address?.phone}</p>
+                      <p>{address?.address}, {address?.city_name}, {address?.province}, {address?.postal_code}</p>
                     </div>
                   </div>
                   <Link href={route("profile.edit")} className="link link-hover link-primary">
@@ -102,28 +79,28 @@ export default function Checkout({ cart, address, couriers }) {
               <div className="space-y-4">
                 {couriers.map((courier, index) => (
                   <div key={index} className="flex flex-col space-y-4">
-                   {courier.costs.length !== 0 && (
-                     <RadioGroup value={courier.code} onChange={(e) => handleChangeDelivery(courier.code, e)} className='space-y-4'>
-                     <RadioGroup.Label className='font-bold uppercase'>{courier.code}</RadioGroup.Label>
-                     <div className="grid sm:grid-cols-2 gap-4">
-                       {courier.costs.map((cost, index) => (
-                         <RadioGroup.Option key={index} value={cost}>
-                           <div className="flex flex-col rounded-lg border border-success space-y-4 w-full bg-base-100 shadow-lg p-4">
-                             <div className="flex flex-col space-y-4">
-                               <div>
-                                 <h3 className="font-bold">{cost.service}</h3>
-                                 <p>{cost.description}</p>
-                                 <p className="font-semibold">estimasi {cost.cost[0].etd} hari </p>
-                                 <p className="font-semibold">{cost.cost[0].note}</p>
-                               </div>
-                               <p className="font-semibold">{Currency.getCurrencyFormat(cost.cost[0].value)}</p>
-                             </div>
-                           </div>
-                         </RadioGroup.Option>
-                       ))}
-                     </div>
-                   </RadioGroup>
-                   )}
+                    {courier.costs.length !== 0 && (
+                      <RadioGroup value={courier.code} onChange={(e) => handleChangeDelivery(courier.code, e)} className='space-y-4'>
+                        <RadioGroup.Label className='font-bold uppercase'>{courier.code}</RadioGroup.Label>
+                        <div className="grid sm:grid-cols-2 gap-4">
+                          {courier.costs.map((cost, index) => (
+                            <RadioGroup.Option key={index} value={cost}>
+                              <div className="flex flex-col rounded-lg border border-success space-y-4 w-full bg-base-100 shadow-lg p-4">
+                                <div className="flex flex-col space-y-4">
+                                  <div>
+                                    <h3 className="font-bold">{cost.service}</h3>
+                                    <p>{cost.description}</p>
+                                    <p className="font-semibold">estimasi {cost.cost[0].etd} hari </p>
+                                    <p className="font-semibold">{cost.cost[0].note}</p>
+                                  </div>
+                                  <p className="font-semibold">{Currency.getCurrencyFormat(cost.cost[0].value)}</p>
+                                </div>
+                              </div>
+                            </RadioGroup.Option>
+                          ))}
+                        </div>
+                      </RadioGroup>
+                    )}
                   </div>
                 ))}
               </div>

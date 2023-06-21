@@ -3,10 +3,32 @@ import { XCircleIcon } from "@heroicons/react/24/outline";
 import { usePage } from "@inertiajs/react";
 import Footer from "@/Components/Footer";
 import NavBar from "@/Components/NavBar";
+import Midtrans from "@/lib/midtrans";
+import { useEffect } from "react";
 
 export default function Authenticated({ header, children }) {
-  const { flash } = usePage().props;
-  const { errors } = usePage().props;
+  const { flash, errors } = usePage().props;
+
+  useEffect(() => {
+    if (flash.invoice) {
+      window.open(flash.invoice, "_blank")
+    }
+
+    const loadMidtrans = async () => {
+      try {
+        await Midtrans.load();
+        const { token } = flash || {};
+
+        if (token && token.snap_token && token.order_id) {
+          await Midtrans.snapPay(token.snap_token, token.order_id);
+        }
+      } catch (error) {
+        alert('Error in Midtrans integration:', error);
+      }
+    };
+
+    loadMidtrans();
+  }, [flash]);
 
   return (
     <div className="relative flex min-h-screen flex-col">
@@ -25,10 +47,11 @@ export default function Authenticated({ header, children }) {
         )}
 
         {/* Alert  */}
-        <Alert status={flash.status} message={flash.message} />
+        {flash?.status && <Alert status={flash.status} message={flash.message} />}
+
 
         {/* Validation Errors */}
-        {Object.keys(errors).length !== 0 && (
+        {errors && Object.keys(errors).length !== 0 && (
           <div className="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8 space-y-2 w-full">
             {Object.values(errors).map((error, index) => (
               <div key={index} className="alert alert-error">

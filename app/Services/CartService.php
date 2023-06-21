@@ -56,15 +56,18 @@ class CartService
         return $qty < $product->minimum_order_quantity;
     }
 
-    public function checkout($request): string
+    public function checkout($data): array
     {
         $paymentService = new PaymentService;
         $orderService = new OrderService;
 
-        $order = $orderService->createOrder($request);
+        $order = $orderService->createOrder($data);
 
         $snapToken = $paymentService->requestPayment($order);
 
-        return $snapToken;
+        return [
+            'snap_token' => $snapToken,
+            'order_id' => $order->id,
+        ];
     }
 }

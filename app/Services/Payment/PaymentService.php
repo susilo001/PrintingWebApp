@@ -8,9 +8,10 @@ class PaymentService extends Midtrans
 {
     public function requestPayment(Order $order): string
     {
+        $orderId = 'OTC-'.$order->id.'-'.date('dmy:His');
         $transaction = [
             'transaction_details' => [
-                'order_id' => $order->id,
+                'order_id' => $orderId,
                 'gross_amount' => $order->total_amount,
             ],
 
@@ -70,7 +71,11 @@ class PaymentService extends Midtrans
     {
         $data = $this->handleNotification($request);
 
-        $order = Order::findOrfail($data['order']);
+        $pattern = '/OTC-(\d+)-/';
+        $getOrderId = preg_match($pattern, $data['order'], $matches);
+        $getOrderId = $matches[1];
+
+        $order = Order::findOrfail($getOrderId);
 
         $order->update([
             'status' => $data['order_status'],

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained();
+            $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->string('tracking_number')->nullable();
             $table->string('first_name');
             $table->string('last_name');

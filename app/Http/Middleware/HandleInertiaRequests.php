@@ -31,28 +31,26 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::share($request), [
-            'auth' => [
-                'user' => $request->user(),
-            ],
-            'cartCount' => function () {
-                $cartCount = Cart::where('user_id', auth()->id())
-                    ->withCount('cartItems')
-                    ->value('cart_items_count');
+        $sharedData = parent::share($request);
 
-                return $cartCount ?? 0;
-            },
-            'flash' => [
-                'title' => $request->session()->get('title'),
-                'message' => $request->session()->get('message'),
-                'status' => $request->session()->get('status'),
-                'invoice' => $request->session()->get('invoice'),
-            ],
-            'ziggy' => function () use ($request) {
-                return array_merge((new Ziggy)->toArray(), [
-                    'location' => $request->url(),
-                ]);
-            },
+        $sharedData['auth'] = [
+            'user' => $request->user(),
+        ];
+
+        $sharedData['cartCount'] = fn () => Cart::withCount('cartItems')->where('user_id', auth()->id())->value('cart_items_count') ?? 0;
+
+        $sharedData['flash'] = [
+            'title' => $request->session()->get('title'),
+            'message' => $request->session()->get('message'),
+            'status' => $request->session()->get('status'),
+            'invoice' => $request->session()->get('invoice'),
+            'token' => $request->session()->get('token'),
+        ];
+
+        $sharedData['ziggy'] = fn () => array_merge((new Ziggy)->toArray(), [
+            'location' => $request->url(),
         ]);
+
+        return $sharedData;
     }
 }

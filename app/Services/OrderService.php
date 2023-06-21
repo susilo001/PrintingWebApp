@@ -53,8 +53,6 @@ class OrderService
             $cartItemMedia->copy($orderItem, 'designs');
         }
 
-        // $userCart->cartItems()->delete();
-
         return $order;
     }
 }
